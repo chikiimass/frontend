@@ -14,6 +14,9 @@ export interface Config {
     users: User;
     media: Media;
     movies: Movie;
+    pages: Page;
+    series: Series;
+    episodes: Episode;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -87,44 +90,66 @@ export interface Media {
 export interface Movie {
   id: string;
   title: string;
+  slug: string;
+  poster: string | Media;
+  releaseDate: string;
+  description?: string | null;
+  duration?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  title: string;
   blocks?:
-    | (
-        | {
-            title: string;
-            description?: string | null;
-            videoUrl: string;
-            thumbnail?: (string | null) | Media;
-            publishedAt?: string | null;
-            qualities?:
-              | {
-                  quality?: string | null;
-                  url?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            subtitles?:
-              | {
-                  language?: string | null;
-                  url?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'video-blocks';
-          }
-        | {
-            title: string;
-            description?: string | null;
-            thumbnail?: (string | null) | Media;
-            videoUrl?: string | null;
-            category?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'card-blocks';
-          }
-      )[]
+    | {
+        series: string | Series;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'card-block';
+      }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "series".
+ */
+export interface Series {
+  id: string;
+  name: string;
+  slug: string;
+  poster: string | Media;
+  releaseDate: string;
+  description?: string | null;
+  seasons?:
+    | {
+        seasonNumber: number;
+        episodes?: (string | Episode)[] | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "episodes".
+ */
+export interface Episode {
+  id: string;
+  title: string;
+  episodeNumber: number;
+  description?: string | null;
+  duration?: string | null;
+  thumbnail?: (string | null) | Media;
+  releaseDate?: string | null;
+  series: string | Series;
   updatedAt: string;
   createdAt: string;
 }

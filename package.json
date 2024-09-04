@@ -25,6 +25,8 @@
     "payload": "beta",
     "react": "19.0.0-rc-06d0b89e-20240801",
     "react-dom": "19.0.0-rc-06d0b89e-20240801",
+    "react-spring": "^9.7.4",
+    "react-spring-bottom-sheet": "^3.4.1",
     "sharp": "0.32.6"
   },
   "devDependencies": {

@@ -11,6 +11,7 @@ import { Media } from '@/payload/collections/Media'
 import Movies from './payload/collections/Movies'
 import Pages from './payload/collections/pages'
 import Series from './payload/collections/Series'
+import Episodes from './payload/collections/Episodes'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,7 +29,7 @@ export default buildConfig({
 
   cors: ['https://checkout.stripe.com', `${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
   csrf: ['https://checkout.stripe.com', process.env.NEXT_PUBLIC_SITE_URL || ''],
-  collections: [Users, Media, Movies, Pages, Series],
+  collections: [Users, Media, Movies, Pages, Series, Episodes],
   secret: process.env.AUTH_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

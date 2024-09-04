@@ -1,9 +1,9 @@
 import { CollectionConfig } from 'payload';
 
-const Movies: CollectionConfig = {
-  slug: 'movies',
+const Episodes: CollectionConfig = {
+  slug: 'episodes',
   admin: {
-    useAsTitle: 'title'
+    useAsTitle: 'title',
   },
   access: {
     read: () => true,
@@ -18,20 +18,8 @@ const Movies: CollectionConfig = {
       required: true,
     },
     {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
-    },
-    {
-      name: 'poster',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'releaseDate',
-      type: 'date',
+      name: 'episodeNumber',
+      type: 'number',
       required: true,
     },
     {
@@ -42,7 +30,26 @@ const Movies: CollectionConfig = {
       name: 'duration',
       type: 'text',
     },
+    {
+      name: 'thumbnail',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'releaseDate',
+      type: 'date',
+    },
+    {
+      name: 'video',
+      type: 'text',
+    },
+    {
+      name: 'series',
+      type: 'relationship',
+      relationTo: 'series',
+      required: true,
+    },
   ],
 };
 
-export default Movies;
+export default Episodes;

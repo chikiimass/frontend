@@ -4,6 +4,12 @@ import CardBlock from '@/payload/blocks/CardBlocks';
 
 const Pages: CollectionConfig = {
   slug: 'pages',
+  access: {
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => true,
+  },
   fields: [
     {
       name: 'title',

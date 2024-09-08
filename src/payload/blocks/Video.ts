@@ -1,71 +1,61 @@
-import { Block } from "payload";
+import { Block } from 'payload';
 
 const VideoBlock: Block = {
-  slug: 'video-blocks',
+  slug: 'video-block',
   labels: {
     singular: 'Video Block',
     plural: 'Video Blocks',
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-      label: 'Title',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      label: 'Description',
-    },
-    {
-      name: 'videoUrl',
-      type: 'text',
-      required: true,
-      label: 'Video URL',
-    },
-    {
-      name: 'thumbnail',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Thumbnail',
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      label: 'Published Date',
-    },
-    {
-      name: 'qualities',
+      name: 'videos',
+      label: 'Videos',
       type: 'array',
-      label: 'Video Qualities',
       fields: [
         {
-          name: 'quality',
-          type: 'text',
-          label: 'Quality',
+          name: 'videoQuality',
+          label: 'Video Quality',
+          type: 'select',
+          options: [
+            {
+              label: '720p',
+              value: '720p',
+            },
+            {
+              label: '1080p',
+              value: '1080p',
+            },
+            {
+              label: '4K',
+              value: '4k',
+            },
+          ],
+          required: true,
         },
         {
-          name: 'url',
+          name: 'videoLink',
+          label: 'Video Link',
           type: 'text',
-          label: 'URL',
-        },
-      ],
-    },
-    {
-      name: 'subtitles',
-      type: 'array',
-      label: 'Subtitles',
-      fields: [
-        {
-          name: 'language',
-          type: 'text',
-          label: 'Language',
+          required: true,
         },
         {
-          name: 'url',
-          type: 'text',
-          label: 'URL',
+          name: 'subtitles',
+          label: 'Subtitles',
+          type: 'array',
+          fields: [
+            {
+              name: 'language',
+              label: 'Language',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'url',
+              label: 'Subtitle File URL',
+              type: 'text',
+              required: true,
+            },
+          ],
         },
       ],
     },

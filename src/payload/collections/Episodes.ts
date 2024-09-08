@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload';
+import { blocksField } from '../fields/blocks';
 
 const Episodes: CollectionConfig = {
   slug: 'episodes',
@@ -35,21 +36,64 @@ const Episodes: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
     },
+    blocksField(),
     {
       name: 'releaseDate',
       type: 'date',
     },
     {
-      name: 'video',
-      type: 'text',
-    },
-    {
       name: 'series',
       type: 'relationship',
-      relationTo: 'series',
+      relationTo: 'series',  // Connect to 'series' collection
       required: true,
     },
+    {
+      name: 'seriesSlug',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true, // Read-only in the admin UI since it's auto-populated
+      },
+    },
+    {
+      name: 'seriesName',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true, // Read-only in the admin UI since it's auto-populated
+      },
+    },
+    {
+      name: 'myCustomUIField',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/MyCustomUIField',
+        },
+        position: 'sidebar',
+      },
+    },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        // Fetch the related series information (slug and name) before saving the episode
+        const seriesId = data.series;
+
+        if (seriesId) {
+          const series = await req.payload.findByID({
+            collection: 'series',
+            id: seriesId,
+          });
+
+          if (series) {
+            data.seriesSlug = series.slug;
+            data.seriesName = series.name;
+          }
+        }
+      },
+    ],
+  },
 };
 
 export default Episodes;

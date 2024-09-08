@@ -53,6 +53,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  name?: string | null;
+  iconType: 'upload' | 'url';
+  iconUpload?: (string | null) | Media;
+  iconUrl?: string | null;
+  role?: ('admin' | 'user' | 'premium') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -91,10 +96,44 @@ export interface Movie {
   id: string;
   title: string;
   slug: string;
-  poster: string | Media;
+  icon?: (string | null) | Media;
+  poster?: (string | null) | Media;
   releaseDate: string;
   description?: string | null;
   duration?: string | null;
+  blocks?:
+    | (
+        | {
+            videos?:
+              | {
+                  videoQuality: '720p' | '1080p' | '4k';
+                  videoLink: string;
+                  subtitles?:
+                    | {
+                        language: string;
+                        url: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'video-block';
+          }
+        | {
+            title: string;
+            description?: string | null;
+            thumbnail?: (string | null) | Media;
+            videoUrl?: string | null;
+            category?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'card-blocks';
+          }
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -124,7 +163,7 @@ export interface Series {
   id: string;
   name: string;
   slug: string;
-  poster: string | Media;
+  poster?: (string | null) | Media;
   releaseDate: string;
   description?: string | null;
   seasons?:
@@ -148,8 +187,43 @@ export interface Episode {
   description?: string | null;
   duration?: string | null;
   thumbnail?: (string | null) | Media;
+  blocks?:
+    | (
+        | {
+            videos?:
+              | {
+                  videoQuality: '720p' | '1080p' | '4k';
+                  videoLink: string;
+                  subtitles?:
+                    | {
+                        language: string;
+                        url: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'video-block';
+          }
+        | {
+            title: string;
+            description?: string | null;
+            thumbnail?: (string | null) | Media;
+            videoUrl?: string | null;
+            category?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'card-blocks';
+          }
+      )[]
+    | null;
   releaseDate?: string | null;
   series: string | Series;
+  seriesSlug?: string | null;
+  seriesName?: string | null;
   updatedAt: string;
   createdAt: string;
 }

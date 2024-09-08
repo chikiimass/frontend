@@ -93,7 +93,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         onMouseMove={handleDragMove}
         onMouseUp={handleDragEnd}
       >
-        <div className="px-4 py-6 overflow-y-auto h-full">
+        <div className="overflow-y-auto h-full">
           {children}
         </div>
       </div>

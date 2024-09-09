@@ -1,0 +1,14 @@
+{
+  "node": {
+    "5b3da24d946dcead107fa9bfa9c11a680098a2bb": {
+      "workers": {
+        "app/(payload)/admin/[[...segments]]/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffrontend%2Ftest%2Fwebsite%2Fnode_modules%2F%40payloadcms%2Fnext%2Fdist%2Flayouts%2FRoot%2Findex.js%22%2C%5B%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/(payload)/admin/[[...segments]]/page": "rsc"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "S8t9o10UJfqYa2O5FUPVjXHn3XL2qGQriFEYnLJDoXA="
+}

@@ -14,7 +14,7 @@ const page = async ({ params }) => {
         },
     })
   return (
-    <div>{JSON.stringify(data)}</div>cat 
+    <div>Series/movie</div>
   )
 }
 

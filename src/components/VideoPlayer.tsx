@@ -37,11 +37,13 @@ const VideoPlayer = ({ video }) => {
     <div className="video-player">
       <video ref={videoRef} autoPlay controls className="w-full">
         {/* Fallback sources for additional formats */}
-        <source src={video.replace('.mkv', '.mp4')} type="video/mp4" /> {/* MP4 format */}
-        <source src={video.replace('.mkv', '.webm')} type="video/webm" /> {/* WebM format */}
-        <source src={video} type="video/x-matroska" /> {/* MKV format - may not work in Firefox */}
-        <source src={video.replace('.mkv', '.ogg')} type="video/ogg" /> {/* Ogg format */}
+        <source src={video} type="video/mp4" /> {/* MP4 format */}
+        <source src={video} type="video/x-matroska" /> {/* MKV format */}
+        <source src={video} type="video/ogg" /> {/* Ogg format */}
+        <source src={video} type="video/webm" /> {/* WebM format */}
         <source src={video} type="application/x-mpegURL" /> {/* HLS format */}
+        <source src={video} type="video/avc" /> {/* AVC format */}
+        <source src={video} type="video/x-msvideo" /> {/* AVI format */}
         <p>Your browser does not support the video tag or the specified formats.</p>
       </video>
     </div>

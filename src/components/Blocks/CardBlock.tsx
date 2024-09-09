@@ -148,7 +148,6 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
               className="h-14 w-14 dark:bg-zinc-700 flex-shrink-0"
             />
           </a>
-          <p>{JSON.stringify(data.seriesSlug)}</p>
           <div className="ml-4 flex-1 min-w-0">
             <Title text={data.title || 'Untitled'} />
             <div className="flex items-center mt-2 text-gray-600 text-xs sm:text-sm">

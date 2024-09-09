@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload';
+import { COLLECTION_SLUG_CATEGORIES } from './config';
 
 export const Series: CollectionConfig = {
   slug: 'series',
@@ -53,6 +54,11 @@ export const Series: CollectionConfig = {
           type: 'relationship',
           relationTo: 'episodes',
           hasMany: true,
+        },
+        {
+          name: 'Category',
+          type: 'relationship',
+          relationTo: COLLECTION_SLUG_CATEGORIES,
         },
       ],
     },

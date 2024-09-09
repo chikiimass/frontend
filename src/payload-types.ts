@@ -14,6 +14,8 @@ export interface Config {
     users: User;
     sessions: Session;
     media: Media;
+    categories: Category;
+    casts: Cast;
     movies: Movie;
     pages: Page;
     series: Series;
@@ -123,6 +125,45 @@ export interface Session {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "casts".
+ */
+export interface Cast {
+  id: string;
+  name: string;
+  role?: string | null;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  photo?: (string | null) | Media;
+  movies?: (string | Movie)[] | null;
+  series?: (string | Series)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "movies".
  */
 export interface Movie {
@@ -172,24 +213,6 @@ export interface Movie {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: string;
-  title: string;
-  blocks?:
-    | {
-        series: string | Series;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'card-block';
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "series".
  */
 export interface Series {
@@ -203,6 +226,7 @@ export interface Series {
     | {
         seasonNumber: number;
         episodes?: (string | Episode)[] | null;
+        Category?: (string | null) | Category;
         id?: string | null;
       }[]
     | null;
@@ -257,6 +281,24 @@ export interface Episode {
   series: string | Series;
   seriesSlug?: string | null;
   seriesName?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  title: string;
+  blocks?:
+    | {
+        series: string | Series;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'card-block';
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }

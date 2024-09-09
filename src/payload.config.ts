@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 /* collections */
-import { Episodes, media, Movies, Pages, Series, sessions, Users } from './payload/collections'
+import { Casts, Categories, Episodes, media, Movies, Pages, Series, sessions, Users } from './payload/collections'
 
 
 /* plugings */
@@ -34,7 +34,7 @@ export default buildConfig({
 
   cors: ['https://checkout.stripe.com', `${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
   csrf: ['https://checkout.stripe.com', process.env.NEXT_PUBLIC_SITE_URL || ''],
-  collections: [Users, sessions, media, Movies, Pages, Series, Episodes],
+  collections: [Users, sessions, media, Categories, Casts, Movies, Pages, Series, Episodes],
   secret: process.env.AUTH_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

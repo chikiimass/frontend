@@ -1,5 +1,7 @@
 export * from './Users'
 export * from './pages'
+export * from './Casts'
+export * from './Categories'
 export * from './Episodes'
 export * from './Series'
 export * from './Movies'

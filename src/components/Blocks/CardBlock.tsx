@@ -14,6 +14,7 @@ interface CardProps {
   data: {
     id?: string;
     seriesSlug?: string;
+    slug?: string;
     poster?: { url: string };
     thumbnail?: { url: string };
     title?: string;
@@ -107,7 +108,11 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   const firstName = data.title?.split(' ')[0] || data.name?.split(' ')[0] || 'User';
   const imageSrc = data.poster?.url || data.thumbnail?.url || '';
   const videoUrl = data.id ? `/video/${data.id}` : '#';
-  const infoUrl = data.seriesSlug ? `/info/${data.seriesSlug}` : '#';
+  const infoUrl = data.seriesSlug 
+  ? `/info/${data.seriesSlug}` 
+  : data.slug 
+  ? `/info/${data.slug}` 
+  : '#';
   const duration = videoDuration || data.duration || 'N/A';
   const views = data.views !== undefined ? cmAbbreviateNumber(data.views) : '0';
   const createdAt = data.createdAt ? cmTimeAgo(data.createdAt) : 'Unknown';

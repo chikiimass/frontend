@@ -6,12 +6,14 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from '@/payload/collections/Users'
-import { Media } from '@/payload/collections/Media'
-import Movies from './payload/collections/Movies'
-import Pages from './payload/collections/pages'
-import Series from './payload/collections/Series'
-import Episodes from './payload/collections/Episodes'
+/* collections */
+import { Episodes, media, Movies, Pages, Series, sessions, Users } from './payload/collections'
+
+
+/* plugings */
+import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
+import { S3_PLUGIN_CONFIG } from './payload/plugins/s3'
+import { COLLECTION_SLUG_MEDIA } from './payload/collections/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -29,7 +31,7 @@ export default buildConfig({
 
   cors: ['https://checkout.stripe.com', `${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
   csrf: ['https://checkout.stripe.com', process.env.NEXT_PUBLIC_SITE_URL || ''],
-  collections: [Users, Media, Movies, Pages, Series, Episodes],
+  collections: [Users, sessions, media, Movies, Pages, Series, Episodes],
   secret: process.env.AUTH_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -40,6 +42,17 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // storage-adapter-placeholder
+    s3StoragePlugin({
+      ...S3_PLUGIN_CONFIG,
+      collections: {
+        [COLLECTION_SLUG_MEDIA]: {
+          disableLocalStorage: true,
+          generateFileURL: (args: any) => {
+            return `https://${process.env.NEXT_PUBLIC_S3_HOSTNAME}/${args.prefix}/${args.filename}`
+          },
+          prefix: process.env.NEXT_PUBLIC_UPLOAD_PREFIX || 'media'
+        }
+      }
+    }),
   ],
 })

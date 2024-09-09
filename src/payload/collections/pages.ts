@@ -2,7 +2,7 @@
 import { CollectionConfig } from 'payload';
 import CardBlock from '@/payload/blocks/CardBlocks';
 
-const Pages: CollectionConfig = {
+export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
     read: () => true,
@@ -25,5 +25,3 @@ const Pages: CollectionConfig = {
     },
   ],
 };
-
-export default Pages;

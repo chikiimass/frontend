@@ -5,6 +5,9 @@ import Card from '@/components/Blocks/Card';
 import Link from 'next/link';
 import CardRow from '@/components/CardRow';
 
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
 const HomePage: React.FC = async () => {
   const payload = await getPayloadHMR({ config: configPromise });
 

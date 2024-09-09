@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload';
 import { blocksField } from '@/payload/fields/blocks'
 
-const Movies: CollectionConfig = {
+export const Movies: CollectionConfig = {
   slug: 'movies',
   admin: {
     useAsTitle: 'title',
@@ -67,5 +67,3 @@ const Movies: CollectionConfig = {
     ],
   },
 };
-
-export default Movies;

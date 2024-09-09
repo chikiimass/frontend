@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload';
 import { blocksField } from '../fields/blocks';
 
-const Episodes: CollectionConfig = {
+export const Episodes: CollectionConfig = {
   slug: 'episodes',
   admin: {
     useAsTitle: 'title',
@@ -95,5 +95,3 @@ const Episodes: CollectionConfig = {
     ],
   },
 };
-
-export default Episodes;

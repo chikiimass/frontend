@@ -2,6 +2,9 @@ import { getPayloadHMR } from '@payloadcms/next/utilities';
 import configPromise from '@payload-config';
 import VideoPage from './page.client';
 
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
 const page = async ({ params }) => {
   const { id } = params;
   const payload = await getPayloadHMR({ config: configPromise });

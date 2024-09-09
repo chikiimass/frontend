@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload';
 
-const Series: CollectionConfig = {
+export const Series: CollectionConfig = {
   slug: 'series',
   admin: {
     useAsTitle: 'name',
@@ -72,5 +72,3 @@ const Series: CollectionConfig = {
     ],
   },
 };
-
-export default Series;

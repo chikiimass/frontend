@@ -8,6 +8,7 @@ import SideBar from '@/components/Sidebar'
 import { VideoPlayerProvider } from '@/context/VideoPlayerContext'
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 export const metadata: Metadata = {
   title: 'Home | Chikiimass',
@@ -105,6 +106,7 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-5016990868345734" />
         <meta name="theme-color" content="#ffffff" />
       </head>
+      <GoogleAnalytics />
       <body>
         <Suspense>
         <Analytics />

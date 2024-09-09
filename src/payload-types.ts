@@ -12,6 +12,7 @@ export interface Config {
   };
   collections: {
     users: User;
+    sessions: Session;
     media: Media;
     movies: Movie;
     pages: Page;
@@ -54,10 +55,18 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   name?: string | null;
-  iconType: 'upload' | 'url';
+  iconType?: ('upload' | 'url') | null;
   iconUpload?: (string | null) | Media;
   iconUrl?: string | null;
   role?: ('admin' | 'user' | 'premium') | null;
+  verificationTokens?:
+    | {
+        identifier?: string | null;
+        token?: string | null;
+        expires?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -75,7 +84,9 @@ export interface User {
  */
 export interface Media {
   id: string;
-  alt?: string | null;
+  title?: string | null;
+  rawContent?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -87,6 +98,28 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: string;
+  user: string | User;
+  sessionToken: string;
+  expires?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

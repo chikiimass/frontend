@@ -1,5 +1,8 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+
 import { FixedToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -40,6 +43,16 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.MONGODB_URI || '',
   }),
+    /*   db: sqliteAdapter({
+    client: {
+      url: process.env.SQLDATABASE_URI
+    }
+  }), */
+  /*db: postgresAdapter({
+    pool: {
+      connectionString: process.env.POSTGRES_URI || ''
+    }
+  }),*/
   sharp,
   plugins: [
     s3StoragePlugin({

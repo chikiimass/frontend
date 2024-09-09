@@ -13,7 +13,7 @@ import Hls from 'hls.js';
 interface CardProps {
   data: {
     id?: string;
-    slug?: string;
+    seriesSlug?: string;
     poster?: { url: string };
     thumbnail?: { url: string };
     title?: string;
@@ -107,7 +107,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   const firstName = data.title?.split(' ')[0] || data.name?.split(' ')[0] || 'User';
   const imageSrc = data.poster?.url || data.thumbnail?.url || '';
   const videoUrl = data.id ? `/video/${data.id}` : '#';
-  const infoUrl = data.slug ? `/info/${data.slug}` : '#';
+  const infoUrl = data.seriesSlug ? `/info/${data.seriesSlug}` : '#';
   const duration = videoDuration || data.duration || 'N/A';
   const views = data.views !== undefined ? cmAbbreviateNumber(data.views) : '0';
   const createdAt = data.createdAt ? cmTimeAgo(data.createdAt) : 'Unknown';
@@ -148,6 +148,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
               className="h-14 w-14 dark:bg-zinc-700 flex-shrink-0"
             />
           </a>
+          <p>{JSON.stringify(data.seriesSlug)}</p>
           <div className="ml-4 flex-1 min-w-0">
             <Title text={data.title || 'Untitled'} />
             <div className="flex items-center mt-2 text-gray-600 text-xs sm:text-sm">

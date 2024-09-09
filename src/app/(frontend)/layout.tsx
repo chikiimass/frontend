@@ -9,6 +9,7 @@ import { VideoPlayerProvider } from '@/context/VideoPlayerContext'
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import SocialBar from '@/components/Ads/Banner/Social'
 
 export const metadata: Metadata = {
   title: 'Home | Chikiimass',
@@ -107,22 +108,23 @@ export default function RootLayout({
         <meta name="theme-color" content="#ffffff" />
       </head>
       <GoogleAnalytics />
+      <SocialBar />
       <body>
         <Suspense>
-        <Analytics />
-        <SpeedInsights />
-      <VideoPlayerProvider>
-          <div className="flex h-screen flex-col">
-            <Header />
+          <Analytics />
+          <SpeedInsights />
+          <VideoPlayerProvider>
+            <div className="flex h-screen flex-col">
+              <Header />
 
-            <div className="flex flex-1 overflow-hidden">
-              <SideBar />
-              <main className="mb-10 flex-1 overflow-auto sm:mb-1">
-                {children}
-              </main>
-              <BottomTab />
+              <div className="flex flex-1 overflow-hidden">
+                <SideBar />
+                <main className="mb-10 flex-1 overflow-auto sm:mb-1">
+                  {children}
+                </main>
+                <BottomTab />
+              </div>
             </div>
-          </div>
           </VideoPlayerProvider>
         </Suspense>
       </body>

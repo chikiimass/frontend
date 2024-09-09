@@ -4,6 +4,7 @@ import configPromise from '@payload-config';
 import Card from '@/components/Blocks/Card';
 import Link from 'next/link';
 import CardRow from '@/components/CardRow';
+import Banner from '@/components/Ads/Banner';
 
 export const dynamic = 'force-static';
 export const revalidate = 600;
@@ -69,12 +70,15 @@ const HomePage: React.FC = async () => {
             ))}
           </div>
         </div>
+        <section aria-label="Ad Banner" className="flex justify-center items-center">
+          <Banner adKey="c3243d8605373e42e7e1ad5f78114b3e" height={60} width={468} />
+        </section>
 
         {/* Latest Movies Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Latest Movies</h2>
           <div>
-              <CardRow data={latestMovies} />
+            <CardRow data={latestMovies} />
           </div>
         </div>
 
@@ -82,7 +86,7 @@ const HomePage: React.FC = async () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Latest Series</h2>
           <div>
-              <CardRow  data={latestSeries} />
+            <CardRow data={latestSeries} />
           </div>
         </div>
 
@@ -90,7 +94,7 @@ const HomePage: React.FC = async () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Top Rated Movies</h2>
           <div>
-              <CardRow data={topRatedMovies} />
+            <CardRow data={topRatedMovies} />
           </div>
         </div>
 
@@ -98,7 +102,7 @@ const HomePage: React.FC = async () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Trending Series</h2>
           <div>
-              <CardRow data={trendingSeries} />
+            <CardRow data={trendingSeries} />
           </div>
         </div>
       </main>

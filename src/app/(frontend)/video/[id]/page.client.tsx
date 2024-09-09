@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import VideoPlayer from '@/components/VideoPlayer';
 import CustomModal from '@/components/CustomModel';
+import Native from '@/components/Ads/Native';
+import Banner from '@/components/Ads/Banner';
 
 const VideoPage = ({ data }) => {
   const [showModal, setShowModal] = useState(false)
@@ -31,6 +33,9 @@ const VideoPage = ({ data }) => {
               {videoDetails.length > 0 && (
                 <VideoPlayer video={videoDetails[0].link} />
               )}
+              <section aria-label="Ad Banner" className="flex justify-center items-center">
+                <Banner adKey="c3243d8605373e42e7e1ad5f78114b3e" height={60} width={468} />
+              </section>
             </div>
           </div>
           <div className="mb-6 lg:mb-0">
@@ -52,19 +57,19 @@ const VideoPage = ({ data }) => {
             )}
           </div>
           <button
-              className="mt-4 w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700 transition-colors duration-300"
-              onClick={() => setShowModal(true)} // Show the modal on click
-            >
-              Download Video
-            </button>
+            className="mt-4 w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700 transition-colors duration-300"
+            onClick={() => setShowModal(true)} // Show the modal on click
+          >
+            Download Video
+          </button>
         </div>
 
         {/* Related Videos */}
         <div className="lg:w-1/4 lg:pl-4 lg:sticky lg:top-0">
           <h2 className="text-2xl font-bold mb-4">Related Videos</h2>
           <div className="flex flex-col space-y-4">
-            
-          </div>  
+            <Native />
+          </div>
         </div>
       </div>
       <CustomModal show={showModal} onClose={() => setShowModal(false)} message="Coming Soon.." />

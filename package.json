@@ -17,6 +17,8 @@
   "dependencies": {
     "@next/third-parties": "^14.2.8",
     "@payloadcms/db-mongodb": "^3.0.0-beta.100",
+    "@payloadcms/db-postgres": "^3.0.0-beta.100",
+    "@payloadcms/db-sqlite": "^3.0.0-beta.100",
     "@payloadcms/next": "^3.0.0-beta.100",
     "@payloadcms/plugin-cloud": "^3.0.0-beta.100",
     "@payloadcms/plugin-search": "^3.0.0-beta.100",

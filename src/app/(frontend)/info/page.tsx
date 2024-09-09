@@ -14,7 +14,7 @@ const page = async ({ params }) => {
         },
     })
   return (
-    <div>{JSON.stringify(data)}</div>
+    <div>{JSON.stringify(data)}</div>cat 
   )
 }
 

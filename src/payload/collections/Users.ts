@@ -17,29 +17,28 @@ export const Users: CollectionConfig = {
     update: isAdminOrCurrentUser,
     delete: isAdminOrCurrentUser
   },
-  auth: true,
-  /*   auth: {
-      forgotPassword: {
-        generateEmailHTML: (arg) => {
-          const token = arg?.token || "";
-  
-          return PrimaryActionEmailHtml({
-            actionLabel: "reset your password",
-            buttonText: "Reset Password",
-            href: `${process.env.NEXT_PUBLIC_SERVER_URL}/reset-password?token=${token}`,
-          });
-        },
-      }, 
-      verify: {
-        generateEmailHTML: ({ token }) => {
-          return PrimaryActionEmailHtml({
-            actionLabel: "verify your account",
-            buttonText: "Verify Account",
-            href: `${process.env.NEXT_PUBLIC_SERVER_URL}/verify?token=${token}`,
-          });
-        },
+  auth: {
+    forgotPassword: {
+      generateEmailHTML: (arg) => {
+        const token = arg?.token || "";
+
+        return PrimaryActionEmailHtml({
+          actionLabel: "reset your password",
+          buttonText: "Reset Password",
+          href: `${process.env.NEXT_PUBLIC_SERVER_URL}/reset-password?token=${token}`,
+        });
       },
-    },*/
+    },
+    verify: {
+      generateEmailHTML: ({ token }) => {
+        return PrimaryActionEmailHtml({
+          actionLabel: "verify your account",
+          buttonText: "Verify Account",
+          href: `${process.env.NEXT_PUBLIC_SERVER_URL}/verify?token=${token}`,
+        });
+      },
+    },
+  },
   fields: [
     {
       name: 'name',
@@ -76,6 +75,7 @@ export const Users: CollectionConfig = {
         condition: (data) => data.iconType === 'url',
         placeholder: 'https://example.com/icon.png',
       },
+      defaultValue: '',
     },
     {
       name: 'role',

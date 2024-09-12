@@ -24,7 +24,7 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {};
   locale: null;
@@ -55,10 +55,10 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   name?: string | null;
   iconType?: ('upload' | 'url') | null;
-  iconUpload?: (string | null) | Media;
+  iconUpload?: (number | null) | Media;
   iconUrl?: string | null;
   role?: ('admin' | 'user' | 'premium') | null;
   verificationTokens?:
@@ -85,7 +85,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   title?: string | null;
   rawContent?: string | null;
   prefix?: string | null;
@@ -116,8 +116,8 @@ export interface Media {
  * via the `definition` "sessions".
  */
 export interface Session {
-  id: string;
-  user: string | User;
+  id: number;
+  user: number | User;
   sessionToken: string;
   expires?: string | null;
   updatedAt: string;
@@ -128,7 +128,7 @@ export interface Session {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: string;
+  id: number;
   title?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -138,7 +138,7 @@ export interface Category {
  * via the `definition` "casts".
  */
 export interface Cast {
-  id: string;
+  id: number;
   name: string;
   role?: string | null;
   bio?: {
@@ -156,9 +156,9 @@ export interface Cast {
     };
     [k: string]: unknown;
   } | null;
-  photo?: (string | null) | Media;
-  movies?: (string | Movie)[] | null;
-  series?: (string | Series)[] | null;
+  photo?: (number | null) | Media;
+  movies?: (number | Movie)[] | null;
+  series?: (number | Series)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -167,11 +167,11 @@ export interface Cast {
  * via the `definition` "movies".
  */
 export interface Movie {
-  id: string;
+  id: number;
   title: string;
   slug: string;
-  icon?: (string | null) | Media;
-  poster?: (string | null) | Media;
+  icon?: (number | null) | Media;
+  poster?: (number | null) | Media;
   releaseDate: string;
   description?: string | null;
   duration?: string | null;
@@ -199,7 +199,7 @@ export interface Movie {
         | {
             title: string;
             description?: string | null;
-            thumbnail?: (string | null) | Media;
+            thumbnail?: (number | null) | Media;
             videoUrl?: string | null;
             category?: string | null;
             id?: string | null;
@@ -216,17 +216,17 @@ export interface Movie {
  * via the `definition` "series".
  */
 export interface Series {
-  id: string;
+  id: number;
   name: string;
   slug: string;
-  poster?: (string | null) | Media;
+  poster?: (number | null) | Media;
   releaseDate: string;
   description?: string | null;
   seasons?:
     | {
         seasonNumber: number;
-        episodes?: (string | Episode)[] | null;
-        Category?: (string | null) | Category;
+        episodes?: (number | Episode)[] | null;
+        Category?: (number | null) | Category;
         id?: string | null;
       }[]
     | null;
@@ -238,12 +238,12 @@ export interface Series {
  * via the `definition` "episodes".
  */
 export interface Episode {
-  id: string;
+  id: number;
   title: string;
   episodeNumber: number;
   description?: string | null;
   duration?: string | null;
-  thumbnail?: (string | null) | Media;
+  thumbnail?: (number | null) | Media;
   blocks?:
     | (
         | {
@@ -268,7 +268,7 @@ export interface Episode {
         | {
             title: string;
             description?: string | null;
-            thumbnail?: (string | null) | Media;
+            thumbnail?: (number | null) | Media;
             videoUrl?: string | null;
             category?: string | null;
             id?: string | null;
@@ -278,7 +278,7 @@ export interface Episode {
       )[]
     | null;
   releaseDate?: string | null;
-  series: string | Series;
+  series: number | Series;
   seriesSlug?: string | null;
   seriesName?: string | null;
   updatedAt: string;
@@ -289,11 +289,11 @@ export interface Episode {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: string;
+  id: number;
   title: string;
   blocks?:
     | {
-        series: string | Series;
+        series: number | Series;
         id?: string | null;
         blockName?: string | null;
         blockType: 'card-block';
@@ -307,10 +307,10 @@ export interface Page {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -330,7 +330,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;

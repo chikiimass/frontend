@@ -192,10 +192,13 @@ export interface Movie {
   slug: string;
   icon?: (string | null) | Media;
   poster?: (string | null) | Media;
-  releaseDate: string;
+  releaseDate?: string | null;
   description?: string | null;
   duration?: string | null;
-  Casts?: (string | null) | Cast;
+  Casts?: {
+    relationTo: 'casts';
+    value: string | Cast;
+  } | null;
   blocks?:
     | (
         | {
@@ -243,14 +246,26 @@ export interface Series {
   poster?: (string | null) | Media;
   releaseDate: string;
   description?: string | null;
-  Casts?: (string | null) | Cast;
-  Category?: (string | null) | Category;
-  Genres?: (string | null) | Genre;
+  Casts?: {
+    relationTo: 'casts';
+    value: string | Cast;
+  } | null;
+  Category?: {
+    relationTo: 'categories';
+    value: string | Category;
+  } | null;
+  Genres?: {
+    relationTo: 'genres';
+    value: string | Genre;
+  } | null;
   seasons?:
     | {
         seasonNumber: number;
         seasonDesc?: string | null;
-        episodes?: (string | Episode)[] | null;
+        episodes?: {
+          relationTo: 'episodes';
+          value: string | Episode;
+        } | null;
         id?: string | null;
       }[]
     | null;
@@ -302,7 +317,10 @@ export interface Episode {
       )[]
     | null;
   releaseDate?: string | null;
-  series: string | Series;
+  series: {
+    relationTo: 'series';
+    value: string | Series;
+  };
   seriesSlug?: string | null;
   seriesName?: string | null;
   updatedAt: string;

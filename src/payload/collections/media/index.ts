@@ -19,10 +19,10 @@ export const media: CollectionConfig = {
     adminThumbnail: ({ doc: media }) => (media?.sizes as any)?.thumbnail?.url || media.url
   },
   access: {
-    read: isAnyone,
+    read: () => true,
     create: () => true,
     update: () => true,
-    delete: isAdmin,
+    delete: () => true,
   },
   admin: {
     useAsTitle: 'title'

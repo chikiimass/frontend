@@ -10,13 +10,15 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 /* collections */
-import { Casts, Categories, Episodes, media, Movies, Pages, Series, sessions, Users } from './payload/collections'
+import { Casts, Categories, Episodes, media, Movies, Pages, Series, Users } from './payload/collections'
 
 
 /* plugings */
 import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { S3_PLUGIN_CONFIG } from './payload/plugins/s3'
 import { COLLECTION_SLUG_MEDIA } from './payload/collections/config'
+import { en } from 'payload/i18n/en'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,7 +36,7 @@ export default buildConfig({
 
   cors: ['https://checkout.stripe.com', `${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
   csrf: ['https://checkout.stripe.com', process.env.NEXT_PUBLIC_SITE_URL || ''],
-  collections: [Users, sessions, media, Categories, Casts, Movies, Pages, Series, Episodes],
+  collections: [Users, media, Categories, Casts, Movies, Pages, Series, Episodes],
   secret: process.env.AUTH_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -54,6 +56,17 @@ export default buildConfig({
     }
   }),*/
   sharp,
+  email:
+    process.env.RESEND_DEFAULT_EMAIL && process.env.AUTH_RESEND_KEY
+      ? resendAdapter({
+        defaultFromAddress: process.env.RESEND_DEFAULT_EMAIL,
+        defaultFromName: 'Chikiimass Admin',
+        apiKey: process.env.AUTH_RESEND_KEY || ''
+      })
+      : undefined,
+  i18n: {
+    supportedLanguages: { en }
+  },
   plugins: [
     s3StoragePlugin({
       ...S3_PLUGIN_CONFIG,

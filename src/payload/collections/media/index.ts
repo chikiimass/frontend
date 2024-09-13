@@ -22,7 +22,7 @@ export const media: CollectionConfig = {
     read: isAnyone,
     create: () => true,
     update: () => true,
-    delete: isAdmin
+    delete: isAdmin,
   },
   admin: {
     useAsTitle: 'title'
@@ -35,18 +35,15 @@ export const media: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
-      admin: {
-        style: { display: 'none' },
-        readOnly: true
-      }
+
+    },
+    {
+      name: 'alt',
+      type: 'text'
     },
     {
       name: 'rawContent',
       type: 'textarea',
-      admin: {
-        disabled: true,
-        readOnly: true
-      }
     }
   ]
 }

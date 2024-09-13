@@ -1,9 +1,9 @@
 import { PrimaryActionEmailHtml } from '@/components/email/PrimaryActionHtml';
-import type { CollectionConfig } from 'payload';
-import { COLLECTION_SLUG_SESSIONS, COLLECTION_SLUG_USER } from './config';
+import payload, { CollectionConfig } from 'payload';
+import { COLLECTION_SLUG_USER } from './config';
 import { isAdminOrCurrentUser, isAdmin } from '../access';
 
-const ADMIN_AUTH_GROUP = 'Auth'
+const ADMIN_AUTH_GROUP = 'Auth';
 
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
@@ -13,28 +13,52 @@ export const Users: CollectionConfig = {
   },
   access: {
     read: isAdminOrCurrentUser,
-    create: isAdmin,
-    update: isAdminOrCurrentUser,
-    delete: isAdminOrCurrentUser
+    create: () => true,
+    update: () => true,
+    delete: () => true,
   },
+/*   hooks: {
+    afterChange: [
+      async ({ doc, previousDoc }) => {
+        // Check if the _verified field has changed from false to true
+        if (!previousDoc?._verified && doc._verified) {
+          const email = doc.email;
+
+          // Generate welcome email HTML
+          const welcomeEmailHtml = PrimaryActionEmailHtml({
+            actionLabel: "Welcome to Our Platform!",
+            buttonText: "Get Started",
+            href: `${process.env.NEXT_PUBLIC_SITE_URL}/sign-in`, // Example link for getting started
+          });
+
+          // Send welcome email logic here (you'll need to implement your email sending function)
+          await payload.sendEmail({
+            to: email,
+            subject: 'Welcome to Our Platform!',
+            html: welcomeEmailHtml,
+          });
+        }
+      },
+    ],
+  }, */
   auth: {
     forgotPassword: {
       generateEmailHTML: (arg) => {
-        const token = arg?.token || "";
+        const token = arg?.token || '';
 
         return PrimaryActionEmailHtml({
-          actionLabel: "reset your password",
-          buttonText: "Reset Password",
-          href: `${process.env.NEXT_PUBLIC_SERVER_URL}/reset-password?token=${token}`,
+          actionLabel: 'Reset your password',
+          buttonText: 'Reset Password',
+          href: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password?token=${token}`,
         });
       },
     },
     verify: {
       generateEmailHTML: ({ token }) => {
         return PrimaryActionEmailHtml({
-          actionLabel: "verify your account",
-          buttonText: "Verify Account",
-          href: `${process.env.NEXT_PUBLIC_SERVER_URL}/verify?token=${token}`,
+          actionLabel: 'Verify your account',
+          buttonText: 'Verify Account',
+          href: `${process.env.NEXT_PUBLIC_SITE_URL}/verify?token=${token}`,
         });
       },
     },
@@ -75,92 +99,14 @@ export const Users: CollectionConfig = {
         condition: (data) => data.iconType === 'url',
         placeholder: 'https://example.com/icon.png',
       },
-      defaultValue: '',
+      defaultValue: 'https://pub-2af5a0856a4a42c3b267a44f15493caf.r2.dev/chikiimass/media/chikiimass-removebg-preview(1).png',
     },
     {
       name: 'role',
       type: 'select',
-      options: [
-        'admin',
-        'user',
-        'premium'
-      ],
+      options: ['admin', 'user'],
       defaultValue: 'user',
-      saveToJWT: true
+      saveToJWT: true,
     },
-    {
-      name: 'verificationTokens',
-      type: 'array',
-      saveToJWT: false,
-      fields: [
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'identifier',
-              type: 'text',
-              admin: {
-                readOnly: true
-              }
-            },
-            {
-              name: 'token',
-              type: 'text',
-              admin: {
-                readOnly: true
-              }
-            },
-            {
-              name: 'expires',
-              type: 'date',
-              admin: {
-                readOnly: true
-              }
-            }
-          ]
-        }
-      ]
-    }
   ],
-} as const;
-
-export const sessions: CollectionConfig = {
-  slug: COLLECTION_SLUG_SESSIONS,
-  admin: {
-    group: ADMIN_AUTH_GROUP
-  },
-  access: {
-    read: isAdminOrCurrentUser,
-    create: isAdmin,
-    update: isAdmin,
-    delete: isAdmin
-  },
-  fields: [
-    {
-      name: 'user',
-      type: 'relationship',
-      relationTo: COLLECTION_SLUG_USER,
-      required: true,
-      admin: {
-        readOnly: false
-      }
-    },
-    {
-      name: 'sessionToken',
-      type: 'text', required: true,
-      index: true,
-      admin: {
-        readOnly: false
-      }
-    },
-    {
-      name: 'expires',
-      type: 'date',
-      admin: {
-        readOnly: false,
-        date: { pickerAppearance: 'dayAndTime' }
-      },
-      required: false
-    }
-  ]
-} as const
+};

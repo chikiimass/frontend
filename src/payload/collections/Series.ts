@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload';
-import { COLLECTION_SLUG_CATEGORIES } from './config';
+import { COLLECTION_SLUG_CASTS, COLLECTION_SLUG_CATEGORIES } from './config';
 
 export const Series: CollectionConfig = {
   slug: 'series',
@@ -39,6 +39,11 @@ export const Series: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
+    },
+    {
+      name: 'Casts',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_CASTS,
     },
     {
       name: 'seasons',

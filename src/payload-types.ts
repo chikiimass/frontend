@@ -12,7 +12,6 @@ export interface Config {
   };
   collections: {
     users: User;
-    sessions: Session;
     media: Media;
     categories: Category;
     casts: Cast;
@@ -60,15 +59,7 @@ export interface User {
   iconType?: ('upload' | 'url') | null;
   iconUpload?: (number | null) | Media;
   iconUrl?: string | null;
-  role?: ('admin' | 'user' | 'premium') | null;
-  verificationTokens?:
-    | {
-        identifier?: string | null;
-        token?: string | null;
-        expires?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  role?: ('admin' | 'user') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -76,6 +67,8 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
@@ -87,6 +80,7 @@ export interface User {
 export interface Media {
   id: number;
   title?: string | null;
+  alt?: string | null;
   rawContent?: string | null;
   prefix?: string | null;
   updatedAt: string;
@@ -110,18 +104,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sessions".
- */
-export interface Session {
-  id: number;
-  user: number | User;
-  sessionToken: string;
-  expires?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -175,6 +157,7 @@ export interface Movie {
   releaseDate: string;
   description?: string | null;
   duration?: string | null;
+  Casts?: (number | null) | Cast;
   blocks?:
     | (
         | {
@@ -222,6 +205,7 @@ export interface Series {
   poster?: (number | null) | Media;
   releaseDate: string;
   description?: string | null;
+  Casts?: (number | null) | Cast;
   seasons?:
     | {
         seasonNumber: number;

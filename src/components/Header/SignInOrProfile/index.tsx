@@ -5,24 +5,23 @@ import { useRouter } from 'next/navigation';
 
 const SignInOrProfile = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('/api/users/me', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-        });
-        setUser(response.data.user);
-      } catch (error) {
-        // Handle user fetching error or not logged in
-        setUser(null);
-      } finally {
-        setLoading(false); // Set loading to false when data is fetched
-      }
-    };
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get('/api/users/me', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      });
+      setUser(response.data.user);
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUser();
   }, []);
 
@@ -32,12 +31,26 @@ const SignInOrProfile = () => {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       });
       localStorage.removeItem('token');
+      setUser(null); // Update the state immediately
       router.push('/sign-in');
     } catch (error) {
-      // Handle logout error
       console.error('Failed to log out:', error);
     }
   };
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === 'token') {
+        fetchUser(); // Re-fetch user when token changes
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   return (
     <div className="relative flex items-center space-x-4 p-2">
@@ -48,7 +61,7 @@ const SignInOrProfile = () => {
         </div>
       ) : user ? (
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" >
+          <div tabIndex={0} role="button">
             <div className='flex items-center gap-4'>
               <div className="avatar online">
                 <div className="ring-primary ring-offset-base-100 w-8 rounded-full ring ring-offset-1">

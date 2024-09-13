@@ -14,24 +14,34 @@ const Profile = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
+    const [loading, setLoading] = useState(true); // Add loading state
     const router = useRouter();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    router.push('/sign-in');
+                    return;
+                }
+
                 const response = await axios.get('/api/users/me', {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    headers: { 'Authorization': `Bearer ${token}` },
                 });
                 setUser(response.data.user);
                 setNewEmail(response.data.user.email);
                 setNewUsername(response.data.user.name);
             } catch (error) {
                 setError('Failed to fetch user data.');
+                router.push('/sign-in');
+            } finally {
+                setLoading(false); // Update loading state
             }
         };
 
         fetchUser();
-    }, []);
+    }, [router]);
 
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -42,8 +52,9 @@ const Profile = () => {
 
         setIsUpdating(true);
         try {
+            const token = localStorage.getItem('token');
             await axios.patch('/api/users/me', { email: newEmail, name: newUsername, password: newPassword }, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                headers: { 'Authorization': `Bearer ${token}` },
             });
             setSuccess('Profile updated successfully.');
         } catch (error) {
@@ -56,8 +67,15 @@ const Profile = () => {
     const handleDeleteAccount = async () => {
         if (window.confirm('Are you sure you want to delete your account?')) {
             try {
-                await axios.delete('/api/users/me', {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                const token = localStorage.getItem('token');
+                const response = await axios.get('/api/users/me', {
+                    headers: { 'Authorization': `Bearer ${token}` },
+                });
+
+                const userId = response.data.user.id; // Get user ID
+
+                await axios.delete(`/api/users/${userId}`, { // Delete user by ID
+                    headers: { 'Authorization': `Bearer ${token}` },
                 });
                 localStorage.removeItem('token');
                 router.push('/sign-in');
@@ -69,8 +87,9 @@ const Profile = () => {
 
     const handleLogout = async () => {
         try {
+            const token = localStorage.getItem('token');
             await axios.post('/api/users/logout', {}, {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                headers: { 'Authorization': `Bearer ${token}` },
             });
             localStorage.removeItem('token');
             router.push('/sign-in');
@@ -79,7 +98,12 @@ const Profile = () => {
         }
     };
 
+    if (loading) {
+        return <SkeletonLoader />;
+    }
+
     if (!user) {
+        // Redirect if no user data
         return <SkeletonLoader />;
     }
 

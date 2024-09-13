@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload';
 import { blocksField } from '@/payload/fields/blocks'
+import { COLLECTION_SLUG_CASTS } from './config';
 
 export const Movies: CollectionConfig = {
   slug: 'movies',
@@ -49,6 +50,11 @@ export const Movies: CollectionConfig = {
     {
       name: 'duration',
       type: 'text',
+    },
+    {
+      name: 'Casts',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_CASTS,
     },
     blocksField(),
   ],

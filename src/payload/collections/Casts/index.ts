@@ -1,8 +1,15 @@
 import { CollectionConfig } from 'payload';
 import { COLLECTION_SLUG_CASTS } from '../config';
+import { isAdmin } from '@/payload/access';
 
 export const Casts: CollectionConfig = {
     slug: COLLECTION_SLUG_CASTS,
+    access: {
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin,
+        read: isAdmin,
+    },
     labels: {
         singular: 'Cast Member',
         plural: 'Cast Members',

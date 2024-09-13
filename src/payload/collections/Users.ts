@@ -10,35 +10,43 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    read: isAdminOrCurrentUser,
+    read: () => true,
     create: () => true,
     update: () => true,
     delete: () => true,
+    admin: ({ req }) => {
+      const { user } = req
+      // Check if the user object and role exist
+      if (user && user.role === 'admin') {
+        return true;
+      }
+      return false;
+    },
   },
-/*   hooks: {
-    afterChange: [
-      async ({ doc, previousDoc }) => {
-        // Check if the _verified field has changed from false to true
-        if (!previousDoc?._verified && doc._verified) {
-          const email = doc.email;
-
-          // Generate welcome email HTML
-          const welcomeEmailHtml = PrimaryActionEmailHtml({
-            actionLabel: "Welcome to Our Platform!",
-            buttonText: "Get Started",
-            href: `${process.env.NEXT_PUBLIC_SITE_URL}/sign-in`, // Example link for getting started
-          });
-
-          // Send welcome email logic here (you'll need to implement your email sending function)
-          await payload.sendEmail({
-            to: email,
-            subject: 'Welcome to Our Platform!',
-            html: welcomeEmailHtml,
-          });
-        }
-      },
-    ],
-  }, */
+  /*   hooks: {
+      afterChange: [
+        async ({ doc, previousDoc }) => {
+          // Check if the _verified field has changed from false to true
+          if (!previousDoc?._verified && doc._verified) {
+            const email = doc.email;
+  
+            // Generate welcome email HTML
+            const welcomeEmailHtml = PrimaryActionEmailHtml({
+              actionLabel: "Welcome to Our Platform!",
+              buttonText: "Get Started",
+              href: `${process.env.NEXT_PUBLIC_SITE_URL}/sign-in`, // Example link for getting started
+            });
+  
+            // Send welcome email logic here (you'll need to implement your email sending function)
+            await payload.sendEmail({
+              to: email,
+              subject: 'Welcome to Our Platform!',
+              html: welcomeEmailHtml,
+            });
+          }
+        },
+      ],
+    }, */
   auth: {
     forgotPassword: {
       generateEmailHTML: (arg) => {

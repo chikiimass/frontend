@@ -43,17 +43,20 @@ export const Series: CollectionConfig = {
     {
       name: 'Casts',
       type: 'relationship',
-      relationTo: COLLECTION_SLUG_CASTS,
+      relationTo: [COLLECTION_SLUG_CASTS],
+      index: true,
     },
     {
       name: 'Category',
       type: 'relationship',
-      relationTo: COLLECTION_SLUG_CATEGORIES,
+      relationTo: [COLLECTION_SLUG_CATEGORIES],
+      index: true
     },
     {
       name: 'Genres',
       type: 'relationship',
-      relationTo: COLLECTION_SLUG_GENRES,
+      relationTo: [COLLECTION_SLUG_GENRES],
+      index: true
     },
     {
       name: 'seasons',
@@ -71,8 +74,8 @@ export const Series: CollectionConfig = {
         {
           name: 'episodes',
           type: 'relationship',
-          relationTo: 'episodes',
-          hasMany: true,
+          relationTo: ['episodes'],
+          index: true
         },
       ],
     },

@@ -37,11 +37,11 @@ export const Movies: CollectionConfig = {
       name: 'poster',
       type: 'upload',
       relationTo: 'media',
+      index: true
     },
     {
       name: 'releaseDate',
       type: 'date',
-      required: true,
     },
     {
       name: 'description',
@@ -54,7 +54,8 @@ export const Movies: CollectionConfig = {
     {
       name: 'Casts',
       type: 'relationship',
-      relationTo: COLLECTION_SLUG_CASTS,
+      relationTo: [COLLECTION_SLUG_CASTS],
+      index: true
     },
     blocksField(),
   ],

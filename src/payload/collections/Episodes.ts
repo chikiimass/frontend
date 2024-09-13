@@ -44,15 +44,16 @@ export const Episodes: CollectionConfig = {
     {
       name: 'series',
       type: 'relationship',
-      relationTo: 'series',  // Connect to 'series' collection
+      relationTo: ['series'],
       required: true,
+      index: true
     },
     {
       name: 'seriesSlug',
       type: 'text',
       admin: {
         position: 'sidebar',
-        readOnly: true, // Read-only in the admin UI since it's auto-populated
+        readOnly: true,
       },
     },
     {

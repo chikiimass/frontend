@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload';
-import { COLLECTION_SLUG_CASTS, COLLECTION_SLUG_CATEGORIES } from './config';
+import { COLLECTION_SLUG_CASTS, COLLECTION_SLUG_CATEGORIES, COLLECTION_SLUG_GENRES } from './config';
 
 export const Series: CollectionConfig = {
   slug: 'series',
@@ -46,6 +46,16 @@ export const Series: CollectionConfig = {
       relationTo: COLLECTION_SLUG_CASTS,
     },
     {
+      name: 'Category',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_CATEGORIES,
+    },
+    {
+      name: 'Genres',
+      type: 'relationship',
+      relationTo: COLLECTION_SLUG_GENRES,
+    },
+    {
       name: 'seasons',
       type: 'array',
       fields: [
@@ -55,15 +65,14 @@ export const Series: CollectionConfig = {
           required: true,
         },
         {
+          name: 'seasonDesc',
+          type: 'textarea'
+        },
+        {
           name: 'episodes',
           type: 'relationship',
           relationTo: 'episodes',
           hasMany: true,
-        },
-        {
-          name: 'Category',
-          type: 'relationship',
-          relationTo: COLLECTION_SLUG_CATEGORIES,
         },
       ],
     },

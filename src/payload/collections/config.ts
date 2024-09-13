@@ -6,7 +6,7 @@ export const COLLECTION_SLUG_PAGES = 'pages' as const
 export const COLLECTION_SLUG_POSTS = 'posts' as const
 export const COLLECTION_SLUG_PROJECTS = 'projects' as const
 export const COLLECTION_SLUG_COMMENTS = 'comments' as const
-export const COLLECTION_SLUG_GERNES = 'genres' as const
+export const COLLECTION_SLUG_GENRES = 'genres' as const
 export const COLLECTION_SLUG_CATEGORIES = 'categories' as const
 
 export const COLLECTION_SLUG_CASTS = 'casts' as const

@@ -1,14 +1,12 @@
 import { PrimaryActionEmailHtml } from '@/components/email/PrimaryActionHtml';
-import payload, { CollectionConfig } from 'payload';
+import { CollectionConfig } from 'payload';
 import { COLLECTION_SLUG_USER } from './config';
 import { isAdminOrCurrentUser, isAdmin } from '../access';
 
-const ADMIN_AUTH_GROUP = 'Auth';
 
 export const Users: CollectionConfig = {
   slug: COLLECTION_SLUG_USER,
   admin: {
-    group: ADMIN_AUTH_GROUP,
     useAsTitle: 'email',
   },
   access: {

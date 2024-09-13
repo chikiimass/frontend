@@ -22,7 +22,6 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_20 } from '@pa
 import { UnderlineFeatureClient as UnderlineFeatureClient_21 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_22 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_23 } from '@payloadcms/richtext-lexical/client'
-import { default as default_24 } from '@/components/MyCustomUIField'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/client#RichTextCell": RichTextCell_0,
@@ -48,6 +47,5 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#StrikethroughFeatureClient": StrikethroughFeatureClient_20,
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_21,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_22,
-  "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_23,
-  "@/components/MyCustomUIField#default": default_24
+  "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_23
 }

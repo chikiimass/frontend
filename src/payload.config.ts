@@ -42,14 +42,14 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   serverURL: process.env.NEXT_PUBLIC_SITE_URL,
-  /* db: mongooseAdapter({
+  db: mongooseAdapter({
     url: process.env.MONGODB_URI || '',
-  }),*/
-  db: sqliteAdapter({
+  }),
+/*   db: sqliteAdapter({
     client: {
       url: process.env.SQLDATABASE_URI || 'file:/chikiimass.db'
     }
-  }),
+  }), */
   /*db: postgresAdapter({
     pool: {
       connectionString: process.env.POSTGRES_URI || ''

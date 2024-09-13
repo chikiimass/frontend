@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 /* collections */
-import { Casts, Categories, Episodes, media, Movies, Pages, Series, Users } from './payload/collections'
+import { Casts, Categories, Episodes, Genres, media, Movies, Pages, Series, Users } from './payload/collections'
 
 
 /* plugings */
@@ -36,7 +36,7 @@ export default buildConfig({
 
   cors: ['https://checkout.stripe.com', 'https://chikiimass.me', 'https://www.chikiimass.me', `${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
   csrf: ['https://checkout.stripe.com', 'https://chikiimass.me', 'https://www.chikiimass.me', process.env.NEXT_PUBLIC_SITE_URL || ''],
-  collections: [Users, media, Categories, Casts, Movies, Pages, Series, Episodes],
+  collections: [Users, media, Categories, Genres, Casts, Movies, Pages, Series, Episodes],
   secret: process.env.AUTH_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

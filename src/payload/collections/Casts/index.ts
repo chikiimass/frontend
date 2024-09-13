@@ -5,14 +5,17 @@ import { isAdmin } from '@/payload/access';
 export const Casts: CollectionConfig = {
     slug: COLLECTION_SLUG_CASTS,
     access: {
-        create: isAdmin,
-        update: isAdmin,
-        delete: isAdmin,
-        read: isAdmin,
+        create: () => true,
+        update: () => true,
+        delete: () => true,
+        read: () => true,
     },
     labels: {
         singular: 'Cast Member',
         plural: 'Cast Members',
+    },
+    admin: {
+        useAsTitle: 'name',
     },
     fields: [
         {
@@ -20,11 +23,6 @@ export const Casts: CollectionConfig = {
             type: 'text',
             required: true,
             label: 'Name',
-        },
-        {
-            name: 'role',
-            type: 'text',
-            label: 'Role',
         },
         {
             name: 'bio',
@@ -38,18 +36,50 @@ export const Casts: CollectionConfig = {
             label: 'Photo',
         },
         {
-            name: 'movies',
-            type: 'relationship',
-            relationTo: 'movies',
-            hasMany: true,
-            label: 'Movies',
+            name: 'roleInMovies',
+            type: 'array',
+            fields: [
+                {
+                    name: 'movie',
+                    type: 'relationship',
+                    relationTo: 'movies',
+                    required: true,
+                    label: 'Movie',
+                },
+                {
+                    name: 'role',
+                    type: 'text',
+                    required: true,
+                    label: 'Role',
+                },
+            ],
+            label: 'Roles in Movies',
+            admin: {
+                description: 'Specify the role of this cast member in each movie.',
+            },
         },
         {
-            name: 'series',
-            type: 'relationship',
-            relationTo: 'series',
-            hasMany: true,
-            label: 'Series',
+            name: 'roleInSeries',
+            type: 'array',
+            fields: [
+                {
+                    name: 'series',
+                    type: 'relationship',
+                    relationTo: 'series',
+                    required: true,
+                    label: 'Series',
+                },
+                {
+                    name: 'role',
+                    type: 'text',
+                    required: true,
+                    label: 'Role',
+                },
+            ],
+            label: 'Roles in Series',
+            admin: {
+                description: 'Specify the role of this cast member in each series.',
+            },
         },
     ],
 };

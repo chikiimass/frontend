@@ -63,7 +63,7 @@ export const Episodes: CollectionConfig = {
         readOnly: true, // Read-only in the admin UI since it's auto-populated
       },
     },
-    {
+ /*    {
       name: 'myCustomUIField',
       type: 'ui',
       admin: {
@@ -72,7 +72,7 @@ export const Episodes: CollectionConfig = {
         },
         position: 'sidebar',
       },
-    },
+    }, */
   ],
   hooks: {
     beforeChange: [

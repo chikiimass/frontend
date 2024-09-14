@@ -158,6 +158,7 @@ const Profile = () => {
                         <div className="form-control">
                             <label htmlFor="new-password" className="label">
                                 <span className="label-text">New Password</span>
+                                <span className="label-text-alt">Disabled</span>
                             </label>
                             <input
                                 id="new-password"
@@ -166,11 +167,13 @@ const Profile = () => {
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 className="input input-bordered w-full"
                                 placeholder="New Password"
+                                disabled
                             />
                         </div>
                         <div className="form-control">
                             <label htmlFor="confirm-password" className="label">
                                 <span className="label-text">Confirm Password</span>
+                                <span className="label-text-alt">Disabled</span>
                             </label>
                             <input
                                 id="confirm-password"
@@ -179,6 +182,7 @@ const Profile = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="input input-bordered w-full"
                                 placeholder="Confirm Password"
+                                disabled
                             />
                         </div>
                         <button

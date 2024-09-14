@@ -12,11 +12,36 @@ export const revalidate = 600;
 const HomePage: React.FC = async () => {
   const payload = await getPayloadHMR({ config: configPromise });
 
-  const featuredContent = await payload.find({
-    collection: 'movies',
-    sort: '-createdAt',
-    limit: 1,
-  });
+  /*   const featuredContent = await payload.find({
+      collection: 'movies',
+      sort: '-createdAt',
+      limit: 1,
+    }); */
+
+  async function fetchFeaturedContentFromCollections(collections) {
+    for (const collection of collections) {
+      try {
+        const result = await payload.find({
+          collection,
+          sort: '-createdAt',
+          limit: 1,
+        });
+
+        if (result.docs.length > 0) {
+          return result;
+        }
+      } catch (error) {
+        console.error(`Error fetching from collection ${collection}:`, error);
+      }
+    }
+
+    return null; // If no results from any collection
+  }
+
+  // Usage
+  const collections = ['movies', 'series'];
+  const featuredContent = await fetchFeaturedContentFromCollections(collections);
+
 
   const latestMovies = await payload.find({
     collection: 'movies',
@@ -47,29 +72,32 @@ const HomePage: React.FC = async () => {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <div className="relative mb-8">
-          <div className="h-64 sm:h-80 md:h-96 lg:h-[500px] overflow-hidden shadow-lg">
-            {featuredContent.docs.map((item) => (
-              <div
-                key={item.id}
-                className="w-full h-full bg-cover bg-center flex items-end justify-center text-white"
-                style={{
-                  backgroundImage: `url(${item.poster.url})`,
-                }}
-              >
-                <div className="bg-black bg-opacity-52 p-8">
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">{item.title}</h1>
-                  <p className="text-sm sm:text-lg mb-4">{item.description}</p>
-                  <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        <section>
+          {featuredContent.docs.map((item) => (
+            <div
+              key={item.id}
+              className="hero min-h-screen"
+              style={{
+                backgroundImage: item?.poster?.url ? `url(${item.poster.url})` : 'none',
+              }}>
+              <div className="hero-overlay bg-opacity-60"></div>
+              <div className="hero-content text-neutral-content text-center">
+                <div className="max-w-md">
+                  <h1 className="mb-5 text-5xl font-bold">{item.title}</h1>
+                  <p className="mb-5 truncate-multiline">
+                    {item.description}
+                  </p>
+
+                  <button className="btn btn-primary">
                     <Link href={`/video/${item.id}`}>
                       Watch Now
                     </Link>
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </section>
         <section aria-label="Ad Banner" className="flex justify-center items-center">
           <Banner adKey="c3243d8605373e42e7e1ad5f78114b3e" height={60} width={468} />
         </section>

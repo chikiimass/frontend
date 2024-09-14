@@ -14,6 +14,13 @@ const config  = {
     extend: {},
   },
   plugins: [daisyui],
+  daisyui: {
+    themes: [
+      "light",
+      "dark",
+      "black",
+      "luxury"
+    ]}
 }
 
 export default config

@@ -40,9 +40,11 @@ export const EmailTemplate = ({
             alt='Chikiimass'
             style={logo}
           />
-          <Text style={paragraph}>Hello and Welcome,</Text>
+          <Text className="text-[24px] font-semibold leading-[32px] text-indigo-500">
+            Hello and Welcome,
+          </Text>
           <Text style={paragraph}>
-            Thank you for joining **Chikiimass**! We're thrilled to have you on board.
+            Thank you for joining  <Text className="text-[24px] font-semibold leading-[32px] text-indigo-500">Chikiimass</Text> We're thrilled to have you on board.
             Dive into our extensive collection of movies, series, and videos. Click the button below to {actionLabel}.
           </Text>
           <Section style={btnContainer}>

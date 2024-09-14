@@ -2,7 +2,7 @@ import { PrimaryActionEmailHtml } from '@/components/email/PrimaryActionHtml';
 import { CollectionConfig } from 'payload';
 import { COLLECTION_SLUG_USER } from './config';
 import { isAdminOrCurrentUser, isAdmin } from '../access';
-import generateEmailHTML from '@/email/generateEmailHTML';
+
 
 
 export const Users: CollectionConfig = {

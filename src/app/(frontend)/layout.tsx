@@ -10,6 +10,8 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import SocialBar from '@/components/Ads/Banner/Social'
+import { ThemeProvider } from '@/contexts/ThemeContext'
+import ClientThemeWrapper from '@/contexts/ClientWrapper'
 
 export const metadata: Metadata = {
   title: 'Home | Chikiimass',
@@ -113,6 +115,8 @@ export default function RootLayout({
         <Suspense>
           <Analytics />
           <SpeedInsights />
+          <ThemeProvider>
+          <ClientThemeWrapper>
           <VideoPlayerProvider>
             <div className="flex h-screen flex-col">
               <Header />
@@ -126,6 +130,8 @@ export default function RootLayout({
               </div>
             </div>
           </VideoPlayerProvider>
+          </ClientThemeWrapper>
+          </ThemeProvider>
         </Suspense>
       </body>
     </html>

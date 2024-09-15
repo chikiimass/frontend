@@ -53,12 +53,11 @@ const movieData = {
   },
 };
 
-const ContentPage = ({ params }: { params: { slug: string } }) => {
+const ContentPage = ({ data, slug }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isSticky, setIsSticky] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
-  const { slug } = params;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -192,7 +191,7 @@ const ContentPage = ({ params }: { params: { slug: string } }) => {
     } else {
       // Handle cases where the series or movie is not found
       return (
-        <div className="bg-white p-4 rounded-md shadow-md">
+        <div className="p-4 ">
           <h2 className="text-2xl font-semibold">Not Found</h2>
           <p className="mt-2 text-gray-600">The series or movie you are looking for was not found.</p>
         </div>
@@ -263,9 +262,9 @@ const ContentPage = ({ params }: { params: { slug: string } }) => {
         </>
       ) : (
         // If neither a series nor a movie is found, show a 404 message
-        <div className="bg-white p-4 rounded-md shadow-md">
+        <div className="p-4 ">
           <h2 className="text-2xl font-semibold">Not Found</h2>
-          <p className="mt-2 text-gray-600">The series or movie you are looking for was not found.</p>
+          <p className="mt-2">The series or movie you are looking for was not found.</p>
         </div>
       )}
     </div>

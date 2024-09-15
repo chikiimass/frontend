@@ -12,6 +12,7 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 import SocialBar from '@/components/Ads/Banner/Social'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import ClientThemeWrapper from '@/contexts/ClientWrapper'
+import Template from '@/components/Ads/Template'
 
 export const metadata: Metadata = {
   title: 'Home | Chikiimass',
@@ -117,6 +118,7 @@ export default function RootLayout({
           <SpeedInsights />
           <ThemeProvider>
           <ClientThemeWrapper>
+          <Template>
           <VideoPlayerProvider>
             <div className="flex h-screen flex-col">
               <Header />
@@ -130,6 +132,7 @@ export default function RootLayout({
               </div>
             </div>
           </VideoPlayerProvider>
+          </Template>
           </ClientThemeWrapper>
           </ThemeProvider>
         </Suspense>

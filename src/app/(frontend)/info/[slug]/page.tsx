@@ -1,6 +1,7 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities';
 import React from 'react';
 import configPromise from '@payload-config';
+import ContentPage from './page.client';
 
 export const dynamic = 'force-static';
 export const revalidate = 600;
@@ -13,14 +14,47 @@ interface MetadataParams {
   params: Params;
 }
 
-interface Content {
-  title: string;
-  description: string;
-  poster?: {
-    url?: string;
-    width?: number;
-    height?: number;
-    alt?: string;
+interface MovieData {
+  [key: string]: {
+    bannerUrl: string;
+    moviePosterUrl: string;
+    movieName: string;
+    description: string;
+    parts: Array<{
+      id: string;
+      title: string;
+      thumbnailUrl: string;
+    }>;
+    cast: Array<{
+      id: string;
+      name: string;
+      role: string;
+      profilePic: string;
+    }>;
+  };
+}
+
+interface SeriesData {
+  [key: string]: {
+    bannerUrl: string;
+    seriesPicUrl: string;
+    seriesName: string;
+    description: string;
+    seasons: Array<{
+      id: string;
+      title: string;
+      episodes: Array<{
+        id: string;
+        title: string;
+        thumbnailUrl: string;
+      }>;
+    }>;
+    cast: Array<{
+      id: string;
+      name: string;
+      role: string;
+      profilePic: string;
+    }>;
   };
 }
 
@@ -43,7 +77,7 @@ const Page = async ({ params }: { params: Params }) => {
   }
 
   try {
-    // Fetch data from 'episodes' collection
+    // Fetch data from 'series' collection
     seriesData = await payload.find({
       collection: 'series',
       where: {
@@ -55,22 +89,75 @@ const Page = async ({ params }: { params: Params }) => {
     console.error('Error fetching series data:', error);
   }
 
-  // Combine data from both collections
+  // Transform movies data to the desired format
+  const transformMoviesData = (data: any): MovieData => {
+    const movies = data?.docs || [];
+
+    return movies.reduce((acc: MovieData, movie: any) => {
+      acc[movie.slug] = {
+        bannerUrl: movie.icon?.url || 'https://via.placeholder.com/1920x1080.png?text=Banner+Image',
+        moviePosterUrl: movie.poster?.url || 'https://via.placeholder.com/720x1080.png?text=Movie+Poster',
+        movieName: movie.title || 'Unknown Movie',
+        description: movie.description || 'No description available.',
+        parts: Array.isArray(movie.blocks) ? movie.blocks.map((part: any) => ({
+          id: part.id || 'placeholder-part-id',
+          title: part.title || 'Unknown Part',
+          thumbnailUrl: part.thumbnailUrl || 'https://via.placeholder.com/300x300.png?text=Part+Thumbnail',
+        })) : [], // Default to empty array if blocks is not an array
+        cast: Array.isArray(movie.Casts?.value) ? movie.Casts.value.map((cast: any) => ({
+          id: cast.id || 'placeholder-cast-id',
+          name: cast.name || 'Unknown Actor',
+          role: cast.role || 'Unknown Role',
+          profilePic: cast.profilePic || 'https://via.placeholder.com/100x100.png?text=Profile+Picture',
+        })) : [], // Default to empty array if Casts.value is not an array
+      };
+      return acc;
+    }, {});
+  };
+
+  // Transform series data to the desired format
+  const transformSeriesData = (data: any): SeriesData => {
+    const series = data?.docs?.[0] || {};
+
+    return {
+      [series.slug || 'placeholder-id']: {
+        bannerUrl: series.poster?.url || 'https://via.placeholder.com/1920x1080.png?text=Banner+Image',
+        seriesPicUrl: series.poster?.url || 'https://via.placeholder.com/720x1080.png?text=Series+Picture',
+        seriesName: series.name || 'Unknown Series',
+        description: series.description || 'No description available.',
+        seasons: series.seasons?.map((season: any) => ({
+          id: season.id || 'placeholder-season-id',
+          title: season.title || 'Unknown Season',
+          episodes: Array.isArray(season.episodes) ? season.episodes.map((episode: any) => ({
+            id: episode.id || 'placeholder-episode-id',
+            title: episode.title || 'Unknown Episode',
+            thumbnailUrl: episode.thumbnailUrl || 'https://via.placeholder.com/300x300.png?text=Episode+Thumbnail',
+          })) : [], // Default to empty array if episodes is not an array
+        })) || [],
+        cast: Array.isArray(series.Casts?.value) ? series.Casts.value.map((cast: any) => ({
+          id: cast.id || 'placeholder-cast-id',
+          name: cast.name || 'Unknown Actor',
+          role: cast.role || 'Unknown Role',
+          profilePic: cast.profilePic || 'https://via.placeholder.com/100x100.png?text=Profile+Picture',
+        })) : [], // Default to empty array if Casts.value is not an array
+      },
+    };
+  };
+
   const combinedData = {
-    movies: moviesData?.docs || [],
-    series: seriesData?.docs || [],
+    movies: transformMoviesData(moviesData || {}),
+    series: transformSeriesData(seriesData || {}),
   };
 
   return (
     <div>
+      <ContentPage data={combinedData} slug={params.slug} />
       <pre>{JSON.stringify(combinedData, null, 2)}</pre>
     </div>
   );
 };
 
 export default Page;
-
-
 
 
 export const generateMetadata = async ({ params }: MetadataParams) => {

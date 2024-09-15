@@ -48,7 +48,8 @@ const page = async ({ params }) => {
       </div>
     );
   }
-console.log('data', combinedContent)
+
+  
   return (
     <div>
       {combinedContent.map((item, index) => (

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~fluid-player/src/css/fluidplayer.css";
 
 .truncate-multiline {
     display: -webkit-box;

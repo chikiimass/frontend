@@ -90,11 +90,11 @@ const HomePage: React.FC = async () => {
                     {item.description}
                   </p>
 
-                  <button className="btn btn-primary">
-                    <Link href={`/video/${item.id}`}>
+                  <Link href={`/video/${item.id}`}>
+                    <button className="btn btn-primary">
                       Watch Now
-                    </Link>
-                  </button>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

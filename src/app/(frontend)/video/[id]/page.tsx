@@ -60,56 +60,103 @@ console.log('data', combinedContent)
 
 export default page;
 
-export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+interface MetadataParams {
+  params: {
+    id: string;
+  };
+}
+
+interface Content {
+  title: string;
+  description: string;
+  thumbnail?: {
+    url?: string;
+    width?: number;
+    height?: number;
+    alt?: string;
+  };
+  poster?: {
+    url?: string;
+    width?: number;
+    height?: number;
+    alt?: string;
+  };
+}
+
+const formatDescription = (description: string): string => {
+  const minLength = 150;
+  const maxLength = 160;
+  let formattedDescription = description;
+
+  if (description.length < minLength) {
+    formattedDescription = `${description} Learn more on Chikiimass.`;
+  } else if (description.length > maxLength) {
+    formattedDescription = `${description.substring(0, maxLength - 3)}...`;
+  }
+
+  return formattedDescription;
+};
+
+export const generateMetadata = async ({ params }: MetadataParams) => {
   const { id } = params;
   const payload = await getPayloadHMR({ config: configPromise });
 
-  let movieContent;
-  let seriesContent;
+  let movieContent: Content | null = null;
+  let seriesContent: Content | null = null;
 
   try {
     movieContent = await payload.findByID({ collection: 'movies', id });
   } catch {
-    movieContent = null;
+    // Log or handle error if needed
   }
 
   try {
     seriesContent = await payload.findByID({ collection: 'episodes', id });
   } catch {
-    seriesContent = null;
+    // Log or handle error if needed
   }
 
-  const combinedContent = [movieContent, seriesContent].filter(Boolean);
+  const combinedContent: Content[] = [movieContent, seriesContent].filter(Boolean) as Content[];
 
   if (combinedContent.length === 0) return {};
 
-  const content = combinedContent[0]; // assuming you want the first valid content
+  const content = combinedContent[0]; // Assuming you want the first valid content
 
   const { title, description, thumbnail, poster } = content;
 
+  const defaultTitle = title || 'Untitled';
+  const defaultDescription = description || 'No description available.';
+
+  const adjustedTitle = defaultTitle.length < 30 ? `${defaultTitle} | Chikiimass` : defaultTitle;
+  const adjustedDescription = formatDescription(defaultDescription);
+
   return {
-    title,
-    description,
+    title: adjustedTitle,
+    description: adjustedDescription,
     openGraph: {
-      title,
-      description,
-      url: `https://yourdomain.com/video/${id}`, // Make sure this URL is correct
+      title: adjustedTitle,
+      description: adjustedDescription,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/video/${id}`, // Ensure this URL is correct
       images: [
         {
-          url: thumbnail?.url || poster?.url,
-          width: thumbnail?.width || poster?.width,
-          height: thumbnail?.height | poster?.height,
-          alt: thumbnail?.alt || poster?.alt,
+          url: thumbnail?.url || poster?.url || `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`, // Fallback image URL
+          width: thumbnail?.width || poster?.width || 1200,
+          height: thumbnail?.height || poster?.height || 630,
+          alt: thumbnail?.alt || poster?.alt || 'Default image alt text', // Default alt text
         },
       ],
       type: 'video.movie',
-      site_name: 'YourSiteName',
+      site_name: 'Chikiimass',
+      locale: 'en_US',
+      audio: {
+        url: 'https://yourdomain.com/audio.mp3', // Example additional metadata
+      },
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
-      image: thumbnail?.url || poster?.url,
+      title: adjustedTitle,
+      description: adjustedDescription,
+      image: thumbnail?.url || poster?.url || `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`, // Fallback image URL
     },
   };
 };

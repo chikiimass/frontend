@@ -204,12 +204,23 @@ export interface Movie {
         | {
             videos?:
               | {
-                  videoQuality: '720p' | '1080p' | '4k';
-                  videoLink: string;
+                  platform?: ('youtube' | 'dailymotion' | 'vimeo' | 'twitch' | 'facebook' | 'custom') | null;
+                  embedType?: ('iframe' | 'direct') | null;
+                  videoQuality?:
+                    | ('144p' | '280p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '4k' | '8k' | 'auto')
+                    | null;
+                  videoLink?: string | null;
                   subtitles?:
                     | {
-                        language: string;
-                        url: string;
+                        language?: string | null;
+                        url?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  captions?:
+                    | {
+                        language?: string | null;
+                        url?: string | null;
                         id?: string | null;
                       }[]
                     | null;
@@ -288,12 +299,23 @@ export interface Episode {
         | {
             videos?:
               | {
-                  videoQuality: '720p' | '1080p' | '4k';
-                  videoLink: string;
+                  platform?: ('youtube' | 'dailymotion' | 'vimeo' | 'twitch' | 'facebook' | 'custom') | null;
+                  embedType?: ('iframe' | 'direct') | null;
+                  videoQuality?:
+                    | ('144p' | '280p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '4k' | '8k' | 'auto')
+                    | null;
+                  videoLink?: string | null;
                   subtitles?:
                     | {
-                        language: string;
-                        url: string;
+                        language?: string | null;
+                        url?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  captions?:
+                    | {
+                        language?: string | null;
+                        url?: string | null;
                         id?: string | null;
                       }[]
                     | null;
@@ -317,10 +339,7 @@ export interface Episode {
       )[]
     | null;
   releaseDate?: string | null;
-  series: {
-    relationTo: 'series';
-    value: string | Series;
-  };
+  series?: (string | null) | Series;
   seriesSlug?: string | null;
   seriesName?: string | null;
   updatedAt: string;

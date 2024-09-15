@@ -11,6 +11,14 @@ export const Episodes: CollectionConfig = {
     create: () => true,
     update: () => true,
     delete: () => true,
+    admin: ({ req }) => {
+      const { user } = req
+      // Check if the user object and role exist
+      if (user && user.role === 'admin') {
+        return true;
+      }
+      return false;
+    },
   },
   fields: [
     {
@@ -44,8 +52,7 @@ export const Episodes: CollectionConfig = {
     {
       name: 'series',
       type: 'relationship',
-      relationTo: ['series'],
-      required: true,
+      relationTo: 'series',
       index: true
     },
     {
@@ -61,7 +68,7 @@ export const Episodes: CollectionConfig = {
       type: 'text',
       admin: {
         position: 'sidebar',
-        readOnly: true, // Read-only in the admin UI since it's auto-populated
+        readOnly: true,
       },
     },
  /*    {

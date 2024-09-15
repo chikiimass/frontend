@@ -257,26 +257,34 @@ export interface Series {
   poster?: (string | null) | Media;
   releaseDate: string;
   description?: string | null;
-  Casts?: {
-    relationTo: 'casts';
-    value: string | Cast;
-  } | null;
-  Category?: {
-    relationTo: 'categories';
-    value: string | Category;
-  } | null;
-  Genres?: {
-    relationTo: 'genres';
-    value: string | Genre;
-  } | null;
+  Casts?:
+    | {
+        relationTo: 'casts';
+        value: string | Cast;
+      }[]
+    | null;
+  Category?:
+    | {
+        relationTo: 'categories';
+        value: string | Category;
+      }[]
+    | null;
+  Genres?:
+    | {
+        relationTo: 'genres';
+        value: string | Genre;
+      }[]
+    | null;
   seasons?:
     | {
         seasonNumber: number;
         seasonDesc?: string | null;
-        episodes?: {
-          relationTo: 'episodes';
-          value: string | Episode;
-        } | null;
+        episodes?:
+          | {
+              relationTo: 'episodes';
+              value: string | Episode;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;

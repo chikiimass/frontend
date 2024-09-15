@@ -48,7 +48,7 @@ const page = async ({ params }) => {
       </div>
     );
   }
-
+console.log('data', combinedContent)
   return (
     <div>
       {combinedContent.map((item, index) => (
@@ -59,3 +59,57 @@ const page = async ({ params }) => {
 };
 
 export default page;
+
+export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  const payload = await getPayloadHMR({ config: configPromise });
+
+  let movieContent;
+  let seriesContent;
+
+  try {
+    movieContent = await payload.findByID({ collection: 'movies', id });
+  } catch {
+    movieContent = null;
+  }
+
+  try {
+    seriesContent = await payload.findByID({ collection: 'episodes', id });
+  } catch {
+    seriesContent = null;
+  }
+
+  const combinedContent = [movieContent, seriesContent].filter(Boolean);
+
+  if (combinedContent.length === 0) return {};
+
+  const content = combinedContent[0]; // assuming you want the first valid content
+
+  const { title, description, thumbnail, poster } = content;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://yourdomain.com/video/${id}`, // Make sure this URL is correct
+      images: [
+        {
+          url: thumbnail?.url || poster?.url,
+          width: thumbnail?.width || poster?.width,
+          height: thumbnail?.height | poster?.height,
+          alt: thumbnail?.alt || poster?.alt,
+        },
+      ],
+      type: 'video.movie',
+      site_name: 'YourSiteName',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      image: thumbnail?.url || poster?.url,
+    },
+  };
+};

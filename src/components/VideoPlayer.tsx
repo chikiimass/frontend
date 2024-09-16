@@ -74,7 +74,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
 
   return (
     <div className="video-player">
-      <video ref={self} className="w-full rounded-lg mb-4">
+      <video ref={self} className="w-full md:rounded-lg mb-4">
         {videoDetails.map((video) => (
           <source
             key={video.id}

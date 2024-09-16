@@ -19,12 +19,12 @@ export function Ads() {
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 transition-opacity duration-300 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="modal-box relative max-w-lg w-full p-6 bg-white rounded-xl shadow-2xl border border-gray-200 animate-slideUp">
         {/* Close Button */}
-        <button
+{/*         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3"
           onClick={() => setIsVisible(false)}
         >
           ✕
-        </button>
+        </button> */}
 
         {/* Modal Header */}
         <div className="text-center">

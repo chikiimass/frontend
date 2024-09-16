@@ -28,14 +28,14 @@ interface Thumbnail {
 }
 
 interface Data {
-  id: Number;
+  id: number;
   title: string;
   description: string;
   releaseDate: string;
   duration?: number;
   thumbnail: Thumbnail;
   blocks: Block[];
-  views: Number;
+  views: number;
 }
 
 interface VideoPageProps {
@@ -83,11 +83,29 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           {data.duration && <p className="text-gray-400">Duration: {data.duration} mins</p>}
           <p className="text-lg mb-4">{data.description}</p>
         </div>
+
+        {/* Download Buttons */}
+        <div className="mt-4">
+          <h2 className="text-xl font-bold mb-2">Download Video</h2>
+          <div className="space-y-2">
+            {videoDetails.map(video => (
+              <a
+                key={video.id}
+                href={video.link}
+                download
+                className="block w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold text-center hover:bg-blue-700 transition-colors duration-300"
+              >
+                Download {video.quality}
+              </a>
+            ))}
+          </div>
+        </div>
+
         <button
           className="mt-4 w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700 transition-colors duration-300"
           onClick={() => setShowModal(true)} // Show the modal on click
         >
-          Download Video
+          More Options
         </button>
       </div>
 

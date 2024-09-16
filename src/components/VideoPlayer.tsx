@@ -41,7 +41,28 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
             animated: true,
           },
         },
-        vastOptions: {},
+        vastOptions: {
+          adList: [
+              {
+                  roll: "preRoll",
+                  vastTag: "https://s.magsrv.com/splash.php?idzone=5418334"
+              },
+              {
+                  roll: "midRoll",
+                  vastTag: "https://s.magsrv.com/splash.php?idzone=5418334",
+                  timer: 8
+              },
+              {
+                  roll: "midRoll",
+                  vastTag: "https://s.magsrv.com/splash.php?idzone=5418334",
+                  timer: 10
+              },
+              {
+                  roll: "postRoll",
+                  vastTag: "https://s.magsrv.com/splash.php?idzone=5418334"
+              }
+          ]
+      },
       });
     }
   }, [self, title, thumbnail]);

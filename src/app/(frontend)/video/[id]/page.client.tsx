@@ -4,6 +4,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import CustomModal from '@/components/CustomModel';
 import Native from '@/components/Ads/Native';
 import Banner from '@/components/Ads/Banner';
+import { FacebookIcon, MessageCircleMore, Share2, XIcon } from 'lucide-react';
 
 interface Subtitle {
   id: string;
@@ -57,6 +58,12 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
       : []
   );
 
+  const videoUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/video/${data.id}`;
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(videoUrl);
+    alert('URL copied to clipboard!');
+  };
   return (
     <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto overflow-x-none">
       {/* Video Player and Details */}
@@ -77,36 +84,79 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           </section>
         </div>
         <div className="mb-6 lg:mb-0">
+          <div className='flex flex-row justify-between'>
+
           <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
+          {/* Share Dialog */}
+          <button
+            className=""
+            onClick={() => document.getElementById('my_modal_3').showModal()}
+          >
+            <Share2 />
+          </button>
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box relative p-6">
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              </form>
+
+              <h2 className="text-2xl font-bold mb-4">Share This Video</h2>
+
+              <div className="mb-4">
+                <label htmlFor="shareInput" className="block font-medium text-gray-700 mb-2">Copy Link:</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="shareInput"
+                    value={videoUrl}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none cursor-pointer"
+                    readOnly
+                    onClick={handleCopyUrl} // Auto select and copy on click
+                  />
+                  <button
+                    onClick={handleCopyUrl}
+                    className="absolute inset-y-0 right-0 px-3 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-500"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex space-x-4 mt-4">
+                <a
+                  href={`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-500"
+                >
+                  <FacebookIcon className="w-6 h-6" />
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(videoUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300"
+                >
+                  <XIcon className="w-6 h-6" />
+                </a>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(videoUrl)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-500 hover:text-green-400"
+                >
+                  <MessageCircleMore className="w-6 h-6" />
+                </a>
+              </div>
+
+              <p className="py-4 text-gray-500">Press ESC key or click on ✕ button to close</p>
+            </div>
+          </dialog>
+          </div>
           <p className="text-gray-400 mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
           {data.duration && <p className="text-gray-400">Duration: {data.duration} mins</p>}
           <p className="text-lg mb-4">{data.description}</p>
         </div>
-
-        {/* Download Buttons */}
-        <div className="mt-4">
-          <h2 className="text-xl font-bold mb-2">Download Video</h2>
-          <div className="space-y-2">
-            {videoDetails.map(video => (
-              <a
-                key={video.id}
-                href={video.link}
-                target='_blank'
-                download
-                className="block w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold text-center hover:bg-blue-700 transition-colors duration-300"
-              >
-                Download {video.quality}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <button
-          className="mt-4 w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700 transition-colors duration-300"
-          onClick={() => setShowModal(true)} // Show the modal on click
-        >
-          More Options
-        </button>
       </div>
 
       {/* Related Videos */}

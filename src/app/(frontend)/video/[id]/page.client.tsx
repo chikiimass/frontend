@@ -44,7 +44,7 @@ interface VideoPageProps {
 }
 
 const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Extract video details from the blocks and restructure
   const videoDetails = data.blocks.flatMap(block =>
@@ -61,9 +61,13 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
   const videoUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/video/${data.id}`;
 
   const handleCopyUrl = () => {
-    navigator.clipboard.writeText(videoUrl);
-    alert('URL copied to clipboard!');
+    navigator.clipboard.writeText(videoUrl); // Copy URL
+    setCopySuccess(true); // Show success alert
+    setTimeout(() => {
+      setCopySuccess(false); // Hide after 3 seconds
+    }, 3000);
   };
+
   return (
     <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto overflow-x-none">
       {/* Video Player and Details */}
@@ -84,74 +88,92 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           </section>
         </div>
         <div className="mb-6 lg:mb-0">
-          <div className='flex flex-row justify-between'>
+          <div className='flex flex-row justify-between pr-2'>
+            <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
+            {/* Share Dialog */}
+            <button
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => document.getElementById('my_modal_3')?.showModal()}
+            >
+              <Share2 />
+            </button>
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box relative p-6">
+                <form method="dialog">
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
 
-          <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
-          {/* Share Dialog */}
-          <button
-            className=""
-            onClick={() => document.getElementById('my_modal_3').showModal()}
-          >
-            <Share2 />
-          </button>
-          <dialog id="my_modal_3" className="modal">
-            <div className="modal-box relative p-6">
-              <form method="dialog">
-                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-              </form>
+                <h2 className="text-2xl font-bold mb-4">Share This Video</h2>
 
-              <h2 className="text-2xl font-bold mb-4">Share This Video</h2>
-
-              <div className="mb-4">
-                <label htmlFor="shareInput" className="block font-medium text-gray-700 mb-2">Copy Link:</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    id="shareInput"
-                    value={videoUrl}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none cursor-pointer"
-                    readOnly
-                    onClick={handleCopyUrl} // Auto select and copy on click
-                  />
-                  <button
-                    onClick={handleCopyUrl}
-                    className="absolute inset-y-0 right-0 px-3 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-500"
-                  >
-                    Copy
-                  </button>
+                <div className="mb-4">
+                  <label htmlFor="shareInput" className="block font-medium text-gray-700 mb-2">Copy Link:</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="shareInput"
+                      value={videoUrl}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none cursor-pointer"
+                      readOnly
+                      onClick={handleCopyUrl} // Auto select and copy on click
+                    />
+                    <button
+                      onClick={handleCopyUrl}
+                      className="absolute inset-y-0 right-0 px-3 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-500"
+                    >
+                      Copy
+                    </button>
+                  </div>
                 </div>
-              </div>
+                {/* Success Alert */}
+                {copySuccess && (
+                  <div role="alert" className="alert alert-success flex items-center mt-4 bg-green-100 text-green-800 p-4 rounded-md">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 shrink-0 stroke-current"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span className="ml-2">URL copied to clipboard!</span>
+                  </div>
+                )}
 
-              <div className="flex space-x-4 mt-4">
-                <a
-                  href={`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-500"
-                >
-                  <FacebookIcon className="w-6 h-6" />
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(videoUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300"
-                >
-                  <XIcon className="w-6 h-6" />
-                </a>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(videoUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-green-500 hover:text-green-400"
-                >
-                  <MessageCircleMore className="w-6 h-6" />
-                </a>
-              </div>
+                <div className="flex space-x-4 mt-4">
+                  <a
+                    href={`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-500"
+                  >
+                    <FacebookIcon className="w-6 h-6" />
+                  </a>
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(videoUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300"
+                  >
+                    <XIcon className="w-6 h-6" />
+                  </a>
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(videoUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-500 hover:text-green-400"
+                  >
+                    <MessageCircleMore className="w-6 h-6" />
+                  </a>
+                </div>
 
-              <p className="py-4 text-gray-500">Press ESC key or click on ✕ button to close</p>
-            </div>
-          </dialog>
+                <p className="py-4 text-gray-500">Press ESC key or click on ✕ button to close</p>
+              </div>
+            </dialog>
           </div>
           <p className="text-gray-400 mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
           {data.duration && <p className="text-gray-400">Duration: {data.duration} mins</p>}
@@ -166,8 +188,6 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           <Native />
         </div>
       </div>
-
-      <CustomModal show={showModal} onClose={() => setShowModal(false)} message="Coming Soon.." />
     </div>
   );
 };

@@ -81,7 +81,6 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
           <p className="text-gray-400 mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
           {data.duration && <p className="text-gray-400">Duration: {data.duration} mins</p>}
-          {data.views && <p className="text-gray-400">Duration: {data.views} mins</p>}
           <p className="text-lg mb-4">{data.description}</p>
         </div>
         <button

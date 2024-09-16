@@ -45,7 +45,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
       });
     }
   }, [self, title, thumbnail]);
-/* 
+
   useEffect(() => {
     const handleViewUpdate = async () => {
       const currentTime = new Date().getTime();
@@ -70,38 +70,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     };
 
     handleViewUpdate();
-  }, [id, views]); */
-    useEffect(() => {
-    const handleViewUpdate = async () => {
-      const currentTime = new Date().getTime();
-      const lastVisit = localStorage.getItem(`video_${id}`);
-      const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
-
-      if (!lastVisit || currentTime - parseInt(lastVisit) > ONE_HOUR) {
-        try {
-          // Patch the views to the server using axios
-          await axios.patch(`/api/episodes/${id}`, {
-            views: views + 1,
-          }, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-
-          // Update localStorage with the current time
-          localStorage.setItem(`video_${id}`, currentTime.toString());
-        } catch (error) {
-          console.error('Error updating views:', error);
-        }
-      }
-    };
-
-    handleViewUpdate();
   }, [id, views]);
 
   return (
     <div className="video-player">
-      <video ref={self} className="w-full md:rounded-lg mb-4">
+      <video ref={self} className="w-full rounded-lg mb-4">
         {videoDetails.map((video) => (
           <source
             key={video.id}

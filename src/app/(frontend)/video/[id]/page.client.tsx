@@ -44,6 +44,7 @@ interface VideoPageProps {
 
 const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showShareDialog, setShowShareDialog] = useState(false);
   const [isFullWidth, setIsFullWidth] = useState(false); // State to track full-width mode
 
   // Extract video details from the blocks and restructure
@@ -57,6 +58,17 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
       }))
       : []
   );
+
+  const videoUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/video/${data.id}`;
+
+  const handleShare = () => {
+    setShowShareDialog(true);
+  };
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(videoUrl);
+    alert('URL copied to clipboard!');
+  };
 
   return (
     <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto">
@@ -103,6 +115,13 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
 
         <button
           className="mt-4 w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700 transition-colors duration-300"
+          onClick={handleShare} // Open share dialog
+        >
+          Share
+        </button>
+
+        <button
+          className="mt-4 w-64 rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700 transition-colors duration-300"
           onClick={() => setShowModal(true)} // Show the modal on click
         >
           More Options
@@ -116,6 +135,51 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           <Native />
         </div>
       </div>
+
+      {/* Share Dialog */}
+      {showShareDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-xl font-bold mb-4">Share This Video</h2>
+            <button
+              onClick={handleCopyUrl}
+              className="block w-full rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold text-center hover:bg-blue-700 transition-colors duration-300 mb-2"
+            >
+              Copy URL
+            </button>
+            <a
+              href={`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full rounded-lg bg-blue-800 px-6 py-3 text-white font-semibold text-center hover:bg-blue-900 transition-colors duration-300 mb-2"
+            >
+              Share on Facebook
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(videoUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full rounded-lg bg-blue-400 px-6 py-3 text-white font-semibold text-center hover:bg-blue-500 transition-colors duration-300 mb-2"
+            >
+              Share on Twitter
+            </a>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(videoUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full rounded-lg bg-green-500 px-6 py-3 text-white font-semibold text-center hover:bg-green-600 transition-colors duration-300"
+            >
+              Share on WhatsApp
+            </a>
+            <button
+              onClick={() => setShowShareDialog(false)}
+              className="mt-4 w-full rounded-lg bg-gray-600 px-6 py-3 text-white font-semibold hover:bg-gray-700 transition-colors duration-300"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       <CustomModal show={showModal} onClose={() => setShowModal(false)} message="Coming Soon.." />
     </div>

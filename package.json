@@ -47,6 +47,7 @@
     "npm": "^10.8.3",
     "payload": "^3.0.0-beta.104",
     "plugin-adaptive-bitrate-videos": "^1.0.5",
+    "puppeteer": "^23.3.0",
     "react": "19.0.0-rc-06d0b89e-20240801",
     "react-dom": "19.0.0-rc-06d0b89e-20240801",
     "react-email": "^3.0.1",

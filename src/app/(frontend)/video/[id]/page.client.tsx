@@ -43,6 +43,11 @@ interface VideoPageProps {
   data: Data;
 }
 
+
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
+
 const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -92,7 +97,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
             <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
             {/* Share Dialog */}
             <button
-              className="text-gray-600 hover:text-gray-800"
+              className="text-primary"
               onClick={() => document.getElementById('my_modal_3')?.showModal()}
             >
               <Share2 />

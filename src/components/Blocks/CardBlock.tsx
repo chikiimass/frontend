@@ -27,6 +27,10 @@ interface CardProps {
   };
 }
 
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
+
 const CardBlock: React.FC<CardProps> = ({ data }) => {
   const { video, minimized } = useVideoPlayer();
   const isPlaying = video?.id === data.id && minimized;

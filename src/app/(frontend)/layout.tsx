@@ -14,6 +14,10 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 import ClientThemeWrapper from '@/contexts/ClientWrapper'
 import Template from '@/components/Ads/Template'
 
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
+
 export const metadata: Metadata = {
   title: 'Home | Chikiimass',
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,

@@ -124,25 +124,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
                     </button>
                   </div>
                 </div>
-                {/* Success Alert */}
-                {copySuccess && (
-                  <div role="alert" className="alert alert-success flex items-center mt-4 bg-green-100 text-green-800 p-4 rounded-md">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 shrink-0 stroke-current"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span className="ml-2">URL copied to clipboard!</span>
-                  </div>
-                )}
+
 
                 <div className="flex space-x-4 mt-4">
                   <a
@@ -174,6 +156,25 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
                 <p className="py-4 text-gray-500">Press ESC key or click on ✕ button to close</p>
               </div>
             </dialog>
+            {/* Success Alert */}
+            {copySuccess && (
+              <div role="alert" className="alert alert-success flex items-center mt-4 bg-green-100 text-green-800 p-4 rounded-md">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 shrink-0 stroke-current"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span className="ml-2">URL copied to clipboard!</span>
+              </div>
+            )}
           </div>
           <p className="text-gray-400 mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
           {data.duration && <p className="text-gray-400">Duration: {data.duration} mins</p>}

@@ -25,14 +25,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     if (!player && self.current) {
       player = fluidPlayer(self.current, {
         layoutControls: {
-          primaryColor: '#28B8ED',
+          primaryColor: '#fff',
           playButtonShowing: false,
           posterImage: thumbnail,
           posterImageSize: 'cover',
           fillToContainer: true,
           autoPlay: true,
+          allowDownload: true,
           preload: 'auto',
-          mute: true,
+          allowTheatre: false,
+          mute: false,
+          playbackRateEnabled: true,
           keyboardControl: true,
           title: title,
           controlBar: {
@@ -40,6 +43,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
             autoHideTimeout: 5,
             animated: true,
           },
+          captions: {
+            play: 'Play',
+            pause: 'Pause',
+            mute: 'Mute',
+            unmute: 'Unmute',
+            fullscreen: 'Fullscreen',
+            exitFullscreen: 'Exit Fullscreen'
+        }
         },
         vastOptions: {
           adList: [

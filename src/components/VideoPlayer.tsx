@@ -1,76 +1,116 @@
-import React, { useEffect, useRef } from 'react';
-import Hls from 'hls.js';
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import fluidPlayer from 'fluid-player';
 
-interface VideoPlayerProps {
-  video: string;
-  subtitles?: string; // Optional subtitle track
+interface VideoDetail {
+  id: string;
+  quality: string;
+  link: string;
+  subtitles: Array<{ id: string; language: string; url: string }>;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, subtitles }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+interface VideoPlayerProps {
+  id: number;
+  videoDetails: VideoDetail[];
+  title: string;
+  thumbnail: string;
+  views: number;
+}
+
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thumbnail, views }) => {
+  const self = useRef<HTMLVideoElement>(null);
+  let player: FluidPlayerInstance | null = null;
 
   useEffect(() => {
-    const videoElement = videoRef.current;
-
-    if (!videoElement) return;
-
-    // Handle .m3u8 (HLS) format using hls.js if browser does not natively support it
-    if (Hls.isSupported() && video.endsWith('.m3u8')) {
-      const hls = new Hls();
-      hls.loadSource(video);
-      hls.attachMedia(videoElement);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        videoElement.play();
+    if (!player && self.current) {
+      player = fluidPlayer(self.current, {
+        layoutControls: {
+          primaryColor: '#28B8ED',
+          playButtonShowing: false,
+          posterImage: thumbnail,
+          posterImageSize: 'cover',
+          fillToContainer: true,
+          autoPlay: true,
+          preload: 'auto',
+          mute: true,
+          keyboardControl: true,
+          title: title,
+          controlBar: {
+            autoHide: true,
+            autoHideTimeout: 5,
+            animated: true,
+          },
+        },
+        vastOptions: {},
       });
-
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error('HLS.js error', event, data);
-      });
-
-      return () => {
-        hls.destroy();
-      };
-    } else {
-      // If not HLS, simply assign the video source for native formats
-      videoElement.src = video;
     }
+  }, [self, title, thumbnail]);
+/* 
+  useEffect(() => {
+    const handleViewUpdate = async () => {
+      const currentTime = new Date().getTime();
+      const lastVisit = localStorage.getItem(`video_${id}`);
+      const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
 
-    // Cleanup
-    return () => {
-      if (Hls.isSupported() && video.endsWith('.m3u8')) {
-        videoElement.pause();
-        videoElement.removeAttribute('src');
+      if (!lastVisit || currentTime - parseInt(lastVisit) > ONE_HOUR) {
+        // Patch the views to the server
+        await fetch(`/api/episodes/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            views: views + 1,
+          }),
+        });
+
+        // Update localStorage with the current time
+        localStorage.setItem(`video_${id}`, currentTime.toString());
       }
     };
-  }, [video]);
 
-  useEffect(() => {
-    const videoElement = videoRef.current;
+    handleViewUpdate();
+  }, [id, views]); */
+    useEffect(() => {
+    const handleViewUpdate = async () => {
+      const currentTime = new Date().getTime();
+      const lastVisit = localStorage.getItem(`video_${id}`);
+      const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
 
-    if (videoElement && subtitles) {
-      // Add subtitle track if provided
-      const track = document.createElement('track');
-      track.kind = 'subtitles';
-      track.label = 'English';
-      track.srclang = 'en';
-      track.src = subtitles;
-      videoElement.appendChild(track);
-    }
-  }, [subtitles]);
+      if (!lastVisit || currentTime - parseInt(lastVisit) > ONE_HOUR) {
+        try {
+          // Patch the views to the server using axios
+          await axios.patch(`/api/episodes/${id}`, {
+            views: views + 1,
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // Update localStorage with the current time
+          localStorage.setItem(`video_${id}`, currentTime.toString());
+        } catch (error) {
+          console.error('Error updating views:', error);
+        }
+      }
+    };
+
+    handleViewUpdate();
+  }, [id, views]);
 
   return (
     <div className="video-player">
-      <video ref={videoRef} autoPlay controls className="w-full">
-        {/* Fallback sources for additional formats */}
-        <source src={video} type="video/mp4" /> {/* MP4 format */}
-        <source src={video} type="video/x-matroska" /> {/* MKV format */}
-        <source src={video} type="video/ogg" /> {/* Ogg format */}
-        <source src={video} type="video/webm" /> {/* WebM format */}
-        <source src={video} type="application/x-mpegURL" /> {/* HLS format */}
-        <source src={video} type="video/avc" /> {/* AVC format */}
-        <source src={video} type="video/x-msvideo" /> {/* AVI format */}
-        <p>Your browser does not support the video tag or the specified formats.</p>
+      <video ref={self} className="w-full rounded-lg mb-4">
+        {videoDetails.map((video) => (
+          <source
+            key={video.id}
+            title={video.quality}
+            src={`/api/proxy?url=${encodeURIComponent(video.link)}`}
+            type="video/mp4"
+          />
+        ))}
+        Your browser does not support the video tag.
       </video>
     </div>
   );

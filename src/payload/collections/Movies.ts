@@ -57,6 +57,11 @@ export const Movies: CollectionConfig = {
       relationTo: [COLLECTION_SLUG_CASTS],
       index: true
     },
+    {
+      name: 'views',
+      type: 'number',
+      defaultValue: 0,
+    },
     blocksField(),
   ],
   hooks: {

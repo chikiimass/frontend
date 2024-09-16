@@ -199,6 +199,7 @@ export interface Movie {
     relationTo: 'casts';
     value: string | Cast;
   } | null;
+  views?: number | null;
   blocks?:
     | (
         | {
@@ -347,6 +348,7 @@ export interface Episode {
       )[]
     | null;
   releaseDate?: string | null;
+  views?: number | null;
   series?: (string | null) | Series;
   seriesSlug?: string | null;
   seriesName?: string | null;

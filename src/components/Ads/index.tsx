@@ -47,13 +47,13 @@ export function Ads() {
         <div className="modal-action flex justify-between items-center gap-4">
           <button
             className="btn btn-primary w-full md:w-auto px-6"
-            onClick={() => router.reload()}
+            onClick={() => router.refresh()}
           >
             Refresh Page
           </button>
 
           <a
-            href="https://www.whitelistadblock.com"
+            href=""
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-outline w-full md:w-auto px-6"

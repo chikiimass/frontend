@@ -50,6 +50,11 @@ export const Episodes: CollectionConfig = {
       type: 'date',
     },
     {
+      name: 'views',
+      type: 'number',
+      defaultValue: 0,
+    },
+    {
       name: 'series',
       type: 'relationship',
       relationTo: 'series',

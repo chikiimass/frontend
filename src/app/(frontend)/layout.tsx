@@ -108,6 +108,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="google-adsense-account" content="ca-pub-5016990868345734" />
+        <meta name="6a97888e-site-verification" content="f7d4271ff77893d6727d2c497dff6a06" />
         <meta name="theme-color" content="#ffffff" />
       </head>
       <GoogleAnalytics />

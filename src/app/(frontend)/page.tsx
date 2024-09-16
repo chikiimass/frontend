@@ -68,7 +68,7 @@ const HomePage: React.FC = async () => {
   });
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen overflow-x-none">
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
@@ -100,7 +100,7 @@ const HomePage: React.FC = async () => {
             </div>
           ))}
         </section>
-        <section aria-label="Ad Banner" className="flex justify-center items-center">
+        <section aria-label="Ad Banner" className="flex justify-center items-center overflow-x-scroll">
           <Banner adKey="c3243d8605373e42e7e1ad5f78114b3e" height={60} width={468} />
         </section>
 

@@ -37,6 +37,7 @@ interface Data {
   thumbnail: Thumbnail;
   blocks: Block[];
   views: number;
+  type: String;
 }
 
 interface VideoPageProps {
@@ -86,6 +87,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
               title={data.title} // Episode title
               thumbnail={data.thumbnail.url}
               views={data.views}
+              type={data.type}
             />
           )}
           <section aria-label="Ad Banner" className="flex justify-center items-center mt-4 overflow-x-scroll">

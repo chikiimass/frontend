@@ -55,6 +55,14 @@ export const Episodes: CollectionConfig = {
       defaultValue: 0,
     },
     {
+      name: 'type',
+      type: 'text',
+      defaultValue: 'series',
+      admin: {
+        readOnly: true,
+      }
+    },
+    {
       name: 'series',
       type: 'relationship',
       relationTo: 'series',

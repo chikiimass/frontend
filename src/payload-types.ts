@@ -200,6 +200,7 @@ export interface Movie {
     value: string | Cast;
   } | null;
   views?: number | null;
+  type?: string | null;
   blocks?:
     | (
         | {
@@ -349,6 +350,7 @@ export interface Episode {
     | null;
   releaseDate?: string | null;
   views?: number | null;
+  type?: string | null;
   series?: (string | null) | Series;
   seriesSlug?: string | null;
   seriesName?: string | null;

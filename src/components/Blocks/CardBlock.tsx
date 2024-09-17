@@ -123,7 +123,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   const iconSrc = data.icon?.url || '';  // Default empty string if icon is not present
 
   return (
-    <div ref={card.ref} className="group relative">
+    <div ref={card.ref} className="group relative vi">
       <a ref={link.ref} href={videoUrl}>
         <div className="relative">
           {!imageLoaded && (
@@ -132,7 +132,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
           <LazyLoadedImage
             image={imageSrc}
             name={data.title || data.name || 'Untitled'}
-            className={`h-64 w-full rounded-md object-cover ${imageLoaded ? '' : 'hidden'}`}
+            className={`h-64 w-full rounded-md aspect-video object-cover ${imageLoaded ? '' : 'hidden'}`}
             onLoad={() => setImageLoaded(true)}
           />
           {isPlaying && (

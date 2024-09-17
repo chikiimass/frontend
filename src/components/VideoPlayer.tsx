@@ -15,11 +15,16 @@ interface VideoPlayerProps {
   title: string;
   thumbnail: string;
   views: number;
+  type: string
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thumbnail, views }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thumbnail, views, type }) => {
   const self = useRef<HTMLVideoElement>(null);
   let player: FluidPlayerInstance | null = null;
+  const LABELS: Record<'series' | 'movies', string> = {
+    series: 'episodes',
+    movies: 'movies',
+  };
 
   useEffect(() => {
     if (!player && self.current) {
@@ -78,7 +83,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     }
   }, [self, title, thumbnail]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     const handleViewUpdate = async () => {
       const currentTime = new Date().getTime();
       const lastVisit = localStorage.getItem(`video_${id}`);
@@ -102,10 +107,36 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     };
 
     handleViewUpdate();
-  }, [id, views]);
+  }, [id, views]); */
+    // Update views if not done within the last hour
+    useEffect(() => {
+      const handleViewUpdate = async () => {
+        const currentTime = new Date().getTime();
+        const lastVisit = localStorage.getItem(`video_${id}`);
+        const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
+  
+        if (!lastVisit || currentTime - parseInt(lastVisit) > ONE_HOUR) {
+          // Patch the views to the server
+          await fetch(`/api/${LABELS[type]}/${id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              views: views + 1,
+            }),
+          });
+  
+          // Update localStorage with the current time
+          localStorage.setItem(`video_${id}`, currentTime.toString());
+        }
+      };
+  
+      handleViewUpdate();
+    }, [id, views]);
 
   return (
-    <div className="video-player">
+    <div className="video-player aspect-video">
       <video ref={self} className="w-full md:rounded-lg mb-4">
         {videoDetails.map((video) => (
           <source

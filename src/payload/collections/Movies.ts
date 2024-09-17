@@ -62,6 +62,14 @@ export const Movies: CollectionConfig = {
       type: 'number',
       defaultValue: 0,
     },
+    {
+      name: 'type',
+      type: 'text',
+      defaultValue: 'movies',
+      admin: {
+        readOnly: true,
+      }
+    },
     blocksField(),
   ],
   hooks: {

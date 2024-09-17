@@ -79,9 +79,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
               vastTag: "https://s.magsrv.com/splash.php?idzone=5418334"
             }
           ],
-          vastTimeout: 5000,
+          vastTimeout: 15000,
           adCTATextVast: false,
-          showPlayButton: true
+          showPlayButton: false
         },
       });
     }
@@ -196,7 +196,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
 
   return (
     <div className="video-player aspect-video">
-      <video ref={self} className="w-full md:rounded-lg mb-4">
+      <video ref={self} crossorigin="anonymous" className="w-full md:rounded-lg mb-4">
         {videoDetails.map((video) => (
           <source
             key={video.id}

@@ -58,6 +58,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           exitFullscreen: 'Exit Fullscreen'
         },
         vastOptions: {
+          allowVPAID: true,
           adList: [
             {
               roll: "preRoll",
@@ -77,7 +78,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
               roll: "postRoll",
               vastTag: "https://s.magsrv.com/splash.php?idzone=5418334"
             }
-          ]
+          ],
+          vastTimeout: 5000,
+          adCTATextVast: false,
+          showPlayButton: true
         },
       });
     }
@@ -109,7 +113,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     handleViewUpdate();
   }, [id, views]); */
     // Update views if not done within the last hour
-    useEffect(() => {
+/*     useEffect(() => {
       const handleViewUpdate = async () => {
         const currentTime = new Date().getTime();
         const lastVisit = localStorage.getItem(`video_${id}`);
@@ -126,6 +130,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
               views: views + 1,
             }),
           });
+          
   
           // Update localStorage with the current time
           localStorage.setItem(`video_${id}`, currentTime.toString());
@@ -133,7 +138,61 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
       };
   
       handleViewUpdate();
-    }, [id, views]);
+    }, [id, views]); */
+
+      // Retry function for patch request
+  const retryPatch = async (url: string, body: object, retries: number = 3, delay: number = 1000) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to update views: ${response.statusText}`);
+        }
+
+        // Success
+        return;
+      } catch (error) {
+        console.error('Error patching views:', error);
+
+        // Retry only if it's a MongoDB write conflict (you can adjust this based on how your backend handles the error)
+        if (i < retries - 1) {
+          console.log(`Retrying patch request... Attempt ${i + 1}`);
+          await new Promise((resolve) => setTimeout(resolve, delay)); // Wait before retrying
+        } else {
+          console.error('Max retries reached. Could not patch views.');
+        }
+      }
+    }
+  };
+
+      // Update views if not done within the last hour
+  useEffect(() => {
+    const handleViewUpdate = async () => {
+      const currentTime = new Date().getTime();
+      const lastVisit = localStorage.getItem(`video_${id}`);
+      const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
+  
+      if (!lastVisit || currentTime - parseInt(lastVisit) > ONE_HOUR) {
+        const url = `/api/${LABELS[type]}/${id}`;
+        const body = { views: views + 1 };
+
+        // Call the retry patch function
+        await retryPatch(url, body);
+  
+        // Update localStorage with the current time
+        localStorage.setItem(`video_${id}`, currentTime.toString());
+      }
+    };
+
+    handleViewUpdate();
+  }, [id, views, type]);
 
   return (
     <div className="video-player aspect-video">

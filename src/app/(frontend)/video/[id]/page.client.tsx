@@ -90,7 +90,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
               type={data.type}
             />
           )}
-          <section aria-label="Ad Banner" className="flex justify-center items-center mt-4 overflow-x-scroll">
+          <section aria-label="Ad Banner" className="flex justify-center items-center mt-1 overflow-x-scroll">
             <Banner adKey="c3243d8605373e42e7e1ad5f78114b3e" height={60} width={468} />
           </section>
         </div>

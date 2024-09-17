@@ -12,3 +12,8 @@
     -webkit-line-clamp: 3; /* Number of lines to show */
   }
   
+
+/*   .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_play:before {
+    background: url(/images/play.svg) no-repeat !important;
+    background-position: 0px 0px !important;
+} */

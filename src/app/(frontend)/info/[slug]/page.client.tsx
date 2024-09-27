@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Card from '@/components/Card';
 
 interface MovieData {
   bannerUrl: string;
@@ -28,11 +29,21 @@ interface SeriesData {
   seasons: Array<{
     id: string;
     title: string;
+    seasonN: any;
     episodes: Array<{
-      id: string;
-      title: string;
-      thumbnailUrl: string;
-    }>;
+        id?: string;
+        seriesSlug?: string;
+        slug?: string;
+        poster?: { url: string };
+        thumbnail?: { url: string };
+        title?: string;
+        name?: string;
+        duration?: string;
+        views?: number;
+        createdAt?: string;
+        icon?: { url: string } | null;
+        blocks?: { videos?: { videoQuality?: string; videoLink?: string; subtitles?: { url?: string }[] }[] }[];
+      }>;
   }>;
   cast: Array<{
     id: string;
@@ -166,7 +177,7 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
                     className={`tab ${selectedSeason === season.id ? 'tab-active' : ''}`}
                     onClick={() => setSelectedSeason(season.id)}
                   >
-                    {season.title}
+                    {season.seasonN}
                   </a>
                 ))}
               </div>
@@ -176,16 +187,7 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
                 {content.seasons
                   .find((season) => season.id === selectedSeason)
                   ?.episodes.map((episode) => (
-                    <div key={episode.id} className="bg-gray-800 p-4 rounded-lg">
-                      <Image
-                        src={episode.thumbnailUrl}
-                        alt={episode.title}
-                        width={300}
-                        height={200}
-                        className="object-cover rounded-md"
-                      />
-                      <h3 className="text-lg mt-2">{episode.title}</h3>
-                    </div>
+                    <Card title={episode.title} thumbnail={episode.thumbnail?.url} videoUrl={''} duration={''} userIcon={episode.icon?.url} views={episode.views} createdAt={episode.createdAt} />
                   ))}
               </div>
             </div>

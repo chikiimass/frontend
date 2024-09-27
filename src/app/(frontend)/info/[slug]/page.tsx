@@ -43,10 +43,20 @@ interface SeriesData {
     seasons: Array<{
       id: string;
       title: string;
+      seasonN: any;
       episodes: Array<{
-        id: string;
-        title: string;
-        thumbnailUrl: string;
+        id?: string;
+        seriesSlug?: string;
+        slug?: string;
+        poster?: { url: string };
+        thumbnail?: { url: string };
+        title?: string;
+        name?: string;
+        duration?: string;
+        views?: number;
+        createdAt?: string;
+        icon?: { url: string } | null;
+        blocks?: { videos?: { videoQuality?: string; videoLink?: string; subtitles?: { url?: string }[] }[] }[];
       }>;
     }>;
     cast: Array<{
@@ -114,7 +124,8 @@ const Page = async ({ params }: { params: Params }) => {
       return acc;
     }, {});
   };
-// Transform series data to the desired format
+
+  // Transform series data to the desired format
 const transformSeriesData = (data: any): SeriesData => {
   const series = data?.docs?.[0] || {};
 
@@ -126,7 +137,8 @@ const transformSeriesData = (data: any): SeriesData => {
       description: series.description || 'No description available.',
       seasons: series.seasons?.map((season: any) => ({
         id: season.id || 'placeholder-season-id',
-        title: season.seasonDesc || 'Unknown Season',
+        seasonNumber: season.seasonNumber || 'Unknown Season Number',
+        title: season.seasonDesc || 'Unknown Season Description',
         episodes: Array.isArray(season.episodes)
           ? season.episodes.map((episode: any) => {
               const episodeData = episode?.value || {};
@@ -135,7 +147,13 @@ const transformSeriesData = (data: any): SeriesData => {
                 title: episodeData.title || 'Unknown Episode',
                 thumbnailUrl: episodeData.thumbnail?.url || 'https://via.placeholder.com/300x300.png?text=Episode+Thumbnail',
                 description: episodeData.description || 'No description available.',
-                episodeNumber: episodeData.episodeNumber || 'Unknown',
+                episodeNumber: episodeData.episodeNumber || 'Unknown Episode Number',
+                relationTo: episode.relationTo || 'Unknown Relation',
+                blocks: episodeData.blocks || [], // Include the blocks array if it exists
+                releaseDate: episodeData.releaseDate || 'Unknown Release Date',
+                seriesSlug: episodeData.seriesSlug || 'Unknown Series Slug',
+                views: episodeData.views || 0, // Default to 0 views if not provided
+                type: episodeData.type || 'Unknown Type',
               };
             })
           : [], // Default to empty array if episodes is not an array
@@ -152,7 +170,6 @@ const transformSeriesData = (data: any): SeriesData => {
   };
 };
 
-
   const combinedData = {
     movies: transformMoviesData(moviesData || {}),
     series: transformSeriesData(seriesData || {}),
@@ -161,6 +178,7 @@ const transformSeriesData = (data: any): SeriesData => {
   return (
     <div>
       <ContentPage data={combinedData} slug={params.slug} />
+      <pre>{JSON.stringify(combinedData, null, 2)}</pre>
     </div>
   );
 };

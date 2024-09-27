@@ -80,7 +80,7 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
 
 
   return (
-    <div className="w-full relative text-white">
+    <div className="w-full relative overflow-x-none">
       {/* Banner */}
       <div className="relative w-full h-[500px]">
         <Image

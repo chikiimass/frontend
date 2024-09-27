@@ -79,7 +79,7 @@ const SignInOrProfile = () => {
             className="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
           >
             <li>
-              <a href="/profile">Profile</a>
+              <a href="/settings/profile">Profile</a>
             </li>
             <li>
               <button onClick={handleLogout}>Logout</button>

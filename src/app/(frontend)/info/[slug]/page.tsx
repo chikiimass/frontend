@@ -1,7 +1,7 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities';
 import React from 'react';
 import configPromise from '@payload-config';
-import ContentPage from './page.client';
+import ContentPage from '../ContentPage';
 
 export const dynamic = 'force-static';
 export const revalidate = 600;
@@ -114,35 +114,44 @@ const Page = async ({ params }: { params: Params }) => {
       return acc;
     }, {});
   };
+// Transform series data to the desired format
+const transformSeriesData = (data: any): SeriesData => {
+  const series = data?.docs?.[0] || {};
 
-  // Transform series data to the desired format
-  const transformSeriesData = (data: any): SeriesData => {
-    const series = data?.docs?.[0] || {};
-
-    return {
-      [series.slug || 'placeholder-id']: {
-        bannerUrl: series.poster?.url || 'https://via.placeholder.com/1920x1080.png?text=Banner+Image',
-        seriesPicUrl: series.poster?.url || 'https://via.placeholder.com/720x1080.png?text=Series+Picture',
-        seriesName: series.name || 'Unknown Series',
-        description: series.description || 'No description available.',
-        seasons: series.seasons?.map((season: any) => ({
-          id: season.id || 'placeholder-season-id',
-          title: season.title || 'Unknown Season',
-          episodes: Array.isArray(season.episodes) ? season.episodes.map((episode: any) => ({
-            id: episode.id || 'placeholder-episode-id',
-            title: episode.title || 'Unknown Episode',
-            thumbnailUrl: episode.thumbnailUrl || 'https://via.placeholder.com/300x300.png?text=Episode+Thumbnail',
-          })) : [], // Default to empty array if episodes is not an array
-        })) || [],
-        cast: Array.isArray(series.Casts?.value) ? series.Casts.value.map((cast: any) => ({
-          id: cast.id || 'placeholder-cast-id',
-          name: cast.name || 'Unknown Actor',
-          role: cast.role || 'Unknown Role',
-          profilePic: cast.profilePic || 'https://via.placeholder.com/100x100.png?text=Profile+Picture',
-        })) : [], // Default to empty array if Casts.value is not an array
-      },
-    };
+  return {
+    [series.slug || 'placeholder-id']: {
+      bannerUrl: series.poster?.url || 'https://via.placeholder.com/1920x1080.png?text=Banner+Image',
+      seriesPicUrl: series.poster?.url || 'https://via.placeholder.com/720x1080.png?text=Series+Picture',
+      seriesName: series.name || 'Unknown Series',
+      description: series.description || 'No description available.',
+      seasons: series.seasons?.map((season: any) => ({
+        id: season.id || 'placeholder-season-id',
+        title: season.seasonDesc || 'Unknown Season',
+        episodes: Array.isArray(season.episodes)
+          ? season.episodes.map((episode: any) => {
+              const episodeData = episode?.value || {};
+              return {
+                id: episodeData.id || 'placeholder-episode-id',
+                title: episodeData.title || 'Unknown Episode',
+                thumbnailUrl: episodeData.thumbnail?.url || 'https://via.placeholder.com/300x300.png?text=Episode+Thumbnail',
+                description: episodeData.description || 'No description available.',
+                episodeNumber: episodeData.episodeNumber || 'Unknown',
+              };
+            })
+          : [], // Default to empty array if episodes is not an array
+      })) || [],
+      cast: Array.isArray(series.Casts?.value)
+        ? series.Casts.value.map((cast: any) => ({
+            id: cast.id || 'placeholder-cast-id',
+            name: cast.name || 'Unknown Actor',
+            role: cast.role || 'Unknown Role',
+            profilePic: cast.profilePic || 'https://via.placeholder.com/100x100.png?text=Profile+Picture',
+          }))
+        : [], // Default to empty array if Casts.value is not an array
+    },
   };
+};
+
 
   const combinedData = {
     movies: transformMoviesData(moviesData || {}),
@@ -152,7 +161,6 @@ const Page = async ({ params }: { params: Params }) => {
   return (
     <div>
       <ContentPage data={combinedData} slug={params.slug} />
-      <pre>{JSON.stringify(combinedData, null, 2)}</pre>
     </div>
   );
 };

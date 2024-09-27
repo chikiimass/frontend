@@ -182,7 +182,7 @@ const transformSeriesData = (data: any): SeriesData => {
   };
 
   return (
-    <div>
+    <div className='overflow-x-none'>
       <ContentPage data={combinedData} slug={params.slug} />
     </div>
   );

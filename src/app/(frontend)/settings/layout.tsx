@@ -23,7 +23,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <div className="container mx-auto px-6 h-screen">
-            <div className="relative z-50 md:h-full flex flex-col md:flex-row">
+            <div className="relative md:h-full flex flex-col md:flex-row">
                 {/* Sidebar Navigation */}
                 <nav className="w-full md:w-1/5 lg:w-1/4 bg-base-100 border-b md:border-b-0 md:border-r border-base-200 h-auto md:h-full overflow-y-auto p-4">
                     <ul className="menu">

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Card from '@/components/Card';
+import Card from '@/components/Blocks/Card';
 
 interface MovieData {
   bannerUrl: string;
@@ -29,21 +29,21 @@ interface SeriesData {
   seasons: Array<{
     id: string;
     title: string;
-    seasonN: any;
+    seasonNumber: any;
     episodes: Array<{
-        id?: string;
-        seriesSlug?: string;
-        slug?: string;
-        poster?: { url: string };
-        thumbnail?: { url: string };
-        title?: string;
-        name?: string;
-        duration?: string;
-        views?: number;
-        createdAt?: string;
-        icon?: { url: string } | null;
-        blocks?: { videos?: { videoQuality?: string; videoLink?: string; subtitles?: { url?: string }[] }[] }[];
-      }>;
+      id?: string;
+      seriesSlug?: string;
+      slug?: string;
+      poster?: { url: string };
+      thumbnail?: { url: string };
+      title?: string;
+      name?: string;
+      duration?: string;
+      views?: number;
+      createdAt?: string;
+      icon?: { url: string } | null;
+      blocks?: { videos?: { videoQuality?: string; videoLink?: string; subtitles?: { url?: string }[] }[] }[];
+    }>;
   }>;
   cast: Array<{
     id: string;
@@ -73,8 +73,14 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
   const isMovie = !!movie;
   const content = isMovie ? movie : series;
 
+  const truncateDescription = (text, maxLength) => {
+    if (!text) return '';
+    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+  };
+
+
   return (
-    <div className="w-full relative bg-gray-900 text-white">
+    <div className="w-full relative text-white">
       {/* Banner */}
       <div className="relative w-full h-[500px]">
         <Image
@@ -87,27 +93,26 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
       </div>
 
       {/* Poster, Title, and Description */}
-      <div className="px-6 py-4 relative -mt-28 flex flex-col lg:flex-row gap-4 lg:gap-8">
+      <div className="px-6 py-4 relative -mt-28 flex flex-col lg:flex-row items-start gap-4 lg:gap-8">
         {/* Poster */}
-        <div className="avatar shrink-0 relative">
-          <div className='w-24 rounded-full'>
-
+        <div className="avatar shrink-0">
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg">
             <Image
               src={isMovie ? content.moviePosterUrl : content.seriesPicUrl}
               alt={isMovie ? content.movieName : content.seriesName}
               fill
-              className=" shadow-lg"
+              className="object-cover"
             />
           </div>
         </div>
 
         {/* Title and Description */}
         <div className="flex-1">
-          <h1 className="text-3xl lg:text-4xl font-bold">
+          <h1 className="text-2xl lg:text-3xl font-bold">
             {isMovie ? content.movieName : content.seriesName}
           </h1>
-          <p className="mt-4 text-gray-300 line-clamp-3">
-            {content.description}
+          <p className="mt-2 text-gray-300">
+            {truncateDescription(content.description, 100)}
           </p>
         </div>
       </div>
@@ -177,7 +182,7 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
                     className={`tab ${selectedSeason === season.id ? 'tab-active' : ''}`}
                     onClick={() => setSelectedSeason(season.id)}
                   >
-                    {season.seasonN}
+                    {season.seasonNumber}
                   </a>
                 ))}
               </div>
@@ -186,8 +191,9 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {content.seasons
                   .find((season) => season.id === selectedSeason)
-                  ?.episodes.map((episode) => (
-                    <Card title={episode.title} thumbnail={episode.thumbnail?.url} videoUrl={''} duration={''} userIcon={episode.icon?.url} views={episode.views} createdAt={episode.createdAt} />
+                  ?.episodes.map((episode: any) => (
+                    <Card data={episode} />
+
                   ))}
               </div>
             </div>

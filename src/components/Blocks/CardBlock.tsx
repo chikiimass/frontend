@@ -110,7 +110,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   }, [videoLink]);
 
   const firstName = data.title?.split(' ')[0] || data.name?.split(' ')[0] || 'User';
-  const imageSrc = data.poster?.url || data.thumbnail?.url || '';
+  const imageSrc = data.poster?.url || data.thumbnail?.url || '/images/chikiimass-placeholder.jpg';
   const videoUrl = data.id ? `/video/${data.id}` : '#';
   const infoUrl = data.seriesSlug 
   ? `/info/${data.seriesSlug}` 
@@ -120,7 +120,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   const duration = videoDuration || data.duration || 'N/A';
   const views = data.views !== undefined ? cmAbbreviateNumber(data.views) : '0';
   const createdAt = data.createdAt ? cmTimeAgo(data.createdAt) : 'Unknown';
-  const iconSrc = data.icon?.url || '';  // Default empty string if icon is not present
+  const iconSrc = data.icon?.url || '/images/chikiimass.jpeg';
 
   return (
     <div ref={card.ref} className="group relative vi">

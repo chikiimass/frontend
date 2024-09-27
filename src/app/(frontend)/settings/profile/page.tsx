@@ -21,6 +21,7 @@ const Profile = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
+                
                 if (!token) {
                     router.push('/sign-in');
                     return;
@@ -118,7 +119,7 @@ const Profile = () => {
                         <div className="avatar online">
                             <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-1">
                                 <img
-                                    src={user.iconType === 'upload' ? user.iconUpload.url : user.iconUrl || '/path/to/default/profile-pic.jpg'}
+                                    src={user.iconType === 'upload' ? user.iconUpload.url : user.iconUrl || '/images/chikiimass.jpeg'}
                                     alt={user.name || 'Profile'}
                                 />
                             </div>

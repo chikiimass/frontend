@@ -145,15 +145,21 @@ const transformSeriesData = (data: any): SeriesData => {
               return {
                 id: episodeData.id || 'placeholder-episode-id',
                 title: episodeData.title || 'Unknown Episode',
-                thumbnailUrl: episodeData.thumbnail?.url || 'https://via.placeholder.com/300x300.png?text=Episode+Thumbnail',
+                thumbnailUrl: episodeData.thumbnail?.url || '/images/chikiimass-placeholder.jpg',
                 description: episodeData.description || 'No description available.',
                 episodeNumber: episodeData.episodeNumber || 'Unknown Episode Number',
-                relationTo: episode.relationTo || 'Unknown Relation',
+                relationTo: episode.relationTo || 'episodes',
                 blocks: episodeData.blocks || [], // Include the blocks array if it exists
                 releaseDate: episodeData.releaseDate || 'Unknown Release Date',
-                seriesSlug: episodeData.seriesSlug || 'Unknown Series Slug',
+                seriesSlug: episodeData.seriesSlug || `${params.slug}`,
                 views: episodeData.views || 0, // Default to 0 views if not provided
-                type: episodeData.type || 'Unknown Type',
+                type: episodeData.type || 'series',
+                createdAt: episodeData.createdAt || 'Unknown Created At',
+                icon: episodeData.icon || '/images/chikiimass-placeholder.jpg', // Include the icon object if it exists
+                poster: episodeData.poster || '/images/chikiimass-placeholder.jpg', // Include the poster object if it exists
+                slug: episodeData.slug || `${params.slug}`,
+                duration: episodeData.duration || '00:00',
+                name: episodeData.name || `${params.slug}`,
               };
             })
           : [], // Default to empty array if episodes is not an array
@@ -178,7 +184,6 @@ const transformSeriesData = (data: any): SeriesData => {
   return (
     <div>
       <ContentPage data={combinedData} slug={params.slug} />
-      <pre>{JSON.stringify(combinedData, null, 2)}</pre>
     </div>
   );
 };

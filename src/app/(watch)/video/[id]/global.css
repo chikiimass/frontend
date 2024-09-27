@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "~fluid-player/src/css/fluidplayer.css";
+
+.truncate-multiline {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 3; /* Number of lines to show */
+    -webkit-line-clamp: 3; /* Number of lines to show */
+  }
+  

@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
-import CustomModal from '@/components/CustomModel';
 import Native from '@/components/Ads/Native';
 import Banner from '@/components/Ads/Banner';
 import { FacebookIcon, MessageCircleMore, Share2, XIcon } from 'lucide-react';
@@ -44,10 +43,8 @@ interface VideoPageProps {
   data: Data;
 }
 
-
 export const dynamic = 'force-static';
 export const revalidate = 600;
-
 
 const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
   const [copySuccess, setCopySuccess] = useState(false);
@@ -95,7 +92,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           </section>
         </div>
         <div className="mb-6 lg:mb-0">
-          <div className='flex flex-row justify-between pr-2'>
+          <div className="flex flex-row justify-between pr-2">
             <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
             {/* Share Dialog */}
             <button
@@ -113,7 +110,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
                 <h2 className="text-2xl font-bold mb-4">Share This Video</h2>
 
                 <div className="mb-4">
-                  <label htmlFor="shareInput" className="block font-medium text-gray-700 mb-2">Copy Link:</label>
+                  <label htmlFor="shareInput" className="block font-medium mb-2">Copy Link:</label>
                   <div className="relative">
                     <input
                       type="text"
@@ -125,13 +122,12 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
                     />
                     <button
                       onClick={handleCopyUrl}
-                      className="absolute inset-y-0 right-0 px-3 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-500"
+                      className="absolute inset-y-0 right-0 px-3 py-2 rounded-r-lg"
                     >
                       Copy
                     </button>
                   </div>
                 </div>
-
 
                 <div className="flex space-x-4 mt-4">
                   <a
@@ -160,12 +156,12 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
                   </a>
                 </div>
 
-                <p className="py-4 text-gray-500">Press ESC key or click on ✕ button to close</p>
+                <p className="py-4">Press ESC key or click on ✕ button to close</p>
               </div>
             </dialog>
             {/* Success Alert */}
             {copySuccess && (
-              <div role="alert" className="alert alert-success flex items-center mt-4 bg-green-100 text-green-800 p-4 rounded-md">
+              <div role="alert" className="alert alert-success flex items-center mt-4 p-4 rounded-md z-50">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 shrink-0 stroke-current"
@@ -183,9 +179,35 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
               </div>
             )}
           </div>
-          <p className="text-gray-400 mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
-          {data.duration && <p className="text-gray-400">Duration: {data.duration} mins</p>}
+          <p className="mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
+          {data.duration && <p>Duration: {data.duration} mins</p>}
           <p className="text-lg mb-4">{data.description}</p>
+
+          {/* Comments Section */}
+          <div className="comments-section mt-8">
+            <h3 className="text-xl font-semibold mb-4">Comments</h3>
+            <textarea
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none resize-none"
+              placeholder="Comments are disabled for now."
+              rows={4}
+              disabled
+            />
+          </div>
+
+          {/* Comment Results */}
+          <div className="comment-results mt-6 lg:block hidden">
+            <h3 className="text-xl font-semibold mb-2">Comment Results</h3>
+            <ul className="space-y-4">
+{/*               <li className="border-b pb-4">
+                <p className="font-semibold">John Doe</p>
+                <p className="text-sm">Great video! Very informative.</p>
+              </li>
+              <li className="border-b pb-4">
+                <p className="font-semibold">Jane Smith</p>
+                <p className="text-sm">Looking forward to more content like this.</p>
+              </li> */}
+            </ul>
+          </div>
         </div>
       </div>
 

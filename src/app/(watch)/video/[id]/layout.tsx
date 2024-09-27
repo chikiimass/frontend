@@ -129,11 +129,9 @@ export default function RootLayout({
               <Header />
 
               <div className="flex flex-1 overflow-hidden">
-                <SideBar />
                 <main className="mb-10 flex-1 overflow-auto sm:mb-1">
                   {children}
                 </main>
-                <BottomTab />
               </div>
             </div>
           </VideoPlayerProvider>

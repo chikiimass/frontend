@@ -1,7 +1,7 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities';
 import React from 'react';
 import configPromise from '@payload-config';
-import ContentPage from '../ContentPage';
+import ContentPage from './page.client';
 
 export const dynamic = 'force-static';
 export const revalidate = 600;

@@ -1,272 +1,216 @@
-'use client';
-import React, { useState, useEffect, useRef } from 'react';
+'use client'
+import React, { useState } from 'react';
 import Image from 'next/image';
 
-// Mock data for series and movies
-const seriesData = {
-  'game-of-thrones': {
-    bannerUrl: 'https://via.placeholder.com/1200x300?text=Game+of+Thrones+Banner',
-    seriesPicUrl: 'https://via.placeholder.com/150?text=GoT+Poster',
-    seriesName: 'Game of Thrones',
-    description: 'Game of Thrones is a fantasy series based on the novels by George R.R. Martin. It is set in the fictional continents of Westeros and Essos.',
-    seasons: [
-      {
-        id: '1',
-        title: 'Season 1',
-        episodes: [
-          { id: '1', title: 'Winter Is Coming', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Episode+1' },
-          { id: '2', title: 'The Kingsroad', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Episode+2' },
-          { id: '3', title: 'Lord Snow', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Episode+3' },
-        ],
-      },
-    ],
-    cast: [
-      { id: '1', name: 'Emilia Clarke', role: 'Daenerys Targaryen', profilePic: 'https://via.placeholder.com/150?text=Emilia+Clarke' },
-      { id: '2', name: 'Kit Harington', role: 'Jon Snow', profilePic: 'https://via.placeholder.com/150?text=Kit+Harington' },
-      { id: '3', name: 'Lena Headey', role: 'Cersei Lannister', profilePic: 'https://via.placeholder.com/150?text=Lena+Headey' },
-    ],
-  },
-};
+interface MovieData {
+  bannerUrl: string;
+  moviePosterUrl: string;
+  movieName: string;
+  description: string;
+  parts: Array<{
+    id: string;
+    title: string;
+    thumbnailUrl: string;
+  }>;
+  cast: Array<{
+    id: string;
+    name: string;
+    role: string;
+    profilePic: string;
+  }>;
+}
 
-const movieData = {
-  'fast-and-furious': {
-    bannerUrl: 'https://via.placeholder.com/1200x300?text=Fast+and+Furious+Banner',
-    moviePosterUrl: 'https://via.placeholder.com/150?text=Fast+and+Furious+Poster',
-    movieName: 'Fast and Furious',
-    description: 'Fast & Furious is a media franchise centered on illegal street racing, heists, spies, and family.',
-    parts: [
-      { id: '1', title: 'The Fast and the Furious (2001)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+1' },
-      { id: '2', title: '2 Fast 2 Furious (2003)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+2' },
-      { id: '3', title: 'Fast & Furious (2009)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+3' },
-      { id: '4', title: 'Fast Five (2011)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+4' },
-      { id: '5', title: 'Fast & Furious 6 (2013)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+5' },
-      { id: '6', title: 'Furious 7 (2015)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+6' },
-      { id: '7', title: 'The Fate of the Furious (2017)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+7' },
-      { id: '8', title: 'F9 (2021)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+8' },
-      { id: '9', title: 'Fast X (2023)', thumbnailUrl: 'https://via.placeholder.com/320x180?text=Fast+9' },
-    ],
-    cast: [
-      { id: '1', name: 'Vin Diesel', role: 'Dominic Toretto', profilePic: 'https://via.placeholder.com/150?text=Vin+Diesel' },
-      { id: '2', name: 'Paul Walker', role: 'Brian O\'Conner', profilePic: 'https://via.placeholder.com/150?text=Paul+Walker' },
-      { id: '3', name: 'Dwayne Johnson', role: 'Luke Hobbs', profilePic: 'https://via.placeholder.com/150?text=Dwayne+Johnson' },
-    ],
-  },
-};
+interface SeriesData {
+  bannerUrl: string;
+  seriesPicUrl: string;
+  seriesName: string;
+  description: string;
+  seasons: Array<{
+    id: string;
+    title: string;
+    episodes: Array<{
+      id: string;
+      title: string;
+      thumbnailUrl: string;
+    }>;
+  }>;
+  cast: Array<{
+    id: string;
+    name: string;
+    role: string;
+    profilePic: string;
+  }>;
+}
 
-const ContentPage = ({ data, slug }) => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [isSticky, setIsSticky] = useState(false);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const tabsRef = useRef<HTMLDivElement>(null);
+interface ContentPageProps {
+  data: {
+    movies: { [key: string]: MovieData };
+    series: { [key: string]: SeriesData };
+  };
+  slug: string;
+}
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (tabsRef.current && headerRef.current) {
-        const tabsTop = tabsRef.current.getBoundingClientRect().top;
-        setIsSticky(tabsTop <= 0);
-      }
-    };
+const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
+  const movie = data.movies[slug];
+  const series = data.series[slug];
 
-    const debounceScroll = debounce(handleScroll, 100);
-    window.addEventListener('scroll', debounceScroll);
-    return () => window.removeEventListener('scroll', debounceScroll);
-  }, []);
+  // State for current tab and season
+  const [selectedTab, setSelectedTab] = useState('Overview');
+  const [selectedSeason, setSelectedSeason] = useState(series?.seasons?.[0]?.id || ''); // Default to the first season
 
-  function debounce(fn: Function, delay: number) {
-    let timer: NodeJS.Timeout;
-    return function (...args: any[]) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), delay);
-    };
-  }
+  // Determine if it's movie or series
+  const isMovie = !!movie;
+  const content = isMovie ? movie : series;
 
-  // Determine whether the slug is for a series or a movie
-  const isSeries = seriesData[slug as string];
-  const isMovie = movieData[slug as string];
+  return (
+    <div className="w-full relative bg-gray-900 text-white">
+      {/* Banner */}
+      <div className="relative w-full h-[500px]">
+        <Image
+          src={content.bannerUrl}
+          alt={isMovie ? content.movieName : content.seriesName}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+      </div>
 
-  const renderContent = () => {
-    if (isSeries) {
-      switch (activeTab) {
-        case 'seasons':
-          return (
-            <div>
-              {seriesData[slug as string].seasons.map((season) => (
-                <div key={season.id} className="mb-8">
-                  <h2 className="text-2xl font-semibold">{season.title}</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {season.episodes.map((episode) => (
-                      <div key={episode.id} className="bg-white p-4 rounded-md shadow-md">
-                        <Image
-                          src={episode.thumbnailUrl}
-                          alt={episode.title}
-                          width={320}
-                          height={180}
-                          className="w-full h-auto object-cover"
-                        />
-                        <h3 className="mt-2 text-lg font-semibold">{episode.title}</h3>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+      {/* Poster, Title, and Description */}
+      <div className="px-6 py-4 relative -mt-28 flex flex-col lg:flex-row gap-4 lg:gap-8">
+        {/* Poster */}
+        <div className="avatar shrink-0 relative">
+          <div className='w-24 rounded-full'>
+
+            <Image
+              src={isMovie ? content.moviePosterUrl : content.seriesPicUrl}
+              alt={isMovie ? content.movieName : content.seriesName}
+              fill
+              className=" shadow-lg"
+            />
+          </div>
+        </div>
+
+        {/* Title and Description */}
+        <div className="flex-1">
+          <h1 className="text-3xl lg:text-4xl font-bold">
+            {isMovie ? content.movieName : content.seriesName}
+          </h1>
+          <p className="mt-4 text-gray-300 line-clamp-3">
+            {content.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="mt-8 px-6">
+        <div role="tablist" className="tabs tabs-bordered">
+          <a
+            role="tab"
+            className={`tab ${selectedTab === 'Overview' ? 'tab-active' : ''}`}
+            onClick={() => setSelectedTab('Overview')}
+          >
+            Overview
+          </a>
+          <a
+            role="tab"
+            className={`tab ${selectedTab === 'Videos' ? 'tab-active' : ''}`}
+            onClick={() => setSelectedTab('Videos')}
+          >
+            {isMovie ? 'Videos' : 'Seasons'}
+          </a>
+          <a
+            role="tab"
+            className={`tab ${selectedTab === 'Casts' ? 'tab-active' : ''}`}
+            onClick={() => setSelectedTab('Casts')}
+          >
+            Casts
+          </a>
+        </div>
+
+        {/* Tab Content */}
+        <div className="mt-4">
+          {selectedTab === 'Overview' && (
+            <div className="text-gray-300">
+              <h2 className="text-xl font-semibold mb-2">About</h2>
+              <p>{content.description}</p>
             </div>
-          );
-        case 'cast':
-          return (
-            <div className="space-y-4">
-              {seriesData[slug as string].cast.map((actor) => (
-                <div key={actor.id} className="flex items-center space-x-4 bg-white p-4 rounded-md shadow-md">
-                  <Image
-                    src={actor.profilePic}
-                    alt={actor.name}
-                    width={150}
-                    height={150}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="text-lg font-semibold">{actor.name}</h3>
-                    <p className="text-gray-600">{actor.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          );
-        case 'overview':
-        default:
-          return (
-            <div className="bg-white p-4 rounded-md shadow-md">
-              <h2 className="text-2xl font-semibold">Overview</h2>
-              <p className="mt-2 text-gray-600">{seriesData[slug as string].description}</p>
-            </div>
-          );
-      }
-    } else if (isMovie) {
-      switch (activeTab) {
-        case 'parts':
-          return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {movieData[slug as string].parts.map((part) => (
-                <div key={part.id} className="bg-white p-4 rounded-md shadow-md">
+          )}
+
+          {/* Videos (Movies) or Seasons (Series) */}
+          {selectedTab === 'Videos' && isMovie && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {content.parts.map((part) => (
+                <div key={part.id} className="bg-gray-800 p-4 rounded-lg">
                   <Image
                     src={part.thumbnailUrl}
                     alt={part.title}
-                    width={320}
-                    height={180}
-                    className="w-full h-auto object-cover"
+                    width={300}
+                    height={200}
+                    className="object-cover rounded-md"
                   />
-                  <h3 className="mt-2 text-lg font-semibold">{part.title}</h3>
+                  <h3 className="text-lg mt-2">{part.title}</h3>
                 </div>
               ))}
             </div>
-          );
-        case 'cast':
-          return (
-            <div className="space-y-4">
-              {movieData[slug as string].cast.map((actor) => (
-                <div key={actor.id} className="flex items-center space-x-4 bg-white p-4 rounded-md shadow-md">
-                  <Image
-                    src={actor.profilePic}
-                    alt={actor.name}
-                    width={150}
-                    height={150}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="text-lg font-semibold">{actor.name}</h3>
-                    <p className="text-gray-600">{actor.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          );
-        case 'overview':
-        default:
-          return (
-            <div className="bg-white p-4 rounded-md shadow-md">
-              <h2 className="text-2xl font-semibold">Overview</h2>
-              <p className="mt-2 text-gray-600">{movieData[slug as string].description}</p>
-            </div>
-          );
-      }
-    } else {
-      // Handle cases where the series or movie is not found
-      return (
-        <div className="p-4 ">
-          <h2 className="text-2xl font-semibold">Not Found</h2>
-          <p className="mt-2 text-gray-600">The series or movie you are looking for was not found.</p>
-        </div>
-      );
-    }
-  };
+          )}
 
-  return (
-    <div className="container min-h-screen mx-auto">
-      {isSeries || isMovie ? (
-        <>
-          <div ref={headerRef} className="relative">
-            <Image
-              src={isSeries ? seriesData[slug as string].bannerUrl : movieData[slug as string].bannerUrl}
-              alt={isSeries ? seriesData[slug as string].seriesName : movieData[slug as string].movieName}
-              width={1200}
-              height={300}
-              className="w-full h-64 object-cover"
-            />
-            <div className="absolute top-1/2 left-4 flex items-center space-x-4">
-              <Image
-                src={isSeries ? seriesData[slug as string].seriesPicUrl : movieData[slug as string].moviePosterUrl}
-                alt={isSeries ? seriesData[slug as string].seriesName : movieData[slug as string].movieName}
-                width={150}
-                height={150}
-                className="rounded-full border-4 border-white"
-              />
-              <div>
-                <h1 className="text-4xl font-semibold">{isSeries ? seriesData[slug as string].seriesName : movieData[slug as string].movieName}</h1>
-                <p className="mt-2 text-gray-600">{isSeries ? seriesData[slug as string].description : movieData[slug as string].description}</p>
+          {/* Seasons and Episodes (Series) */}
+          {selectedTab === 'Videos' && !isMovie && (
+            <div>
+              {/* Seasons Tabs */}
+              <div role="tablist" className="tabs tabs-boxed mb-4">
+                {content.seasons.map((season) => (
+                  <a
+                    key={season.id}
+                    role="tab"
+                    className={`tab ${selectedSeason === season.id ? 'tab-active' : ''}`}
+                    onClick={() => setSelectedSeason(season.id)}
+                  >
+                    {season.title}
+                  </a>
+                ))}
+              </div>
+
+              {/* Episodes for Selected Season */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {content.seasons
+                  .find((season) => season.id === selectedSeason)
+                  ?.episodes.map((episode) => (
+                    <div key={episode.id} className="bg-gray-800 p-4 rounded-lg">
+                      <Image
+                        src={episode.thumbnailUrl}
+                        alt={episode.title}
+                        width={300}
+                        height={200}
+                        className="object-cover rounded-md"
+                      />
+                      <h3 className="text-lg mt-2">{episode.title}</h3>
+                    </div>
+                  ))}
               </div>
             </div>
-          </div>
+          )}
 
-          <div ref={tabsRef} className='bg-white'>
-            <div className="flex space-x-4 px-4 py-2">
-              <button
-                className={`px-4 py-2 ${activeTab === 'overview' ? 'font-semibold text-blue-600' : 'text-gray-600'}`}
-                onClick={() => setActiveTab('overview')}
-              >
-                Overview
-              </button>
-              {isSeries ? (
-                <button
-                  className={`px-4 py-2 ${activeTab === 'seasons' ? 'font-semibold text-blue-600' : 'text-gray-600'}`}
-                  onClick={() => setActiveTab('seasons')}
-                >
-                  Seasons
-                </button>
-              ) : (
-                <button
-                  className={`px-4 py-2 ${activeTab === 'parts' ? 'font-semibold text-blue-600' : 'text-gray-600'}`}
-                  onClick={() => setActiveTab('parts')}
-                >
-                  Parts
-                </button>
-              )}
-                            <button
-                className={`px-4 py-2 ${activeTab === 'cast' ? 'font-semibold text-blue-600' : 'text-gray-600'}`}
-                onClick={() => setActiveTab('cast')}
-              >
-                Cast
-              </button>
+          {/* Casts */}
+          {selectedTab === 'Casts' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {content.cast.map((castMember) => (
+                <div key={castMember.id} className="bg-gray-800 p-4 rounded-lg">
+                  <Image
+                    src={castMember.profilePic}
+                    alt={castMember.name}
+                    width={100}
+                    height={100}
+                    className="object-cover rounded-full"
+                  />
+                  <h3 className="text-lg mt-2">{castMember.name}</h3>
+                  <p className="text-gray-400">{castMember.role}</p>
+                </div>
+              ))}
             </div>
-          </div>
-
-           <div className="max-w-6xl mx-auto px-4 py-4 mt-16">{renderContent()}</div>
-        </>
-      ) : (
-        // If neither a series nor a movie is found, show a 404 message
-        <div className="p-4 ">
-          <h2 className="text-2xl font-semibold">Not Found</h2>
-          <p className="mt-2">The series or movie you are looking for was not found.</p>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

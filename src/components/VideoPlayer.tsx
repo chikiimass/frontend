@@ -28,6 +28,24 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     movies: 'movies',
   };
 
+  // Key for storing playback time in localStorage
+  const playbackTimeKey = `video_playback_time_${id}`;
+
+  // Resume playback from saved time
+  const resumePlayback = () => {
+    const savedTime = localStorage.getItem(playbackTimeKey);
+    if (savedTime && videoRef.current) {
+      videoRef.current.currentTime = parseFloat(savedTime); // Resume from saved time
+    }
+  };
+
+  // Save current playback time to localStorage
+  const savePlaybackTime = () => {
+    if (videoRef.current) {
+      localStorage.setItem(playbackTimeKey, videoRef.current.currentTime.toString());
+    }
+  };
+
   useEffect(() => {
     if (!player && videoRef.current) {
       player = fluidPlayer(videoRef.current, {
@@ -37,7 +55,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           posterImage: thumbnail,
           posterImageSize: 'cover',
           fillToContainer: true,
-          autoPlay: true,
           allowDownload: true,
           preload: 'auto',
           allowTheatre: false,
@@ -57,42 +74,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
             theatre: false,
           },
         },
-        captions: {
-          play: 'Play',
-          pause: 'Pause',
-          mute: 'Mute',
-          unmute: 'Unmute',
-          fullscreen: 'Fullscreen',
-          exitFullscreen: 'Exit Fullscreen',
-        },
-        vastOptions: {
-          allowVPAID: true,
-          adList: [
-            {
-              roll: 'preRoll',
-              vastTag: 'https://s.magsrv.com/splash.php?idzone=5418334',
-            },
-            {
-              roll: 'midRoll',
-              vastTag: 'https://s.magsrv.com/splash.php?idzone=5418334',
-              timer: 8,
-            },
-            {
-              roll: 'midRoll',
-              vastTag: 'https://s.magsrv.com/splash.php?idzone=5418334',
-              timer: 10,
-            },
-            {
-              roll: 'postRoll',
-              vastTag: 'https://s.magsrv.com/splash.php?idzone=5418334',
-            },
-          ],
-          vastTimeout: 15000,
-          adCTATextVast: false,
-          showPlayButton: false,
-        },
       });
+
+      // Resume playback when the video is ready
+      videoRef.current.addEventListener('loadedmetadata', resumePlayback);
+      
+      // Save playback time periodically
+      videoRef.current.addEventListener('timeupdate', savePlaybackTime);
     }
+
+    // Cleanup event listeners when the component unmounts
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('loadedmetadata', resumePlayback);
+        videoRef.current.removeEventListener('timeupdate', savePlaybackTime);
+      }
+    };
   }, [videoRef, title, thumbnail]);
 
   // Retry function with exponential backoff
@@ -126,6 +123,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
     }
   };
 
+  const getMimeType = (url: string) => {
+    const extension = url.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'mp4':
+        return 'video/mp4';
+      case 'm3u8':
+        return 'application/x-mpegURL';
+      case 'webm':
+        return 'video/webm';
+      case 'ogg':
+        return 'video/ogg';
+      default:
+        return 'video/mp4';
+    }
+  };
+
+  // Sort videoDetails based on quality (e.g., '1080p', '720p', '480p')
+  const sortedVideoDetails = [...videoDetails].sort((a, b) => {
+    const getQualityValue = (quality: string) => {
+      if (quality.includes('1080p')) return 1080;
+      if (quality.includes('720p')) return 720;
+      if (quality.includes('480p')) return 480;
+      return parseInt(quality) || 0; // Fallback to parse if no "p" or other known value
+    };
+
+    return getQualityValue(b.quality) - getQualityValue(a.quality); // Sort in descending order
+  });
+
   // Update views if not done within the last hour
   useEffect(() => {
     const handleViewUpdate = async () => {
@@ -157,14 +182,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
   return (
     <div className="video-player aspect-video">
       <video ref={videoRef} crossOrigin="anonymous" className="w-full md:rounded-lg mb-4" onError={handleError}>
-        {videoDetails.map((video) => (
-          <source
-            key={video.id}
-            title={video.quality}
-            src={video.link}
-            type="video/mp4"
-          />
-        ))}
+        {sortedVideoDetails.map((video) => {
+          const isHD = video.quality.includes('720p') || video.quality.includes('1080p') || parseInt(video.quality) >= 720;
+          return (
+            <source
+              key={video.id}
+              title={video.quality}
+              src={video.link}
+              type={getMimeType(video.link)}
+              {...(isHD ? { 'data-fluid-hd': true } : {})}
+            />
+          )
+        })}
         Your browser does not support the video tag.
       </video>
     </div>

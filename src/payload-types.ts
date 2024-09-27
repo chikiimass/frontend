@@ -352,6 +352,7 @@ export interface Episode {
   views?: number | null;
   type?: string | null;
   series?: (string | null) | Series;
+  season?: number | null;
   seriesSlug?: string | null;
   seriesName?: string | null;
   updatedAt: string;

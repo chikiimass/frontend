@@ -69,6 +69,13 @@ export const Episodes: CollectionConfig = {
       index: true
     },
     {
+      name: 'season',
+      type: 'number',
+      admin: {
+        position: 'sidebar',
+      }
+    },
+    {
       name: 'seriesSlug',
       type: 'text',
       admin: {
@@ -84,16 +91,6 @@ export const Episodes: CollectionConfig = {
         readOnly: true,
       },
     },
- /*    {
-      name: 'myCustomUIField',
-      type: 'ui',
-      admin: {
-        components: {
-          Field: '@/components/MyCustomUIField',
-        },
-        position: 'sidebar',
-      },
-    }, */
   ],
   hooks: {
     beforeChange: [

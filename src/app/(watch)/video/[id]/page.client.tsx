@@ -4,6 +4,8 @@ import VideoPlayer from '@/components/VideoPlayer';
 import Native from '@/components/Ads/Native';
 import Banner from '@/components/Ads/Banner';
 import { FacebookIcon, MessageCircleMore, Share2, XIcon } from 'lucide-react';
+import Card from '@/components/Blocks/Card';
+import Link from 'next/link';
 
 interface Subtitle {
   id: string;
@@ -34,7 +36,9 @@ interface Data {
   releaseDate: string;
   duration?: number;
   thumbnail: Thumbnail;
+  season: number;
   blocks: Block[];
+  series: any;
   views: number;
   type: String;
 }
@@ -70,6 +74,28 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
       setCopySuccess(false); // Hide after 3 seconds
     }, 3000);
   };
+
+  // Find the current season
+  const currentSeason = data.series.seasons.find(
+    season => season.seasonNumber === data.season
+  );
+
+  const getOrderedEpisodes = (episodes: any[], currentEpisodeNumber: number) => {
+    const currentIndex = episodes.findIndex(
+      episode => episode.value.episodeNumber === currentEpisodeNumber
+    );
+
+    if (currentIndex === -1) return episodes; // Return as is if current episode not found
+
+    // Reorder the episodes starting from the next one
+    const reorderedEpisodes = [
+      ...episodes.slice(currentIndex + 1), // Episodes after the current one
+      ...episodes.slice(0, currentIndex + 1) // Episodes before and including the current one
+    ];
+
+    return reorderedEpisodes;
+  };
+
 
   return (
     <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto overflow-x-none">
@@ -158,30 +184,49 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
 
                 <p className="py-4">Press ESC key or click on ✕ button to close</p>
               </div>
-            </dialog>
-            {/* Success Alert */}
-            {copySuccess && (
-              <div role="alert" className="alert alert-success flex items-center mt-4 p-4 rounded-md z-50">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 shrink-0 stroke-current"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span className="ml-2">URL copied to clipboard!</span>
+              <div className=''>
+                {/* Success Alert */}
+                {copySuccess && (
+                  <div role="alert" className="alert alert-success flex items-center mt-4 p-4 rounded-md z-50">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 shrink-0 stroke-current"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span className="ml-2">URL copied to clipboard!</span>
+                  </div>
+                )}
               </div>
-            )}
+            </dialog>
           </div>
           <p className="mb-2">Release Date: {new Date(data.releaseDate).toDateString()}</p>
-          {data.duration && <p>Duration: {data.duration} mins</p>}
           <p className="text-lg mb-4">{data.description}</p>
+
+
+          {/* Episodes Buttons */}
+          <div className="episodes-buttons mt-6">
+            <h3 className="text-xl font-semibold mb-4">Episodes in Season {data.season}</h3>
+            <div className="flex flex-wrap gap-2">
+              {currentSeason?.episodes.map(episode => (
+                <Link key={episode.value.id} href={`/video/${episode.value.id}`}>
+                  <button
+                    key={episode.value.id}
+                    className={`btn ${episode.value.id === data.id ? 'btn-active' : ''}`} // Ensure the comparison is correct
+                  >
+                    Episode {episode.value.episodeNumber}
+                  </button>
+                </Link>
+              ))}
+            </div>
+          </div>
 
           {/* Comments Section */}
           <div className="comments-section mt-8">
@@ -198,7 +243,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
           <div className="comment-results mt-6 lg:block hidden">
             <h3 className="text-xl font-semibold mb-2">Comment Results</h3>
             <ul className="space-y-4">
-{/*               <li className="border-b pb-4">
+              {/*               <li className="border-b pb-4">
                 <p className="font-semibold">John Doe</p>
                 <p className="text-sm">Great video! Very informative.</p>
               </li>
@@ -217,6 +262,11 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
         <div className="flex flex-col space-y-4">
           <Native />
         </div>
+        {currentSeason && getOrderedEpisodes(currentSeason.episodes, data.id).map(episode => (
+          episode.value.id !== data.id && ( // Prevent rendering the current episode card
+            <Card key={episode.value.id} data={episode.value} />
+          )
+        ))}
       </div>
     </div>
   );

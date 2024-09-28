@@ -14,6 +14,7 @@ const page = async ({ params }) => {
   try {
     movieContent = await payload.findByID({
       collection: 'movies',
+      depth: 3,
       id: id,
     });
   } catch (error) {
@@ -25,6 +26,7 @@ const page = async ({ params }) => {
   try {
     seriesContent = await payload.findByID({
       collection: 'episodes',
+      depth: 3,
       id: id,
     });
   } catch (error) {
@@ -53,7 +55,7 @@ const page = async ({ params }) => {
   return (
     <div>
       {combinedContent.map((item, index) => (
-        <VideoPage key={index} data={item} id={id}/>
+        <VideoPage key={index} data={item} id={id} />
       ))}
     </div>
   );
@@ -90,7 +92,7 @@ const formatDescription = (description: string): string => {
   let formattedDescription = description;
 
   if (description.length < minLength) {
-    formattedDescription = `${description} Learn more on Chikiimass.`;
+    formattedDescription = `${description} Check more on Chikiimass.`;
   } else if (description.length > maxLength) {
     formattedDescription = `${description.substring(0, maxLength - 3)}...`;
   }
@@ -125,10 +127,18 @@ export const generateMetadata = async ({ params }: MetadataParams) => {
 
   const { title, description, thumbnail, poster } = content;
 
-  const defaultTitle = title || 'Untitled';
-  const defaultDescription = description || 'No description available.';
+  let defaultTitle = title || 'Untitled';
+  const defaultDescription = description || 'Enjoy the videos and music you love, and share it all with friends, family, and the world on ChikiiMass.';
+  if (seriesContent) {
+  const seriesName = (seriesContent as any).seriesName; // Assuming the field name is `seriesName`
+  const season = (seriesContent as any).season; // Assuming the field name is `season`
+  
+  if (seriesName && season) {
+    defaultTitle = `${seriesName} S${season} ${title} -`;
+  }
+}
 
-  const adjustedTitle = defaultTitle.length < 30 ? `${defaultTitle} | Chikiimass` : defaultTitle;
+  const adjustedTitle = defaultTitle.length < 30 ? `${defaultTitle} - Chikiimass` : defaultTitle;
   const adjustedDescription = formatDescription(defaultDescription);
 
   return {

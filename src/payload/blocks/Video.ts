@@ -42,6 +42,7 @@ const VideoBlock: Block = {
               value: 'custom',
             },
           ],
+          defaultValue: 'custom',
          
         },
         {
@@ -58,6 +59,7 @@ const VideoBlock: Block = {
               value: 'direct',
             },
           ],
+          defaultValue: 'direct',
          
         },
         {
@@ -106,6 +108,7 @@ const VideoBlock: Block = {
               value: 'auto',
             },
           ],
+          defaultValue: 'auto',
          
         },
         {

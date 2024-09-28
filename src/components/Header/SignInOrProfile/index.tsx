@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SignInOrProfile = () => {
   const [user, setUser] = useState(null);
@@ -79,7 +80,7 @@ const SignInOrProfile = () => {
             className="dropdown-content menu bg-base-100 rounded-box z-[1] w-48 p-2 shadow"
           >
             <li>
-              <a href="/settings/profile">Profile</a>
+              <Link href="/settings/profile">Profile</Link>
             </li>
             <li>
               <button onClick={handleLogout}>Logout</button>
@@ -88,18 +89,18 @@ const SignInOrProfile = () => {
         </div>
       ) : (
         <div className="flex space-x-4">
-          <a
+          <Link
             href="/sign-in"
             className="btn btn-primary btn-sm rounded-lg px-4 py-2 font-medium transition-colors duration-300 hover:bg-primary-dark"
           >
             Sign In
-          </a>
-          <a
+          </Link>
+          <Link
             href="/sign-up"
             className="btn btn-secondary btn-sm rounded-lg px-4 py-2 font-medium transition-colors duration-300 hover:bg-secondary-dark"
           >
             Sign Up
-          </a>
+          </Link>
         </div>
       )}
     </div>

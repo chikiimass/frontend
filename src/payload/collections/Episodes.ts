@@ -4,7 +4,7 @@ import { blocksField } from '../fields/blocks';
 export const Episodes: CollectionConfig = {
   slug: 'episodes',
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'episodeNumber',
   },
   access: {
     read: () => true,
@@ -53,6 +53,9 @@ export const Episodes: CollectionConfig = {
       name: 'views',
       type: 'number',
       defaultValue: 0,
+      admin: {
+        readOnly: true,
+      }
     },
     {
       name: 'type',
@@ -73,7 +76,8 @@ export const Episodes: CollectionConfig = {
       type: 'number',
       admin: {
         position: 'sidebar',
-      }
+      },
+      defaultValue: 1,
     },
     {
       name: 'seriesSlug',

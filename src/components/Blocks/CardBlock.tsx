@@ -4,11 +4,10 @@ import { Avatar } from '../Avatar';
 import LazyLoadedImage from '../LazyLoadingImage';
 import { cmTimeAgo } from '@/utils/time-ago';
 import { cmAbbreviateNumber } from '@/utils/views';
-import useClickableCard from '@/utils/useClickableCard';
 import { useVideoPlayer } from '@/context/VideoPlayerContext';
 import styles from './video-thumbnail.module.scss';
 import Title from '../Title';
-import Hls from 'hls.js';
+import Link from 'next/link';
 
 interface CardProps {
   data: {
@@ -35,79 +34,9 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   const { video, minimized } = useVideoPlayer();
   const isPlaying = video?.id === data.id && minimized;
 
-  const { card, link } = useClickableCard({
-    external: false,
-    newTab: false,
-    scroll: true,
-  });
 
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [textLoaded, setTextLoaded] = useState(false);
-  const [videoDuration, setVideoDuration] = useState<string | null>(null);
 
-  // Get video link if available from data.blocks
-  const videoLink = data.blocks?.[0]?.videos?.[0]?.videoLink || '';
-
-  useEffect(() => {
-    const fetchVideoDuration = async () => {
-      if (videoLink) {
-        const extension = videoLink.split('.').pop()?.toLowerCase();
-
-        if (extension === 'mp4' || extension === 'mkv') {
-          // Use native video element for .mp4 or .mkv files
-          const videoElement = document.createElement('video');
-          videoElement.src = videoLink;
-
-          videoElement.onloadedmetadata = () => {
-            const duration = videoElement.duration;
-            if (duration) {
-              const minutes = Math.floor(duration / 60);
-              const seconds = Math.floor(duration % 60);
-              setVideoDuration(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-            }
-          };
-
-        } else if (extension === 'm3u8') {
-          // Use hls.js for .m3u8 streams
-          if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(videoLink);
-
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-              const videoElement = document.createElement('video');
-              hls.attachMedia(videoElement);
-
-              videoElement.onloadedmetadata = () => {
-                const duration = videoElement.duration;
-                if (duration) {
-                  const minutes = Math.floor(duration / 60);
-                  const seconds = Math.floor(duration % 60);
-                  setVideoDuration(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-                }
-              };
-            });
-          } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-            // Fallback for browsers with native HLS support (e.g., Safari)
-            const videoElement = document.createElement('video');
-            videoElement.src = videoLink;
-
-            videoElement.onloadedmetadata = () => {
-              const duration = videoElement.duration;
-              if (duration) {
-                const minutes = Math.floor(duration / 60);
-                const seconds = Math.floor(duration % 60);
-                setVideoDuration(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-              }
-            };
-          }
-        }
-      }
-    };
-
-    fetchVideoDuration();
-
-    setTextLoaded(true);
-  }, [videoLink]);
 
   const firstName = data.title?.split(' ')[0] || data.name?.split(' ')[0] || 'User';
   const imageSrc = data.poster?.url || data.thumbnail?.url || '/images/chikiimass-placeholder.jpg';
@@ -117,14 +46,14 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
   : data.slug 
   ? `/info/${data.slug}` 
   : '#';
-  const duration = videoDuration || data.duration || 'N/A';
+  const duration = data.duration || 'N/A';
   const views = data.views !== undefined ? cmAbbreviateNumber(data.views) : '0';
   const createdAt = data.createdAt ? cmTimeAgo(data.createdAt) : 'Unknown';
-  const iconSrc = data.icon?.url || '/images/chikiimass.jpeg';
+  const iconSrc = data.icon?.url || data.thumbnail?.url || '/images/chikiimass.jpeg';
 
   return (
-    <div ref={card.ref} className="group relative vi">
-      <a ref={link.ref} href={videoUrl}>
+    <div className="group relative vi">
+      <Link href={videoUrl}>
         <div className="relative">
           {!imageLoaded && (
             <div className="h-52 w-full bg-gray-500 rounded-md" />
@@ -150,13 +79,13 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
           <span className="absolute bottom-2 right-2 rounded-sm bg-black opacity-[0.72] px-1 text-sm text-white">{duration}</span>
         </div>
         <div className="mt-2 pl-4 flex items-start">
-          <a ref={link.ref} href={infoUrl} className="flex-shrink-0">
+          <Link href={infoUrl} className="flex-shrink-0">
             <Avatar
               image={iconSrc || imageSrc}
               name={firstName}
               className="h-14 w-14 dark:bg-zinc-700 flex-shrink-0"
             />
-          </a>
+          </Link>
           <div className="ml-4 flex-1 min-w-0">
             <Title text={data.title || 'Untitled'} />
             <div className="flex items-center mt-2 text-gray-600 text-xs sm:text-sm">
@@ -167,7 +96,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };

@@ -37,6 +37,7 @@ interface Data {
   duration?: number;
   thumbnail: Thumbnail;
   season: number;
+  seriesName: string;
   blocks: Block[];
   series: any;
   views: number;
@@ -119,7 +120,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
         </div>
         <div className="mb-6 lg:mb-0">
           <div className="flex flex-row justify-between pr-2">
-            <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.title}</h1>
+            <h1 className="text-3xl font-bold mt-4 lg:mt-0">{data.seriesName} S{data.season} - {data.title}</h1>
             {/* Share Dialog */}
             <button
               className="text-primary"
@@ -241,7 +242,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
 
           {/* Comment Results */}
           <div className="comment-results mt-6 lg:block hidden">
-            <h3 className="text-xl font-semibold mb-2">Comment Results</h3>
+            {/* <h3 className="text-xl font-semibold mb-2">Comment Results</h3> */}
             <ul className="space-y-4">
               {/*               <li className="border-b pb-4">
                 <p className="font-semibold">John Doe</p>
@@ -264,7 +265,7 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
         </div>
         {currentSeason && getOrderedEpisodes(currentSeason.episodes, data.id).map(episode => (
           episode.value.id !== data.id && ( // Prevent rendering the current episode card
-            <Card key={episode.value.id} data={episode.value} />
+         <Card key={episode.value.id} data={episode.value} />
           )
         ))}
       </div>

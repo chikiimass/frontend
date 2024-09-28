@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ExternalSidebar from '@/components/Sidebar/ExternalSidebar';
 import { Menu } from 'lucide-react';
 import useClickableCard from '@/utils/useClickableCard';
+import Link from 'next/link';
 
 const Headers = () => {
   const { card, link } = useClickableCard({ external: true, newTab: true, scroll: true });
@@ -33,10 +34,10 @@ const Headers = () => {
         <button onClick={toggleExternalSidebar} className="hidden sm:block">
           <Menu size={24} />
         </button>
-        <div ref={card.ref} className="font-bold uppercase sm:px-4">
-          <a ref={link.ref} href="/">
+        <div className="font-bold uppercase sm:px-4">
+          <Link href="/">
             Chikiimass
-          </a>
+          </Link>
         </div>
       </div>
       {/* External Sidebar */}

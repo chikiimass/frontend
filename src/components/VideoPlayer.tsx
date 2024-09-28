@@ -55,7 +55,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           posterImage: thumbnail,
           posterImageSize: 'cover',
           fillToContainer: true,
-          allowDownload: true,
           preload: 'auto',
           allowTheatre: false,
           mute: false,

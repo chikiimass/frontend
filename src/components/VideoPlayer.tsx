@@ -68,7 +68,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           },
           persistentSettings: {
             volume: false,
-            quality: false,
+            quality: true,
             speed: false,
             theatre: false,
           },

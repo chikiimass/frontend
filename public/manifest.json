@@ -1,5 +1,11 @@
 {
- "name": "App",
+ "name": "ChikiiMass",
+ "short_name": "chikiimass",
+ "description": "Enjoy the videos and music you love, and share it all with friends, family, and the world on ChikiiMass.",
+ "start_url": "/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#000000",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",

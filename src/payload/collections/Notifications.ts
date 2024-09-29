@@ -11,6 +11,12 @@ export const Notifications: CollectionConfig = {
     useAsTitle: 'message',
     group: 'utils'
   },
+  access: {
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => true,
+  },
   fields: [
     {
       name: 'message',

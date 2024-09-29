@@ -73,8 +73,8 @@
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
-    "@ffmpeg/core": "0.8.3",
-    "@ffmpeg/ffmpeg": "0.9.4",
+    "@ffmpeg/core": "^0.11.0",
+    "@ffmpeg/ffmpeg": "^0.11.6",
     "@types/inline-css": "^3.0.3",
     "@types/node": "^20.14.9",
     "@types/react": "npm:types-react@19.0.0-rc.0",

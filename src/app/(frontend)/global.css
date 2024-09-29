@@ -4,16 +4,21 @@
 @import "~fluid-player/src/css/fluidplayer.css";
 
 .truncate-multiline {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-clamp: 3; /* Number of lines to show */
-    -webkit-line-clamp: 3; /* Number of lines to show */
-  }
-  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 3;
+  /* Number of lines to show */
+  -webkit-line-clamp: 3;
+  /* Number of lines to show */
+}
 
-/*   .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_play:before {
-    background: url(/images/play.svg) no-repeat !important;
-    background-position: 0px 0px !important;
-} */
+
+.bottom-left-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  max-width: 300px;
+  z-index: 50;
+}

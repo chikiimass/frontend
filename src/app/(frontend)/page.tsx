@@ -39,13 +39,13 @@ const HomePage: React.FC = async () => {
   }
 
   // Usage
-  const collections = ['movies', 'series'];
+  const collections = ['episodes', 'movies'];
   const featuredContent = await fetchFeaturedContentFromCollections(collections);
-
 
   const latestMovies = await payload.find({
     collection: 'movies',
     sort: '-createdAt',
+    depth: 3,
     limit: 6,
   });
 
@@ -78,7 +78,7 @@ const HomePage: React.FC = async () => {
               key={item.id}
               className="hero min-h-screen"
               style={{
-                backgroundImage: item?.poster?.url ? `url(${item.poster.url})` : 'none',
+                backgroundImage: item?.poster?.url ? `url(${item.poster.url})` : `${item?.thumbnail?.url}`,
               }}>
               <div className="hero-overlay bg-opacity-60"></div>
               <div className="hero-content text-neutral-content text-center">

@@ -34,10 +34,14 @@ const Headers = () => {
         <button onClick={toggleExternalSidebar} className="hidden sm:block">
           <Menu size={24} />
         </button>
-        <div className="font-bold uppercase sm:px-4">
+        <div className="font-bold uppercase sm:px-4 flex items-center">
           <Link href="/">
             Chikiimass
           </Link>
+          {/* Beta Badge */}
+          <sup className="ml-1 text-xs align-super bg-yellow-200 text-yellow-800 px-1 py-0.5 rounded-lg border border-yellow-400">
+            Beta
+          </sup>
         </div>
       </div>
       {/* External Sidebar */}

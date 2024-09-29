@@ -145,7 +145,7 @@ const transformSeriesData = (data: any): SeriesData => {
               return {
                 id: episodeData.id || 'placeholder-episode-id',
                 title: episodeData.title || 'Unknown Episode',
-                thumbnailUrl: episodeData.thumbnail?.url || '/images/chikiimass-placeholder.jpg',
+                thumbnail: episodeData.thumbnail || '/images/chikiimass-placeholder.jpg',
                 description: episodeData.description || 'No description available.',
                 episodeNumber: episodeData.episodeNumber || 'Unknown Episode Number',
                 relationTo: episode.relationTo || 'episodes',

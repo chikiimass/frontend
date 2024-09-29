@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { JSX, useEffect, useRef } from 'react'
 
 export default function SocialBar(): JSX.Element {
   const social = useRef<HTMLDivElement | null>(null)
@@ -14,5 +14,5 @@ export default function SocialBar(): JSX.Element {
     }
   }, [])
 
-  return <div ref={social}></div>
+  return <div className='bg-none' ref={social}></div>
 }

@@ -13,6 +13,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    notifications: Notification;
     categories: Category;
     genres: Genre;
     casts: Cast;
@@ -105,6 +106,21 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications".
+ */
+export interface Notification {
+  id: string;
+  message: string;
+  type: 'info' | 'warning' | 'success';
+  link?: string | null;
+  linkText?: string | null;
+  dismissible: boolean;
+  reappearAfter?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

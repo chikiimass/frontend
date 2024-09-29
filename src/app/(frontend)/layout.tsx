@@ -13,6 +13,8 @@ import SocialBar from '@/components/Ads/Banner/Social'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import ClientThemeWrapper from '@/contexts/ClientWrapper'
 import Template from '@/components/Ads/Template'
+import NotificationBanner from '@/components/NotificationBanner'
+import { NotificationProvider } from '@/context/Notification'
 
 export const dynamic = 'force-static';
 export const revalidate = 600;
@@ -125,7 +127,9 @@ export default function RootLayout({
           <ClientThemeWrapper>
           <Template>
           <VideoPlayerProvider>
+          <NotificationProvider>
             <div className="flex h-screen flex-col">
+              <NotificationBanner />
               <Header />
 
               <div className="flex flex-1 overflow-hidden">
@@ -136,6 +140,7 @@ export default function RootLayout({
                 <BottomTab />
               </div>
             </div>
+            </NotificationProvider>
           </VideoPlayerProvider>
           </Template>
           </ClientThemeWrapper>

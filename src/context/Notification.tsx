@@ -27,8 +27,7 @@ export const NotificationProvider = ({ children }) => {
       try {
         const response = await fetch('/api/notifications');
         const data = await response.json();
-        console.log(data.docs)
-        setAnnouncements(data.docs); // Set announcements from API response
+        setAnnouncements(data.docs);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }

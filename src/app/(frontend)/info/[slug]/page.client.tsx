@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Card from '@/components/Blocks/Card';
 
@@ -68,6 +68,10 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
   // State for current tab and season
   const [selectedTab, setSelectedTab] = useState('Overview');
   const [selectedSeason, setSelectedSeason] = useState(series?.seasons?.[0]?.id || ''); // Default to the first season
+  const [maxHeight, setMaxHeight] = useState(0); // To maintain the maximum height
+
+  // Ref for the tab content area
+  const tabContentRef = useRef<HTMLDivElement>(null);
 
   // Determine if it's movie or series
   const isMovie = !!movie;
@@ -78,6 +82,13 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
 
+  // Measure the content height when the tab changes
+  useEffect(() => {
+    if (tabContentRef.current) {
+      const currentHeight = tabContentRef.current.scrollHeight;
+      setMaxHeight((prevMaxHeight) => Math.max(prevMaxHeight, currentHeight));
+    }
+  }, [selectedTab, selectedSeason]);
 
   return (
     <div className="w-full relative overflow-x-none">
@@ -144,7 +155,11 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
         </div>
 
         {/* Tab Content */}
-        <div className="mt-4">
+        <div
+          ref={tabContentRef}
+          className="mt-4 transition-all duration-300"
+          style={{ minHeight: maxHeight }} // Set the minHeight to the max height achieved
+        >
           {selectedTab === 'Overview' && (
             <div className="text-gray-300">
               <h2 className="text-xl font-semibold mb-2">About</h2>
@@ -193,7 +208,6 @@ const ContentPage: React.FC<ContentPageProps> = ({ data, slug }) => {
                   .find((season) => season.id === selectedSeason)
                   ?.episodes.map((episode: any) => (
                     <Card data={episode} />
-
                   ))}
               </div>
             </div>

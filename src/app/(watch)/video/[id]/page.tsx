@@ -134,7 +134,7 @@ export const generateMetadata = async ({ params }: MetadataParams) => {
   const season = (seriesContent as any).season; // Assuming the field name is `season`
   
   if (seriesName && season) {
-    defaultTitle = `${seriesName} S${season} ${title} -`;
+    defaultTitle = `${seriesName} S${season} - ${title}`;
   }
 }
 

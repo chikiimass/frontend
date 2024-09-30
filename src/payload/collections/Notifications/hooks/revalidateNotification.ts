@@ -2,26 +2,26 @@ import type { CollectionAfterChangeHook } from 'payload'
 
 import { revalidatePath } from 'next/cache'
 
-import type { Episode } from '@/payload-types'
+import type { Notification } from '@/payload-types'
 
-export const revalidateEpisode: CollectionAfterChangeHook<Episode> = ({
+export const revalidateNotification: CollectionAfterChangeHook<Notification> = ({
   doc,
   previousDoc,
   req: { payload },
 }) => {
   if (doc._status === 'published') {
-    const path = `/video/${doc.id}`
+    const path = `/${doc.id}`
 
-    payload.logger.info(`Revalidating Episode at path: ${path}`)
+    payload.logger.info(`Revalidating notification at path: ${path}`)
 
     revalidatePath(path)
   }
 
   // If the post was previously published, we need to revalidate the old path
   if (previousDoc._status === 'published' && doc._status !== 'published') {
-    const oldPath = `/video/${previousDoc.id}`
+    const oldPath = `/${previousDoc.id}`
 
-    payload.logger.info(`Revalidating old post at path: ${oldPath}`)
+    payload.logger.info(`Revalidating old notification at path: ${oldPath}`)
 
     revalidatePath(oldPath)
   }

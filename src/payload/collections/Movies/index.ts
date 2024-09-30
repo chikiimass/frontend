@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload';
 import { blocksField } from '@/payload/fields/blocks'
 import { COLLECTION_SLUG_CASTS } from './config';
+import { revalidateMovie } from './hooks/revalidateMovie';
 
 export const Movies: CollectionConfig = {
   slug: 'movies',
@@ -71,8 +72,29 @@ export const Movies: CollectionConfig = {
       }
     },
     blocksField(),
+    {
+        name: 'publishedAt',
+        type: 'date',
+        admin: {
+            date: {
+                pickerAppearance: 'dayAndTime',
+            },
+            position: 'sidebar',
+        },
+        hooks: {
+            beforeChange: [
+                ({ siblingData, value }) => {
+                    if (siblingData._status === 'published' && !value) {
+                        return new Date()
+                    }
+                    return value
+                },
+            ],
+        },
+    },
   ],
   hooks: {
+    afterChange: [revalidateMovie],
     beforeValidate: [
       async ({ data }) => {
         // Ensure data exists and that we have a title but no slug yet

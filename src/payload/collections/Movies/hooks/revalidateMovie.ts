@@ -2,9 +2,9 @@ import type { CollectionAfterChangeHook } from 'payload'
 
 import { revalidatePath } from 'next/cache'
 
-import type { Episode } from '@/payload-types'
+import type { Movie } from '@/payload-types'
 
-export const revalidateEpisode: CollectionAfterChangeHook<Episode> = ({
+export const revalidateMovie: CollectionAfterChangeHook<Movie> = ({
   doc,
   previousDoc,
   req: { payload },
@@ -12,7 +12,7 @@ export const revalidateEpisode: CollectionAfterChangeHook<Episode> = ({
   if (doc._status === 'published') {
     const path = `/video/${doc.id}`
 
-    payload.logger.info(`Revalidating Episode at path: ${path}`)
+    payload.logger.info(`Revalidating movie at path: ${path}`)
 
     revalidatePath(path)
   }
@@ -21,7 +21,7 @@ export const revalidateEpisode: CollectionAfterChangeHook<Episode> = ({
   if (previousDoc._status === 'published' && doc._status !== 'published') {
     const oldPath = `/video/${previousDoc.id}`
 
-    payload.logger.info(`Revalidating old post at path: ${oldPath}`)
+    payload.logger.info(`Revalidating old movie at path: ${oldPath}`)
 
     revalidatePath(oldPath)
   }

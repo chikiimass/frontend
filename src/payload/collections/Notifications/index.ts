@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload';
+import { revalidateNotification } from './hooks/revalidateNotification';
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications', // The URL to access this collection in the admin panel
@@ -66,7 +67,6 @@ export const Notifications: CollectionConfig = {
       name: 'dismissible',
       type: 'checkbox',
       label: 'Manually Dismissible',
-      required: true,
       defaultValue: true, // Most announcements should be dismissible by default
     },
     {
@@ -82,5 +82,36 @@ export const Notifications: CollectionConfig = {
         ],
       },
     },
+    {
+        name: 'publishedAt',
+        type: 'date',
+        admin: {
+            date: {
+                pickerAppearance: 'dayAndTime',
+            },
+            position: 'sidebar',
+        },
+        hooks: {
+            beforeChange: [
+                ({ siblingData, value }) => {
+                    if (siblingData._status === 'published' && !value) {
+                        return new Date()
+                    }
+                    return value
+                },
+            ],
+        },
+    },
   ],
+  hooks: {
+    afterChange: [revalidateNotification],
+  },
+  versions: {
+    drafts: {
+        autosave: {
+            interval: 100, // We set this interval for optimal live preview
+        },
+    },
+    maxPerDoc: 50,
+},
 };

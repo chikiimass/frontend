@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload';
 import { COLLECTION_SLUG_CASTS, COLLECTION_SLUG_CATEGORIES, COLLECTION_SLUG_GENRES } from './config';
+import { revalidateSeries } from './hooks/revalidateSeries';
 
 export const Series: CollectionConfig = {
   slug: 'series',
@@ -7,10 +8,10 @@ export const Series: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: () => true,    // Consider limiting public read access if needed
-    create: () => true,  // Consider restricting creation to authenticated users
-    update: () => true,  // Consider restricting updates to content owners
-    delete: () => true,  // Consider restricting deletion to admins or content owners
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => true,
   },
   fields: [
     {
@@ -83,8 +84,29 @@ export const Series: CollectionConfig = {
         },
       ],
     },
+    {
+        name: 'publishedAt',
+        type: 'date',
+        admin: {
+            date: {
+                pickerAppearance: 'dayAndTime',
+            },
+            position: 'sidebar',
+        },
+        hooks: {
+            beforeChange: [
+                ({ siblingData, value }) => {
+                    if (siblingData._status === 'published' && !value) {
+                        return new Date()
+                    }
+                    return value
+                },
+            ],
+        },
+    },
   ],
   hooks: {
+    afterChange: [revalidateSeries],
     beforeValidate: [
       async ({ data }) => {
         // Ensure data exists and that we have a title but no slug yet

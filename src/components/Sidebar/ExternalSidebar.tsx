@@ -36,7 +36,7 @@ const ExternalSidebar: React.FC<ExternalSidebarProps> = ({
         </div>
         <div className="flex-1 overflow-y-auto">
           <nav className="flex flex-col space-y-4 p-3 text-sm lg:mt-0">
-            <Link href="/" passHref>
+            <Link title="Home" href="/" passHref>
               <div
                 className={`hover:bg-base-300  hover:text-secondary rounded-md p-3 flex flex-row items-center ${pathname === "/" ? "bg-base-300 text-secondary" : ""
                   }`}
@@ -45,7 +45,7 @@ const ExternalSidebar: React.FC<ExternalSidebarProps> = ({
                 <div className="pl-8">Home</div>
               </div>
             </Link>
-            <Link href="/tv" passHref>
+            <Link title="Tv" href="/tv" passHref>
               <div
                 className={`hover:bg-base-300 hover:text-secondary rounded-md p-3 flex flex-row items-center ${pathname === "/tv" ? "bg-base-300 text-secondary" : ""
                   }`}
@@ -54,7 +54,7 @@ const ExternalSidebar: React.FC<ExternalSidebarProps> = ({
                 <div className="pl-8">TV</div>
               </div>
             </Link>
-            <Link href="/settings" passHref>
+            <Link title="Settings" href="/settings" passHref>
               <div
                 className={`hover:bg-base-300 hover:text-secondary rounded-md p-3 flex flex-row items-center ${pathname === "/settings" ? "bg-base-300 text-secondary" : ""
                   }`}

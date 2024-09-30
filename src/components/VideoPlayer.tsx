@@ -58,7 +58,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           preload: 'auto',
           allowTheatre: false,
           mute: false,
-          playbackRateEnabled: true,
+          playbackRateEnabled: false,
           keyboardControl: true,
           title: title,
           controlBar: {

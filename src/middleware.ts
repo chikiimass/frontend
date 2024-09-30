@@ -9,6 +9,7 @@ export default function middleware() {
   })
 }
 
+// The matcher now includes both the static route `/video` and any dynamic routes under `/video/[id]`.
 export const config = {
-  matcher: '/',
+  matcher: ['/', '/video', '/video/:id*'],
 }

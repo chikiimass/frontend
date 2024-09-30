@@ -46,9 +46,9 @@ export function PlaylistOptionsDialog({
     <Dialog {...props}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Download Playlist Options</DialogTitle>
+          <DialogTitle>Download Options</DialogTitle>
         </DialogHeader>
-        <div className='space-y-1 dark:border-neutral-800'>
+        <div className='space-y-1 dark:border-primary'>
           {extractedData && (
             <>
               <label className='text-sm' htmlFor='playlist'>
@@ -85,6 +85,7 @@ export function PlaylistOptionsDialog({
           </Select>
         </div>
         <Button
+        className='btn btn-primary mt-4'
           type='button'
           onClick={() => {
             const playlist = playlists?.at(+selectedPlaylistFormat)

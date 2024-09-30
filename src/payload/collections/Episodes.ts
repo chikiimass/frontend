@@ -4,7 +4,7 @@ import { blocksField } from '../fields/blocks';
 export const Episodes: CollectionConfig = {
   slug: 'episodes',
   admin: {
-    useAsTitle: 'episodeNumber',
+    useAsTitle: 'title',
   },
   access: {
     read: () => true,
@@ -69,7 +69,10 @@ export const Episodes: CollectionConfig = {
       name: 'series',
       type: 'relationship',
       relationTo: 'series',
-      index: true
+      index: true,
+      admin: {
+        position: 'sidebar'
+      }
     },
     {
       name: 'season',
@@ -112,6 +115,11 @@ export const Episodes: CollectionConfig = {
             data.seriesSlug = series.slug;
             data.seriesName = series.name;
           }
+
+          // If there's no thumbnail for the episode, use the series poster as the thumbnail
+/*           if (!data.thumbnail && series.poster) {
+            data.thumbnail = series.poster;
+          } */
         }
       },
     ],

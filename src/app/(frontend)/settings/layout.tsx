@@ -28,32 +28,32 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
                 <nav className="w-full md:w-1/5 lg:w-1/4 bg-base-100 border-b md:border-b-0 md:border-r border-base-200 h-auto md:h-full overflow-y-auto p-4">
                     <ul className="menu">
                         <li className="mb-2">
-                            <Link href="/settings/profile" className={getLinkClass('/settings/profile')}>
+                            <Link title={'Profile'} href="/settings/profile" className={getLinkClass('/settings/profile')}>
                                 Profile
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/settings/playback" className={getLinkClass('/settings/playback')}>
+                            <Link title='Playback' href="/settings/playback" className={getLinkClass('/settings/playback')}>
                                 Playback
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/settings/appearance" className={getLinkClass('/settings/appearance')}>
+                            <Link title='Appearance' href="/settings/appearance" className={getLinkClass('/settings/appearance')}>
                                 Appearance
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/settings/privacy" className={getLinkClass('/settings/privacy')}>
+                            <Link title='Privacy' href="/settings/privacy" className={getLinkClass('/settings/privacy')}>
                                 Privacy
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/settings/content" className={getLinkClass('/settings/content')}>
+                            <Link title='Content' href="/settings/content" className={getLinkClass('/settings/content')}>
                                 Content
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/settings/advanced" className={getLinkClass('/settings/advanced')}>
+                            <Link title='Advanced' href="/settings/advanced" className={getLinkClass('/settings/advanced')}>
                                 Advanced
                             </Link>
                         </li>

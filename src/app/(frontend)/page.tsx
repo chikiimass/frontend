@@ -78,7 +78,7 @@ const HomePage: React.FC = async () => {
               key={item.id}
               className="hero min-h-screen"
               style={{
-                backgroundImage: item?.poster?.url ? `url(${item.poster.url})` : `${item?.thumbnail?.url}`,
+                backgroundImage: item?.poster?.url ? `url(${item.poster.url})` : `url(${item?.thumbnail?.url})`,
               }}>
               <div className="hero-overlay bg-opacity-60"></div>
               <div className="hero-content text-neutral-content text-center">
@@ -90,7 +90,7 @@ const HomePage: React.FC = async () => {
                     {item.description}
                   </p>
 
-                  <Link href={`/video/${item.id}`}>
+                  <Link title={item.title || item.name || 'Untitled'} href={`/video/${item.id}`}>
                     <button className="btn btn-primary">
                       Watch Now
                     </button>

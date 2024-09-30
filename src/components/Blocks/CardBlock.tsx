@@ -13,6 +13,7 @@ interface CardProps {
   data: {
     id?: string;
     seriesSlug?: string;
+    seriesName?: string;
     slug?: string;
     poster?: { url: string };
     thumbnail?: { url: string };
@@ -53,7 +54,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
 
   return (
     <div className="group relative vi">
-      <Link href={videoUrl}>
+      <Link title={`${data.title || data.name || 'Untitled'}`} href={videoUrl}>
         <div className="relative">
           {!imageLoaded && (
             <div className="h-52 w-full bg-gray-500 rounded-md" />
@@ -79,7 +80,7 @@ const CardBlock: React.FC<CardProps> = ({ data }) => {
           <span className="absolute bottom-2 right-2 rounded-sm bg-black opacity-[0.72] px-1 text-sm text-white">{duration}</span>
         </div>
         <div className="mt-2 pl-4 flex items-start">
-          <Link href={infoUrl} className="flex-shrink-0">
+          <Link title={data.seriesName || data.name || 'Untitled'} href={infoUrl} className="flex-shrink-0">
             <Avatar
               image={iconSrc || imageSrc}
               name={firstName}

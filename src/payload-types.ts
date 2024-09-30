@@ -371,8 +371,10 @@ export interface Episode {
   season?: number | null;
   seriesSlug?: string | null;
   seriesName?: string | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

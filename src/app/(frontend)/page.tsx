@@ -1,7 +1,6 @@
 import React from 'react';
 import { getPayloadHMR } from '@payloadcms/next/utilities';
 import configPromise from '@payload-config';
-import Card from '@/components/Blocks/Card';
 import Link from 'next/link';
 import CardRow from '@/components/CardRow';
 import Banner from '@/components/Ads/Banner';

@@ -138,7 +138,6 @@ const VideoPage: React.FC<VideoPageProps> = ({ data }) => {
                     name={`${data.seriesName} S${data.season} - ${data.title}`.replaceAll(' ', '_')}
                     url={download.url} />
                 )}
-
               </div>
               <button
                 className="text-primary"

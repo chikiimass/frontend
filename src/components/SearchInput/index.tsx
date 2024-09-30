@@ -79,17 +79,18 @@ const SearchInput = ({ data }) => {
                     <div className="w-full max-w-md">
                         {filteredSeries.length > 0 ? (
                             filteredSeries.map(series => (
-                                <div
-                                    key={series.id}
-                                    className="flex items-center mb-4 cursor-pointer"
-                                    onClick={() => handleCardClick(series.name)}
-                                >
-                                    <img src={series.poster.url} alt={series.name} className="w-16 h-16 object-cover mr-4" />
-                                    <div>
-                                        <h4 className="text-lg font-semibold">{series.name}</h4>
-                                        <p className="text-sm text-gray-500">{new Date(series.releaseddate).getFullYear()}</p>
+                                <Link title={series.name} href={`/info/${series.slug}`} className="flex items-center mb-4 cursor-pointer" >
+                                    <div
+                                        key={series.id}
+                                        className="flex items-center mb-4 cursor-pointer"
+                                    >
+                                        <img src={series.poster.url} alt={series.name} className="w-16 h-16 object-cover mr-4" />
+                                        <div>
+                                            <h4 className="text-lg font-semibold">{series.name}</h4>
+                                            <p className="text-sm text-gray-500">{new Date(series.releaseDate).getFullYear()}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))
                         ) : (
                             <p className="text-gray-500">No results found</p>
@@ -123,17 +124,18 @@ const SearchInput = ({ data }) => {
                         <div className="p-4">
                             {filteredSeries.length > 0 ? (
                                 filteredSeries.map(series => (
-                                    <div
-                                        key={series.id}
-                                        className="flex items-center mb-4 cursor-pointer"
-                                        onClick={() => handleCardClick(series.name)}
-                                    >
-                                        <img src={series.poster.url} alt={series.name} className="w-16 h-16 object-cover mr-4" />
-                                        <div>
-                                            <h4 className="text-lg font-semibold">{series.name}</h4>
-                                            <p className="text-sm text-gray-500">{new Date(series.releaseddate).getFullYear()}</p>
+                                    <Link title={series.name} href={`/info/${series.slug}`} className="flex items-center mb-4 cursor-pointer" >
+                                        <div
+                                            key={series.id}
+                                            className="flex items-center mb-4 cursor-pointer"
+                                        >
+                                            <img src={series.poster.url} alt={series.name} className="w-16 h-16 object-cover mr-4" />
+                                            <div>
+                                                <h4 className="text-lg font-semibold">{series.name}</h4>
+                                                <p className="text-sm text-gray-500">{new Date(series.releaseDate).getFullYear()}</p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))
                             ) : (
                                 <p className="text-gray-500">No results found</p>

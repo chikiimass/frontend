@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload';
 import { blocksField } from '@/payload/fields/blocks'
-import { COLLECTION_SLUG_CASTS } from './config';
+import { COLLECTION_SLUG_CASTS } from '../config';
 import { revalidateMovie } from './hooks/revalidateMovie';
 
 export const Movies: CollectionConfig = {

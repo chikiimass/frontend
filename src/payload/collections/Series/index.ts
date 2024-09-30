@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload';
-import { COLLECTION_SLUG_CASTS, COLLECTION_SLUG_CATEGORIES, COLLECTION_SLUG_GENRES } from './config';
+import { COLLECTION_SLUG_CASTS, COLLECTION_SLUG_CATEGORIES, COLLECTION_SLUG_GENRES } from '../config';
 import { revalidateSeries } from './hooks/revalidateSeries';
 
 export const Series: CollectionConfig = {

@@ -8,6 +8,7 @@ export const COLLECTION_SLUG_PROJECTS = 'projects' as const
 export const COLLECTION_SLUG_COMMENTS = 'comments' as const
 export const COLLECTION_SLUG_GENRES = 'genres' as const
 export const COLLECTION_SLUG_CATEGORIES = 'categories' as const
+export const COLLECTION_SLUG_NOTIFICATIONS = 'notifications' as const
 
 export const COLLECTION_SLUG_CASTS = 'casts' as const
 export const COLLECTION_SLUG_EPISODES = 'episodes' as const

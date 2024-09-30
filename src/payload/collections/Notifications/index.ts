@@ -1,8 +1,9 @@
 import { CollectionConfig } from 'payload';
 import { revalidateNotification } from './hooks/revalidateNotification';
+import { COLLECTION_SLUG_NOTIFICATIONS } from '../config';
 
 export const Notifications: CollectionConfig = {
-  slug: 'notifications', // The URL to access this collection in the admin panel
+  slug:  COLLECTION_SLUG_NOTIFICATIONS,
   labels: {
     singular: 'Notification',
     plural: 'Notifications',

@@ -117,10 +117,12 @@ export interface Notification {
   type: 'info' | 'warning' | 'success';
   link?: string | null;
   linkText?: string | null;
-  dismissible: boolean;
+  dismissible?: boolean | null;
   reappearAfter?: number | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -261,6 +263,7 @@ export interface Movie {
           }
       )[]
     | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -306,6 +309,7 @@ export interface Series {
         id?: string | null;
       }[]
     | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }

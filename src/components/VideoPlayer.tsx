@@ -51,7 +51,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
       player = fluidPlayer(videoRef.current, {
         layoutControls: {
           primaryColor: 'royalblue',
-          playButtonShowing: false,
+          playButtonShowing: true,
           posterImage: thumbnail,
           posterImageSize: 'cover',
           fillToContainer: true,
@@ -59,6 +59,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           allowTheatre: false,
           mute: false,
           playbackRateEnabled: false,
+          autoPlay: true,
           keyboardControl: true,
           title: title,
           controlBar: {
@@ -68,16 +69,45 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, videoDetails, title, thum
           },
           persistentSettings: {
             volume: false,
-            quality: true,
+            quality: false,
             speed: false,
             theatre: false,
           },
         },
+
+        vastOptions: {
+          adList: [
+            {
+              roll: "preRoll",
+              vastTag: "https://s.magsrv.com/v1/vast.php?idzone=5418334",
+              adText: ""
+            },
+            {
+              roll: "midRoll",
+              timer: 5,
+              vastTag: "https://s.magsrv.com/v1/vast.php?idzone=5418334",
+              adText: ""
+            },
+            {
+              roll: "postRoll",
+              vastTag: "https://s.magsrv.com/v1/vast.php?idzone=5418334",
+              adText: ""
+            },
+            {
+              roll: "onPauseRoll",
+              vastTag: "https://s.magsrv.com/splash.php?idzone=5432850",
+              adText: ""
+            }
+          ],
+          adCTAText: false,
+          adCTATextPosition: "bottom right"
+        },
+
       });
 
       // Resume playback when the video is ready
       videoRef.current.addEventListener('loadedmetadata', resumePlayback);
-      
+
       // Save playback time periodically
       videoRef.current.addEventListener('timeupdate', savePlaybackTime);
     }

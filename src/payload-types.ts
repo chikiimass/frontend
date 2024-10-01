@@ -15,6 +15,7 @@ export interface Config {
     media: Media;
     notifications: Notification;
     categories: Category;
+    test: Test;
     genres: Genre;
     casts: Cast;
     movies: Movie;
@@ -131,6 +132,16 @@ export interface Notification {
 export interface Category {
   id: string;
   title?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test".
+ */
+export interface Test {
+  id: string;
+  name?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -266,6 +277,7 @@ export interface Movie {
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -312,6 +324,7 @@ export interface Series {
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

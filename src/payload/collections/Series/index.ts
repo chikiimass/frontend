@@ -85,24 +85,24 @@ export const Series: CollectionConfig = {
       ],
     },
     {
-        name: 'publishedAt',
-        type: 'date',
-        admin: {
-            date: {
-                pickerAppearance: 'dayAndTime',
-            },
-            position: 'sidebar',
+      name: 'publishedAt',
+      type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
         },
-        hooks: {
-            beforeChange: [
-                ({ siblingData, value }) => {
-                    if (siblingData._status === 'published' && !value) {
-                        return new Date()
-                    }
-                    return value
-                },
-            ],
-        },
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === 'published' && !value) {
+              return new Date()
+            }
+            return value
+          },
+        ],
+      },
     },
   ],
   hooks: {
@@ -119,5 +119,13 @@ export const Series: CollectionConfig = {
         }
       }
     ],
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+    },
+    maxPerDoc: 50,
   },
 };

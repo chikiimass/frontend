@@ -21,7 +21,7 @@ export const revalidate = 600;
 
 
 export const metadata: Metadata = {
-  title: 'Home | Chikiimass',
+  title: 'Chikiimass',
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   description: 'Enjoy the videos and music you love, and share it all with friends, family, and the world on ChikiiMass.',
   generator: 'Chikiimass',

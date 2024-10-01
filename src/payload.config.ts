@@ -19,6 +19,7 @@ import { resendAdapter } from '@payloadcms/email-resend'
 import { S3_PLUGIN_CONFIG } from './payload/plugins/s3'
 import { COLLECTION_SLUG_MEDIA } from './payload/collections/config'
 import { en } from 'payload/i18n/en'
+import Test from './payload/collections/Test'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,7 +37,7 @@ export default buildConfig({
 
   cors: ['https://checkout.stripe.com', 'https://chikiimass.me', 'https://www.chikiimass.me', `${process.env.NEXT_PUBLIC_SITE_URL}` || ''],
   csrf: ['https://checkout.stripe.com', 'https://chikiimass.me', 'https://www.chikiimass.me', process.env.NEXT_PUBLIC_SITE_URL || ''],
-  collections: [Users, media, Notifications, Categories, Genres, Casts, Movies, Pages, Series, Episodes],
+  collections: [Users, media, Notifications, Categories, Test, Genres, Casts, Movies, Pages, Series, Episodes],
   secret: process.env.AUTH_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

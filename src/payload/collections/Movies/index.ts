@@ -108,4 +108,12 @@ export const Movies: CollectionConfig = {
       }
     ],
   },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+    },
+    maxPerDoc: 50,
+  },
 };

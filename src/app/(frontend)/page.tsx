@@ -17,7 +17,7 @@ const HomePage: React.FC = async () => {
       limit: 1,
     }); */
 
-  async function fetchFeaturedContentFromCollections(collections) {
+  async function fetchFeaturedContentFromCollections(collections: string[]) {
     for (const collection of collections) {
       try {
         const result = await payload.find({
@@ -72,7 +72,7 @@ const HomePage: React.FC = async () => {
       <main className="flex-1">
         {/* Hero Section */}
         <section>
-          {featuredContent.docs.map((item) => (
+          {featuredContent?.docs.map((item) => (
             <div
               key={item.id}
               className="hero min-h-screen"

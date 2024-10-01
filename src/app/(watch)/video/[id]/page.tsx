@@ -1,9 +1,12 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities';
 import configPromise from '@payload-config';
 import VideoPage from './page.client';
+import { draftMode } from 'next/headers'
 
 export const dynamic = 'force-static';
 export const revalidate = 600;
+
+const { draft, isEnabled} = draftMode()
 
 const page = async ({ params }) => {
   const { id } = params;
@@ -15,6 +18,8 @@ const page = async ({ params }) => {
     movieContent = await payload.findByID({
       collection: 'movies',
       depth: 3,
+      draft,
+      overrideAccess: draft,
       id: id,
     });
   } catch (error) {
@@ -27,6 +32,8 @@ const page = async ({ params }) => {
     seriesContent = await payload.findByID({
       collection: 'episodes',
       depth: 3,
+      draft,
+      overrideAccess: draft,
       id: id,
     });
   } catch (error) {

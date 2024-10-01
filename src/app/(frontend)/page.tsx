@@ -4,9 +4,13 @@ import configPromise from '@payload-config';
 import Link from 'next/link';
 import CardRow from '@/components/CardRow';
 import Banner from '@/components/Ads/Banner';
+import { draftMode } from 'next/headers'
+
 
 export const dynamic = 'force-static';
 export const revalidate = 600;
+
+const { isEnabled: draft } = draftMode()
 
 const HomePage: React.FC = async () => {
   const payload = await getPayloadHMR({ config: configPromise });
@@ -22,8 +26,10 @@ const HomePage: React.FC = async () => {
       try {
         const result = await payload.find({
           collection,
+          draft,
           sort: '-createdAt',
           limit: 1,
+          overrideAccess: draft,
         });
 
         if (result.docs.length > 0) {
@@ -43,26 +49,35 @@ const HomePage: React.FC = async () => {
 
   const latestMovies = await payload.find({
     collection: 'movies',
+    draft
     sort: '-createdAt',
     depth: 3,
     limit: 6,
+    overrideAccess: draft,
   });
 
   const latestSeries = await payload.find({
     collection: 'episodes',
     sort: '-createdAt',
+    draft,
+    overrideAccess: draft,
+    depth: 3,
     limit: 6,
   });
 
   const topRatedMovies = await payload.find({
     collection: 'movies',
     sort: '-rating',
+    draft,
+    overrideAccess: draft,
     limit: 6,
   });
 
   const trendingSeries = await payload.find({
     collection: 'episodes',
     sort: '-views',
+    draft,
+    overrideAccess: draft,
     limit: 6,
   });
 

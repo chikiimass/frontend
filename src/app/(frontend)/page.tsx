@@ -49,7 +49,7 @@ const HomePage: React.FC = async () => {
 
   const latestMovies = await payload.find({
     collection: 'movies',
-    draft
+    draft,
     sort: '-createdAt',
     depth: 3,
     limit: 6,

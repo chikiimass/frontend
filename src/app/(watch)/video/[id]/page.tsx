@@ -6,11 +6,11 @@ import { draftMode } from 'next/headers'
 export const dynamic = 'force-static';
 export const revalidate = 600;
 
-const { isEnabled:  draft} = draftMode()
 
 const page = async ({ params }) => {
   const { id } = params;
   const payload = await getPayloadHMR({ config: configPromise });
+  const { isEnabled:  draft} = draftMode()
 
   // Try to fetch from the 'movies' collection
   let movieContent;

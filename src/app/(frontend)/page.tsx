@@ -10,10 +10,11 @@ import { draftMode } from 'next/headers'
 export const dynamic = 'force-static';
 export const revalidate = 600;
 
-const { isEnabled: draft } = draftMode()
 
 const HomePage: React.FC = async () => {
   const payload = await getPayloadHMR({ config: configPromise });
+  const { isEnabled: draft } = draftMode()
+
 
   /*   const featuredContent = await payload.find({
       collection: 'movies',

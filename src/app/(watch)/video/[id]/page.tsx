@@ -6,7 +6,7 @@ import { draftMode } from 'next/headers'
 export const dynamic = 'force-static';
 export const revalidate = 600;
 
-const { draft, isEnabled} = draftMode()
+const { isEnabled:  draft} = draftMode()
 
 const page = async ({ params }) => {
   const { id } = params;
